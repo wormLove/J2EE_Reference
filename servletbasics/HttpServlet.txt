@@ -1,0 +1,437 @@
+Pack200和压缩
+
+-------------------------------------------------- ------------------------------
+
+本章包括以下主题：
+
+简介
+理论
+GZIP压缩
+Pack200压缩
+测试
+更多信息
+ 
+
+简介
+为了提高服务器和网络的可用性和带宽，两种新的压缩格式提供的Java应用程序和applets的部署：gzip和Pack200。
+
+随着这两种技术压缩的JAR文件通过网络传输和接收应用程序解压缩，并恢复他们。
+
+理论
+HTTP 1.1（RFC 2616）协议讨论HTTP压缩。 HTTP压缩可以压缩JAR文件部署应用程序的JAR文件。支持的压缩技术，压缩，GZIP，DEFLATE。
+
+SDK / JRE版本5.0，HTTP压缩是在Java Web Start和Java插件在实施符合RFC 2616的。支持技术gzip和pack200 - GZIP。
+
+请求的应用程序发送一个HTTP请求到服务器。一个HTTP请求多个领域。 pack200 - gzip或GZIP的Accept - Encoding（AE）的字段设置，说明服务器的应用程序可以处理pack200 - gzip或gzip格式。
+
+服务器实现，将搜索请求。pack.gz JAR文件或文件扩展名。GZ和响应文件位于回。服务器将设置响应头内容编码pack200 - gzip压缩，gzip压缩，或NULL的文件类型而定（CE）的领域正在发送，并选择设置内容类型（CT）的application/Java-归档。因此，通过检查CE领域，发出请求的应用程序可以申请相应的改造，恢复原来的JAR文件。
+
+
+
+
+以上可以实现用一个简单的servlet或任何HTTP 1.1兼容的Web服务器的服务器模块。在飞行压缩文件会降低服务器的性能，特别是与Pack200，因此不建议。
+
+
+Tomcat的servlet示例：
+
+/ **
+ *一个简单的HTTP压缩的servlet
+ * /
+
+进口的java.util .*;
+进口java.io. *;
+导入javax.servlet .*;
+进口javax.servlet.http .*;
+进口java.util.zip .*;
+java.net .*;
+
+/ **
+ * Servlet类。
+ * /
+公共类的ContentType延伸的HttpServlet {
+
+    私有静态最终字符串JNLP_MIME_TYPE =“应用程序/ X - Java的JNLP文件”;
+    私有静态最终字符串JAR_MIME_TYPE =“应用程序/ x - java的归档”;
+    私有静态最终字符串PACK200_MIME_TYPE =“application/x-java-pack200”;
+
+    / / HTTP压缩2616：标准头文件
+    公共静态最后弦乐ACCEPT_ENCODING =“接受编码”;
+    公共静态最终字符串CONTENT_TYPE =“内容类型”;
+    公共静态最终字符串CONTENT_ENCODING =“内容编码”;
+
+    / / HTTP压缩2616：HTTP/Pack200压缩标准头
+    公共静态最终字符串GZIP_ENCODING =“gzip压缩”;
+    公共静态最终字符串PACK200_GZIP_ENCODING =“pack200 - gzip的”;
+       
+    私人无效sendHtml（HttpServletResponse的响应，String的）
+                 抛出IOException异常{
+         PrintWriter的输出= response.getWriter（）;
+         
+         通过out.println（“<HTML>”）;
+         通过out.println（“<HEAD>”）;
+         通过out.println（“<TITLE>的ContentType </ TITLE>”）;
+         通过out.println（“</ HEAD>”）;
+         通过out.println（“<BODY>”）;
+         通过out.println（S）;
+         通过out.println（“</ BODY>”）;
+         通过out.println（“</ HTML>”）;
+    }
+
+    / *
+     *复制到输出的InputStream，
+     * /
+    私人无效sendOut（中的InputStream，OutputStream的ostream的）
+                 抛出IOException异常{
+        字节缓冲区[] =新的字节[8192];
+
+        N = in.read（BUF）;
+        而（N> 0）{
+            ostream.write（BUF，0，N）;
+            N = in.read（BUF）;
+        }
+        ostream.close（）;
+        in.close（）;
+    }
+    
+    布尔doFile（string名称，HttpServletResponse的响应）{
+        文件f =新的文件（名称）;
+        （f.exists（））{
+            getServletContext（）日志（“找到的文件”+名字）;
+
+            response.setContentLength（Integer.parseInt（
+                        Long.toString（f.length ())));
+
+            response.setDateHeader（“最后修改”，f.lastModified（））;
+            返回true;
+        }
+        getServletContext（）日志（+名字“未找到文件”）;
+        返回false;
+    }
+    
+    
+    / **当有人访问该servlet调用。 * /
+    公共无效的doGet（HttpServletRequest的请求，
+                HttpServletResponse的回应）
+                抛出IOException异常，ServletException {
+        
+        字符串编码= request.getHeader（ACCEPT_ENCODING）;
+        pathInfo = request.getPathInfo（）;
+        pathInfoEx = request.getPathTranslated（）;
+        字符串的contentType = request.getContentType（）;
+        StringBuffer的requestURL = request.getRequestURL（）;
+        弦乐requestName = pathInfo;
+        
+        ServletContext的SC = getServletContext（）;
+        sc.log ("----------------------------");
+        sc.log（“pathInfo =”+ pathInfo）;
+        sc.log（“pathInfoEx =”+ pathInfoEx）;
+        sc.log（“的Accept - Encoding =”+编码）;
+        sc.log内容类型（“=”+内容）;
+        sc.log（“requestURL =”+ requestURL）;
+        
+        （pathInfoEx == NULL）{
+            response.sendError（response.SC_NOT_FOUND）;
+            返回;
+        }
+        字符串OUTFILE = pathInfo;
+        布尔发现= FALSE;
+        字符串contentEncoding = NULL;
+        
+
+        / / Pack200压缩
+        （编码！= NULL＆＆的contentType！= NULL＆＆
+                contentType.compareTo（JAR_MIME_TYPE）== 0＆＆
+                encoding.toLowerCase（）的indexOf（PACK200_GZIP_ENCODING）> -1）{
+
+            contentEncoding = PACK200_GZIP_ENCODING;
+            
+            
+            （doFile（pathInfoEx.concat（“。pack.gz”），响应））{
+                OUTFILE = pathInfo.concat（“pack.gz。”）;
+                发现= TRUE;
+            }其他{
+                / /包/压缩和传输，效率不是很高。
+                = FALSE;
+            }
+        }
+
+        / / HTTP压缩
+        （发现== FALSE＆编码！= NULL＆＆
+                的contentType = NULL＆＆
+                contentType.compareTo（JAR_MIME_TYPE）== 0＆＆
+                encoding.toLowerCase（）的indexOf（使用“gzip”）> -1）{
+                
+            contentEncoding = GZIP_ENCODING;
+
+            （doFile（pathInfoEx.concat（“GZ”），响应））{
+                OUTFILE = pathInfo.concat（“GZ”）;
+                发现= TRUE;
+            }
+        }
+
+        / /无压缩
+        （发现== FALSE）{/ /只发送文件
+            contentEncoding = NULL;
+            sc.log（CONTENT_ENCODING +“=”+“空”）;
+            doFile（pathInfoEx，响应）;
+            OUTFILE = pathInfo;
+        }
+
+        response.setHeader（CONTENT_ENCODING，contentEncoding）;
+        sc.log（CONTENT_ENCODING +“=”+ contentEncoding +
+                “：OUTFILE =”+ OUTFILE）;
+
+
+        （sc.getMimeType（pathInfo）！= NULL）{
+            回复（sc.getMimeType（pathInfo））;
+        }
+        
+        = sc.getResourceAsStream的InputStream（OUTFILE）;
+        的OutputStream出= response.getOutputStream（）;
+
+        （！= NULL）{
+            尝试{
+                sendOut（IN，OUT）;
+            }赶上（IOException异常IOE）{
+                （ioe.getMessage（）。的compareTo（“断管”）== 0）{
+                    sc.log（“管道破裂而写”）;
+                    返回;
+                }否则抛出IOE;
+            }
+        }其他response.sendError（response.SC_NOT_FOUND）;
+        
+    }
+
+}
+ 
+
+
+
+
+GZIP压缩
+gzip是免费提供的压缩机内的JRE和SDK Java.util.zip.GZIPInputStream和Java.util.zip.GZIPOutputStream。
+与大多数UNIX操作系统时，Windows的Unix工具包（Cygwin和MKS）的命令行版本，或下载http://www.gzip.org/过多的操作系统。
+
+人们可以使用gzip压缩压缩JAR文件的压缩与未压缩的JAR文件的压缩程度最高，缺点是该文件可以存储在目标系统上解压缩。
+
+下面是一个例子：
+压缩使用gzip的一个jar文件包含个人瘪条目。
+Notepad.jar 46.25 KB
+Notepad.jar.gz 43.00 KB
+
+一个JAR文件中包含“存储”条目的压缩使用的gzip
+Notepad.jar 987.47 KB
+Notepad.jar.gz 32.47 KB
+
+正如你可以看到下载的大小，可以减少14％，使用未压缩的JAR％和3％，使用压缩JAR文件。
+
+
+
+Pack200压缩
+
+Pack200压缩大文件的效率非常高，在JAR文件中的类文件的大小和密度而定。可以预期的JAR文件的大小压缩到1 / 9，如果只包含类文件，并在几MB的顺序。
+
+
+在前面的例子中使用相同的JAR：
+Notepad.jar 46.25 KB
+Notepad.jar.pack.gz 22.58 KB
+
+
+在这种情况下，相同的JAR可减少50％。
+
+
+请注意：签署大罐时，第5步可能会失败与安全性错误 - 一个可能的原因是错误5078608。请使用发行说明中详细的解决方法之一。
+
+Pack200作品最有效的Java类文件。它使用多种技术来有效地降低JAR文件的大小：
+
+它合并和各种类文件的常量池的数据和合作定位在归档。
+它消除了多余的类的属性。
+它存储的内部数据结构。
+它使用增量和可变长度编码。
+它选择最佳的编码类型为二次压缩。
+Pack200可用于通过使用命令行接口pack200（1），unpack200（1）在您的SDK或JRE目录的bin目录。
+Pack200接口还可以从Java程序调用，请参考API和Javadoc参考Java.util.jar.Pack200。
+
+
+包文件的步骤
+1。考虑大小的JAR文件，JAR文件的内容，带宽和您的目标受众。
+
+所有这些因素都发挥到选择的压缩技术。 unpack200是设计要尽可能高效，它需要一点时间来恢复原来的文件。如果你有大的JAR文件（2 MB或更多），主要包括类文件，Pack200是首选的压缩技术。如果你有大量的资源文件（JPEG，GIF数据等）组成的JAR文件，然后gzip是首选的压缩技术。
+
+2。 Pack200分割。
+
+Pack200加载到内存中的整个压缩文件。然而，当目标系统内存和资源约束，Pack200.Packer.SEGMENT_LIMIT设置一个较低的值，会减少对内存的要求，在包装和拆包。 Pack200.Packer.SEGMENT_LIMIT =- 1将强制生成一个段，将在规模缩小的影响，但将需要一个更大的Java堆在包装和拆包系统。请注意，这些包装的几个分部可能被连接起来以产生一个单一的压缩文件。
+
+
+3。签名的JAR文件。
+
+Pack200重新排列所造成的JAR文件的内容。 jarsigner哈希类文件的内容，并存储在一个加密的摘要??清单中的哈希值。当解压一个包装盒装上运行，将重新排列类的内容，从而使签名无效。因此，必须正常化的JAR文件首先使用pack200和unpack200，并在其后签署的。
+
+（这里的为什么这个工程：任何任何类文件的结构重新排序封隔器做是幂等的，所以的第二包装并没有改变的第一个包装所产生的顺序另外，在解压是在JSR 200规范保证产生一个特定的bytewise形象。对于任何给定的传输归档元素的顺序。）
+
+一个例子
+假设你想使用HelloWorld.jar。
+
+
+
+第1步：重新包装正常化的jar文件，再包装调用在一个步骤中的封隔器，并解压缩文件。
+
+pack200％ - 改装HelloWorld.jar
+
+第2步：签名JAR使用改装后，我们正常化。
+
+％jarsigner -密钥库的Mykeystore HelloWorld.jar ksrini
+
+验证刚刚签署的JAR，以确保签约工作。
+
+％jarsigner验证HelloWorld.jar
+JAR核实。
+
+确保JAR仍然有效。
+
+％Java的JAR HelloWorld.jar
+的HelloWorld
+
+第3步：现在我们包的文件
+
+％pack200 HelloWorld.jar.pack.gz HelloWorld.jar
+
+第4步：解压缩文件
+
+％unpack200 HelloWorld.jar.pack.gz HelloT1.jar
+
+第5步：验证JAR
+
+％jarsigner验证HelloT1.jar
+JAR核实。
+
+/ /测试的jar ...
+％Java的JAR HelloT1.jar
+的HelloWorld
+
+经核查，压缩包文件HelloWorld.jar.pack.gz可以部署。
+ 
+
+4。降低技术：
+
+
+ 默认情况下，Pack200行为高保真（Hi - Fi的）模式，意思是保留所有的原始属性，以及目前在类在JAR文件中的每一个单独的条目的属性。这些通常往往添加到压缩文件大小，这里有一些
+技术可以使用，以进一步减少下载的大小：
+
+修改时间：如果在JAR文件中的各个条目的修改时间是不是一个问题，您可以指定选项Pack200.Packer.MODIFICATION_TIME =“最新的”。这将允许一个修改时间，在每段包文件传输。最新的时间将是该段内的任何条目的最新时间。
+
+通货紧缩提示：上述类似，如果存档中的个别条目的压缩状态并不是必需的，设置Pack200.Packer.DEFLATION_HINT =“假”。这将略微减少下载的大小，作为单独的压缩提示不会传染。然而，重构JAR时，将??包含“存储”条目，并因此可能在目标系统上消耗更多的磁盘空间。
+
+
+例如：
+
+
+pack200 - 修改时间=最新 - 紧缩的暗示=“真正的”工具 - md.jar.pack.gz tools.jar中
+
+
+注：上述优化将产生更好的结果，同一个JAR文件包含数千个条目。
+
+
+属性：部署JAR文件时，不需要几个类属性。这些属性可以被剥离出来的类文件，显着减少下载大小。但是，必须小心，以确保维持所需的运行时属性。
+
+调试属性：如果不需要调试信息，如行号和源文件，（通常在应用程序的堆栈跟踪），那么这些属性可以通过指定Pack200.Packer.STRIP_DEBUG = true.This丢弃，通常会降低约压缩文件10％。
+
+例如：
+pack200 - 带状调试工具 - stripped.jar.pack.gz tools.jar中
+
+
+其他属性：高级用户可以使用一些其他地带的相关的属性，去掉额外的属性。然而，这样做时，应使用格外小心，由此产生的JAR文件，必须在所有可能的Java运行时系统测试，以确保运行时不依赖于剥离的属性。
+
+5。处理未知的属性：
+
+Pack200交易与Java虚拟机规范定义的标准属性，但编译器都是免费的引入自定义属性。存在这样的属性时，默认情况下，Pack200通过类，散发出一条警告消息。这些“通过通过”类文件，可能会导致腹胀压缩文件。如果未知的属性在JAR文件中的类普遍存在，这可能会导致一个非常大的膨胀的包装输出。在这种情况下，应考虑以下策略：
+
+
+地带的属性，如果属性被认为是在运行时是多余的，这可以通过设置属性Pack200.Packer.UNKNOWN_ATTRIBUTE =带钢或
+
+pack200 - 未知属性=地带foo.pack.gz foo.jar
+
+如果需要的属性是在运行时，和他们做贡献的通货膨胀，然后确定从警告消息的属性和应用合适的布局，为这些描述的Pack200 JSR 200规范。Pack200的Java API参考部分帕克。
+
+
+编译器可以定义属性不Pack200布局规范实施，并可能导致封隔器发生故障，在这种情况下，整个类文件（S）可以“通过”，如果它是一个由资源其可能凭借其名称，并可以指定如下：
+
+pack200 - 传递文件=“COM /梯形/富/酒吧/ baz.class”foo.pack.gz foo.jar
+
+或整个目录及其内容，
+
+pack200 - 传递文件=“COM /梯形/富/酒吧/”foo.pack.gz foo.jar
+
+6。安装：
+
+您不妨在您的安装程序Pack200技术，使产品的罐子可能需要压缩在安装过程中使用Pack200及解压缩的优势。如果捆绑在安装JRE或SDK，您可以自由使用unpack200（Unix）或unpack200.exe（Windows）中分布的“bin”目录中，这个实现是一个纯C + +应用程序要求没有Java运行时存在它运行。
+
+
+Windows的安装，可以使用一个比一个是gzip更好的算法，在这种情况下，压缩条目，将得到更好的压缩，使用安装的内在压缩，使用pack200如下：
+
+pack200 - 无GZIP foo.jar.pack foo.jar
+
+这将防止被gzip压缩输出文件。
+
+unpack200是一个Windows控制台应用程序，即。它会显示一个MS - DOS窗口，在安装过程中压制，你可以用一个WinMain这将抑制这个窗口，如下图所示的发射装置。
+
+
+
+示例代码：＃包括“WINDOWS.H”
+＃包括<stdio.h>
+
+INT APIENTRY的WinMain（HINSTANCE的hInstance，
+                     HINSTANCE hPrevInstance，
+                     LPSTR lpCmdLine，
+                     INT nCmdShow）{
+  STARTUPINFO SI;
+  memset的（SI，0，sizeof（SI）的）;
+  si.cb = SIZEOF（SI）;
+
+  PROCESS_INFORMATION PI;
+  memset的（PI，0，sizeof（PI）的）;
+
+  / /测试
+  C：/ / / lpCmdLine =“C：/ build/windows-i586/bin/unpack200 - LC：/温度/日志彗星：/温度/ rt.pack温度/ rt.jar中”;
+  RET =的CreateProcess（NULL，/ *执行的姓名* /
+lpCmdLine，/ * CMD线* /
+NULL，/ * PROC。秒。 ATTR。 * /
+NULL，/ *线程秒。 ATTR * /
+为TRUE，/ *继承文件句柄* /
+CREATE_NO_WINDOW | DETACHED_PROCESS / *分离的过程/压制控制台* /
+NULL，/ * ENV块* /
+NULL，/ *继承CWD * /
+＆SI / *启动信息* /
+＆PI）; / *进程信息* /
+  （RET == 0）ExitProcess（255）;
+
+  / /等待子进程退出。
+  WaitForSingleObject的（pi.hProcess，无限）;
+
+  DWORD exit_val;
+
+  / /是保守的，并返回
+  （GetExitCodeProcess（pi.hProcess，exit_val）== 0）ExitProcess（255）;
+
+  ExitProcess（exit_val）; / /返回子进程的错误代码
+
+  返回-1;
+}
+ 
+
+测试
+它要求所有的JAR文件，包装和打包，与您的应用程序测试预选赛的正确性测试。当使用命令行界面pack200，输出文件将被压缩，使用默认值，Gzip已。一个用户可以创建一个简单的包文件，并使用用户指定的选项gzip或使用其他一些压缩机压缩。
+
+更多信息
+欲了解更多信息，请参阅pack200在Java部署工具和unpack200。
+
+在Java标准版6更新
+在Java SE 6，Java类文件格式已更新。欲了解更多信息，请参阅JSR 202：Java类文件规格更新。由于对JSR 202 Pack200引擎需要相应更新为以下几个原因：
+
+Java SE 6中对齐新的类文件格式
+确保有效压缩，Java SE 6中的类文件。
+为了保持最小的变化，并为用户提供无缝，封隔器将产生相应版本的包，基于输入类文件的版本文件。
+
+也能保持向后兼容性，如果输入的JAR文件仅JDK 1.5或较旧的类文件组成，一个1.5兼容包文件就产生了。否则产生一个Java SE 6兼容pack200文件。欲了解更多信息，请参阅Pack200手册页。
+
+-------------------------------------------------- ------------------------------

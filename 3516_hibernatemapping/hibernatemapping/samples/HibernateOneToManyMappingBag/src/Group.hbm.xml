@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping 
+PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    
+    <class name="Group" table="grouptable">
+        <id name="id" unsaved-value="0">
+            <generator class="increment"/>
+        </id>
+        <bag name="stories" cascade="all">
+            <key column="parent_id"/>
+            <one-to-many class="Story"/>
+        </bag>
+        <property name="name" type="string"/>
+    </class>
+    
+    <class name="Story" table="story">
+        <id name="id" unsaved-value="0">
+            <generator class="increment"/>
+        </id>
+        <property name="info"/>
+    </class>
+    
+</hibernate-mapping>

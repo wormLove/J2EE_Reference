@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-mapping 
+PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    
+    <joined-subclass name="SpecialEditionBook" extends="Book"
+              table="SpecialEditionBook">
+        <key column="id" />
+        <property name="newfeatures" type="string" />
+    </joined-subclass>
+    
+</hibernate-mapping>
+

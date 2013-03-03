@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="false" />
+
+    <package name="mypackage" namespace="/mypackage" extends="struts-default">
+
+        <action name="StaticPara" class="mypackage.StaticParameter">
+            <param name="pramater1">Value 1</param>
+            <param name="pramater2">Value 2</param>
+            <param name="pramater3">Value 3</param>
+            <result>/pages/ShowParam.jsp</result>
+        </action>
+
+        <!-- Add actions here -->
+    </package>
+
+</struts>

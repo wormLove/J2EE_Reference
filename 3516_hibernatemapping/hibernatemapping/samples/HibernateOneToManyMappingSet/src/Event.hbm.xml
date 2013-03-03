@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="Event" table="events">
+        
+        <id name="id" column="uid" type="long" unsaved-value="null">
+            <generator class="increment"/>
+        </id>
+        
+        <property name="name" type="string" length="100"/>
+        
+        <property name="startDate" column="start_date"
+                  type="date"/>
+        <property name="duration" type="integer"/>
+        
+        <many-to-one name="location" column="location_id" class="Location"/>
+        
+        <set name="speakers" cascade="all">
+            <key column="event_id"/>
+            <one-to-many class="Speaker"/>
+        </set>
+        
+        <set name="attendees" cascade="all">
+            <key column="event_id"/>
+            <one-to-many class="Attendee"/>
+        </set>
+        
+    </class>
+</hibernate-mapping>

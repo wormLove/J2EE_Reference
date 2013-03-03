@@ -1,0 +1,2902 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <script src="index_files/tigris.txt" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="index_files/netbeans.css">
+  <title>LAB-4015: JSTL Examples</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta name="SourceCastVersion" content="2.6.2.4.10">
+  <link rel="shortcut icon" href="http://www.netbeans.org/favicon.ico"
+ type="image/x-icon">
+  <meta name="keywords"
+ content="NetBeans, IDE, Platform, free, open source, developer">
+  <link rel="stylesheet" href="index_files/netbeans_002.css">
+  <meta name="author" content="Sang Shin">
+  <style type="text/css">
+#search {height:100%;}
+#topmodule {align:right;}
+  </style>
+  <script language="JavaScript" type="text/javascript">
+<!--
+function get_sc_login() {
+  var sclogin = "guest";
+  return (sclogin);
+}
+var username=get_sc_login();
+//-->
+  </script>
+</head>
+<body onload="loginfocus()" class="composite"
+ style="background-image: url(index_files/beige.jpg);">
+<!-- begin TopTabs --><!-- end TopTabs --><!-- start NavCol --><!-- end NavCol --><!-- Servlet-Specific template --><!-- Show servlet name if it is a servlet -->
+<br>
+<br>
+<h1 style="text-align: center;">JSTL Examples<br>
+</h1>
+<div class="articledate" style="margin-left: 0px; text-align: center;"><a
+ href="http://www.javapassion.com/SangSchedule.html#Bio">Sang Shin</a>,
+<a href="mailto:sang.shin@sun.com">sang.shin@sun.com</a>,&nbsp; <a
+ href="http://www.javapassion.com/j2ee">www.javapassion.com/j2ee</a><a
+ href="mailto:sang.shin@sun.com"><i>
+</i></a></div>
+<div class="indent"><br>
+<div style="text-align: center;"><img alt=""
+ src="index_files/l2_shin_sang_portrait.gif"
+ style="width: 100px; height: 88px;"><br>
+</div>
+<br>
+The JSTL is a standard set of tag libraries that are available on all
+Java EE 1.4 and after compatible platforms.&nbsp; The JSTL includes
+core tags, Internationalization and formatting tags, XML tags, and SQL
+tags.&nbsp; In this hands-on lab, you are going to learn how to use
+these tags in your web applications.<br>
+<b><br>
+</b>
+<div style="text-align: center;"><b>Expected duration: 180 minutes
+(excluding homework)<br>
+<br>
+</b></div>
+<br>
+<h3 class="tutorial">Software Needed</h3>
+<p>Before you begin, you need to install the following software on your
+computer.&nbsp; <br>
+</p>
+<ul>
+  <li>Java Standard Development Kit (JDK™) version 6.0 (<a
+ href="http://java.sun.com/javase/downloads/index.jsp">download</a>)</li>
+  <ul>
+    <li>Select <span style="font-weight: bold;">JDK 6 Update x</span>
+from the download page<br>
+    </li>
+  </ul>
+  <li>NetBeans IDE 6.1 (<a
+ href="http://download.netbeans.org/netbeans/6.1/final/">download</a>)</li>
+  <ul>
+    <li>Download either "<span style="font-weight: bold;">Web &amp;
+Java EE</span>" or "<span style="font-weight: bold;">All</span>"
+bundles.</li>
+  </ul>
+  <li>4015_jstlexamples.zip (<a
+ href="http://www.javapassion.com/handsonlabs/4015_jstlexamples.zip">download</a>)</li>
+  <ul>
+    <li>The zip file contains this document and the lab contents<br>
+    </li>
+    <li>Download it and unzip in a directory of your choice</li>
+  </ul>
+</ul>
+<br>
+<h3 class="tutorial">OS platforms you can use<br>
+</h3>
+<ul>
+  <li>Windows</li>
+  <li>Solaris x86, Solaris Sparc</li>
+  <li>Linux</li>
+  <li>Mac OS X</li>
+</ul>
+<br>
+<h3 class="tutorial"><a name="Resources"></a>Resources</h3>
+<ul>
+  <li><a
+ href="http://java.sun.com/docs/books/tutorial/jdbc/basics/index.html">JDBC
+Basics tutorial from java.sun.com</a></li>
+  <li><font size="-1"><a
+ href="http://www-128.ibm.com/developerworks/library/j-jstlsql/index.html">Easy
+databasen queries with JSTL SQL actions</a></font></li>
+</ul>
+<h3 class="tutorial"><a name="Change_Log"></a>Change Log<br>
+</h3>
+<ul>
+  <li>Oct. 18th, 2006: Draft version created</li>
+  <li>Oct. 29th, 2006: Homework created</li>
+  <li>Dec. 10th, 2006: The <a href="#t1">trouble-shooting on SQLTags
+not being run over Sun Java System App Server</a> is added</li>
+  <li>Dec. 25th, 2006: Homework is clarified a bit</li>
+  <li>June 18th, 2008: NetBeans 6.1 is used</li>
+  <li>July 3rd, 2008: References to Sun Java System App Server are
+removed.<br>
+  </li>
+</ul>
+<br>
+<h3 class="tutorial"><a name="Tutorial_Exercises"></a>Lab Exercises</h3>
+<br>
+<ul>
+  <li><a href="#Exercise_1">Exercise 1: "Core" JSTL tags (45
+minutes)</a><br>
+  </li>
+  <li><a href="#Exercise_2">Exercise 2: "I18N &amp; Formatting"
+tags (45 minutes)</a></li>
+  <li><a href="#Exercise_3">Exercise 3: "SQL" tags</a><a
+ href="index.html#Exercise_1"> (45
+minutes)</a></li>
+  <li><a href="#Exercise_4">Exercise 4: "XML" tags </a><a
+ href="index.html#Exercise_1">(45
+minutes)</a></li>
+  <li><a href="#Homework_Exercise">Homework
+Exercise (for people who
+are taking Sang Shin's "Java EE Programming online course")</a></li>
+</ul>
+</div>
+<br>
+<!-- ===================================================================================== -->
+<h2><a name="Exercise_1"></a>Exercise 1: "Core" JSTL tags<br>
+</h2>
+<i></i>
+<p style="margin-left: 40px;">In this exercise, you are going to
+experiment various "Core" JSTL tags such as &lt;c:out&gt;,
+&lt;c:set&gt; &lt;c:foreach&gt;, &lt;c:import&gt;, &lt;c:url&gt;, and
+so on..<br>
+</p>
+<ul style="margin-left: 40px;">
+</ul>
+<div style="margin-left: 40px;">
+<ol>
+  <li><a href="#1.1">Build and run "JSTL Example" sample application</a><br>
+  </li>
+  <li><a href="#1.2">&lt;c:out&gt;</a></li>
+  <li><a href="#1.3">&lt;c:set&gt;</a></li>
+  <li><a href="#1.4">Conditional tags, &lt;c:if&gt;, &lt;c:choose&gt;<br>
+    </a></li>
+  <li><a href="#1.5">Iterator tags, &lt;c:foreach&gt;</a></li>
+  <li><a href="#1.6">Import tags, &lt;c:import&gt;</a></li>
+  <li><a href="#1.7">Encode tags, &lt;c:url&gt;</a><br>
+  </li>
+</ol>
+</div>
+<ol style="margin-left: 40px;">
+</ol>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.1"></a>(1.1)
+Build and run "JSTL Example" sample application<br>
+</h3>
+<p style="margin-left: 40px;">0. Start NetBeans IDE. <br>
+1. Create a new NetBeans project from
+the sample app that comes with NetBeans <br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">New Project (Ctrl+Shift+N)</span>.&nbsp; <br>
+  </li>
+  <li>Obserbe the <span style="font-weight: bold;">New Project</span>
+dialog box appears.</li>
+  <li>Expand <span style="font-weight: bold;">Samples</span>.</li>
+  <li>Select <span style="font-weight: bold;">Web </span>under <span
+ style="font-weight: bold;">Categories </span>and <span
+ style="font-weight: bold; color: rgb(51, 51, 255);">JSTL Example</span>s
+under <span style="font-weight: bold;">Projects</span>. Click <span
+ style="font-weight: bold;">Next</span>. (Figure-1.10 below)<br>
+  </li>
+</ul>
+</div>
+<p style="margin-left: 40px;"><img alt="" src="index_files/1_jstl1.png"
+ style="width: 729px; height: 505px;"><br>
+Figure-1.10: Run JSTL Example sample application<br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Observe that <span style="font-weight: bold;">New Sample Web
+Application</span> dialog
+box appears. </li>
+  <li>Accept the default project name
+and other values and click <span style="font-weight: bold;">Finish</span>.</li>
+  <li>Observe that the <span
+ style="font-weight: bold; color: rgb(51, 51, 255);">JSTLExamples </span>project
+node appears.</li>
+</ul>
+2. Build and run the application<br>
+<ul>
+  <li>Right click <span style="font-weight: bold;"><span
+ style="color: rgb(51, 51, 255);">JSTLExamples</span> </span>project
+node and select <span style="font-weight: bold;">Run</span>.</li>
+  <li>Observe that the browser gets displayed.&nbsp; (Figure-1.11 below)<br>
+  </li>
+</ul>
+<img alt="" src="index_files/1_jstl2.png"
+ style="width: 795px; height: 885px;"><br>
+Figure-1.11: JSTL Example<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of
+the exercise</a><br>
+</div>
+<p style="margin-left: 40px;"><span style="font-weight: bold;"></span></p>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.2"></a>(1.2)
+&lt;c:out&gt;<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">In this step, you are going to display
+customer information using <span style="font-weight: bold;">&lt;c:set&gt;</span>
+core tag.&nbsp; <br>
+<br>
+Note:&nbsp; The <span style="font-weight: bold;">"customers"/"Customers"</span>
+name/object pair is created and saved as an attribute in the
+ServletContext when the application is deployed.&nbsp; The code in
+which this is initialized is Init.java under <span
+ style="font-weight: bold;">JSTLExamples-&gt;Source
+Packages-&gt;org.apache.taglibs.standard.examples.startup</span>.&nbsp;
+The <span style="font-weight: bold;">Customers </span>is a collection
+of <span style="font-weight: bold;">Customer </span>object.<br>
+<br>
+1. Click <span style="font-weight: bold;">General Purpose tags</span>.
+(Figure-1.20 below)<br>
+<br>
+<img alt="" src="index_files/1_general1.png"
+ style="width: 789px; height: 682px;"><br>
+Figure-1.20: Select General Purpose Tags<br>
+<br>
+2. Click execute icon of <span style="font-weight: bold;">&lt;out&gt;</span>.
+(Figure-1.21 below)<br>
+<br>
+<img alt="" src="index_files/1_general2.png"
+ style="width: 789px; height: 682px;"><br>
+Figure-1.21: Try &lt;c:out&gt;<br>
+<br>
+<a name="Figure-1.22"></a>3. Observe the result. (Figure-1.22
+below)&nbsp; Note that each
+customer's last name, home phone number, and cell phone number
+information is displayed.<br>
+<br>
+<img alt="" src="index_files/1_general4.png"
+ style="width: 789px; height: 684px;"><br>
+Figure-1.22: Result of displaying customer information through
+&lt;c:out tag&gt;<br>
+<br>
+4. Click backward button of the browser to go back to the previous page.<br>
+5. Click source code link. (Figure-1.23 below)&nbsp; This is to display
+the source code of the JSP page.<br>
+<br>
+<img alt="" src="index_files/1_general5.png"
+ style="width: 789px; height: 684px;"><br>
+Figure-1.23: See the source code<br>
+<br>
+6. Observe the source code of <span style="font-weight: bold;">./elsupport/Out.jsp</span>.
+(Figure-1.24
+below)&nbsp; <br>
+<br>
+<img alt="" src="index_files/1_general6.png"
+ style="width: 789px; height: 684px;"><br>
+Figure-1.24: Source code display of the ./elsupport/Out.jsp<br>
+<br>
+Now let's see the /elsupport/Out.jsp from the NetBeans IDE.&nbsp; You
+are going to modify it in the subsequent steps as an experiment.<br>
+<br>
+7. In the NetBeans IDE, expand <span style="font-weight: bold;">elsupport
+</span>under <span style="font-weight: bold;">JSTLExamples-&gt;Web
+Pages</span>.<br>
+8. Double-click<span style="font-weight: bold;"> Out.jsp</span> to open
+it
+in the source editor window.<br>
+<br>
+9. Modify <span style="font-weight: bold;">Out.jsp</span> as shown in
+Code-1.25 below.&nbsp; The code fragment
+that needs to be added is highlighted in <span
+ style="font-weight: bold; color: rgb(51, 51, 255);">bold and
+blue-colored</span>
+font.&nbsp; The modification is to display customer's first name along
+last name, home phone number, and cell phone number.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ taglib prefix="c"
+uri="http://java.sun.com/jsp/jstl/core" %&gt;<br>
+&lt;html&gt;<br>
+&lt;head&gt;<br>
+&nbsp; &lt;title&gt;JSTL: Expression Language Support -- Expr
+Example&lt;/title&gt;<br>
+&lt;/head&gt;<br>
+&lt;body bgcolor="#FFFFFF"&gt;<br>
+      <br>
+&lt;h3&gt;&amp;lt;c:out&amp;gt;&lt;/h3&gt;<br>
+      <br>
+&lt;table border="1"&gt;<br>
+&nbsp; &lt;c:forEach var="customer" items="${customers}"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td&gt;&lt;c:out
+value="${customer.lastName}"/&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold; color: rgb(51, 51, 255);">&lt;td&gt;&lt;c:out
+value="${customer.firstName}"/&gt;&lt;/td&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td&gt;&lt;c:out
+value="${customer.phoneHome}" default="no home phone
+specified"/&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;c:out
+value="${customer.phoneCell}" escapeXml="false"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;font
+color="red"&gt;no cell phone specified&lt;/font&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/c:out&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/tr&gt;<br>
+&nbsp; &lt;/c:forEach&gt;<br>
+&lt;/table&gt;<br>
+      <br>
+&lt;h4&gt;&amp;lt;c:out&amp;gt; with Reader object&lt;/h4&gt;<br>
+&lt;%<br>
+java.io.Reader reader1 = new java.io.StringReader("&lt;foo&gt;Text for
+a Reader!&lt;/foo&gt;");<br>
+pageContext.setAttribute("myReader1", reader1);<br>
+java.io.Reader reader2 = new java.io.StringReader("&lt;foo&gt;Text for
+a Reader!&lt;/foo&gt;");<br>
+pageContext.setAttribute("myReader2", reader2);<br>
+%&gt;<br>
+Reader1 (escapeXml=true) : &lt;c:out value="${myReader1}"/&gt;&lt;br&gt;<br>
+Reader2 (escapeXml=false): &lt;c:out value="${myReader2}"
+escapeXml="false"/&gt;&lt;br&gt;<br>
+&lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.25: Modified Out.jsp<br>
+<br>
+10. Right click <span style="font-weight: bold;"><span
+ style="color: rgb(51, 51, 255);">JSTLExamples</span>
+</span>project
+node and select <span style="font-weight: bold;">Run</span>.<br>
+11. Click <span style="font-weight: bold;">General Purpose tags</span>.<br>
+12. Click execute icon of <span style="font-weight: bold;">&lt;out&gt;</span>.
+<br>
+13. Observe that customer's first names are also displayed.
+(Figure-1.21 above)<br>
+<br>
+<img alt="" src="index_files/1_general7.png"
+ style="width: 789px; height: 684px;"><br>
+Figure-1.26: Customer's first name is also displayed<br>
+<br>
+14.&nbsp; For your own exercise, display the customer's <span
+ style="font-weight: bold;">birthDate </span>as well by modifying the <span
+ style="font-weight: bold;">Out.jsp</span>.<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of
+the exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.3"></a>(1.3)
+&lt;c:set&gt;<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">In this step, you are going to use <span
+ style="font-weight: bold;">&lt;c:set&gt;</span> and <span
+ style="font-weight: bold;">&lt;c:out&gt;</span> core tags to display
+customer information in a different format.&nbsp; You will see how <span
+ style="font-weight: bold;">&lt;c:set&gt;</span> is used to create an
+attribute (of an application scope) in <span style="font-weight: bold;">Set.jsp</span>.
+This
+application scope attribute is then used in a second JSP page, <span
+ style="font-weight: bold;">Set2.jsp</span>.<br>
+<br>
+1. Click <span style="font-weight: bold;">General Purpose tags</span>.
+<br>
+2. Click execute icon of <span style="font-weight: bold;">&lt;set&gt;</span>.
+(Figure-1.31 below)<br>
+</div>
+<div style="margin-left: 40px;"><br>
+<img alt="" src="index_files/1_general8.png"
+ style="width: 789px; height: 684px;"><br>
+Figure-1.31: Click &lt;set&gt;<br>
+<br>
+3. At this point, an application scope attribute "<span
+ style="font-weight: bold;">customerTable</span>" is set. <br>
+4. Click "execute" button beside <span style="font-weight: bold;">Using
+customerTable in another JSP page</span>.&nbsp; (Figure-1.32 below)<br>
+<br>
+<img alt="" src="index_files/1_general9.png"
+ style="width: 789px; height: 684px;"><br>
+Figure-1.32: Display customer information using customerTable attribute<br>
+<br>
+5. Observe the display of the customer information (Figure-1.33 below)<br>
+<br>
+<img alt="" src="index_files/1_general10.png"
+ style="width: 789px; height: 684px;"><br>
+Figure-1.33: Customer information is displayed twice<br>
+<br>
+Now let's see how this is done.<br>
+<br>
+6. Double-click <span style="font-weight: bold;">/elsupport/Set.jsp</span>
+to open it in the source editor. (Code-1.34 below)&nbsp; Observe that
+the code fragment in bold and blue-colored font is set to <span
+ style="font-weight: bold;">customerTable </span>attribute in the <span
+ style="font-weight: bold;">application </span>scope.&nbsp; This
+<span style="font-weight: bold;">customerTable </span>attrubute is
+then used in <span style="font-weight: bold;">/elsupport/Set2.jsp</span>.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ taglib prefix="c"
+uri="http://java.sun.com/jsp/jstl/core" %&gt;<br>
+      <br>
+&lt;html&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt;JSTL:
+Expression Language Support -- Set Example&lt;/title&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;body bgcolor="#FFFFFF"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;h3&gt;&amp;lt;c:set&amp;gt;&lt;/h3&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h4&gt;Setting
+application scope attribute "customerTable"&lt;/h4&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">&lt;c:set var="customerTable"
+scope="application"&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="color: rgb(51, 51, 255);">&lt;table border="1"&gt;</span></span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;c:forEach var="customer" items="${customers}"&gt;</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;tr&gt;</span><br style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;${customer.lastName}&lt;/td&gt;</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;&lt;c:out value="${customer.address}" default="no address
+specified"/&gt;&lt;/td&gt;</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;</span><br style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;c:out value="${customer.address}"&gt;</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;font color="red"&gt;no address specified&lt;/font&gt;</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/c:out&gt;</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/td&gt;</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/tr&gt;</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/c:forEach&gt;</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/table&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/c:set&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Using customerTable in
+another JSP page <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;a
+href="../ShowSource.jsp?filename=/elsupport/Set2.jsp"&gt;&lt;img
+src="../images/code.gif" width="24" height="24"
+border="0"&gt;&lt;/a&gt; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;a
+href="../elsupport/Set2.jsp"&gt;&lt;img src="../images/execute.gif"
+width="24" height="24" border="0"&gt;&lt;/a&gt; <br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.34: /elsupport/Set.jsp<br>
+<br>
+7. Double-click <span style="font-weight: bold;">/elsupport/Set2.jsp</span>
+to open it in the source editor. (Code-1.35 below)<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ taglib prefix="c"
+uri="http://java.sun.com/jsp/jstl/core" %&gt;<br>
+&lt;html&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt;JSTL:
+Expression Language Support -- Set 2 Example&lt;/title&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;body bgcolor="#FFFFFF"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;h3&gt;&amp;lt;c:set&amp;gt;&lt;/h3&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h4&gt;Using
+"customerTable" application scope attribute defined in Set.jsp a first
+time&lt;/h4&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">&lt;c:out value="${customerTable}"
+escapeXml="false"/&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h4&gt;Using
+"customerTable" application scope attribute defined in Set.jsp a second
+time&lt;/h4&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">&lt;c:out value="${customerTable}"
+escapeXml="false" /&gt;</span><br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.35: /elsupport/Set2.jsp<br>
+<br>
+8. Modify <span style="font-weight: bold;">/elsupport/Set.jsp </span>as
+shown in Code-1.36 below.&nbsp; The modification is to display the
+birthday data of the customers along with address.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ taglib prefix="c"
+uri="http://java.sun.com/jsp/jstl/core" %&gt;<br>
+      <br>
+&lt;html&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt;JSTL:
+Expression Language Support -- Set Example&lt;/title&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;body bgcolor="#FFFFFF"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;h3&gt;&amp;lt;c:set&amp;gt;&lt;/h3&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h4&gt;Setting
+application scope attribute "customerTable"&lt;/h4&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;c:set
+var="customerTable" scope="application"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;table border="1"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;c:forEach var="customer" items="${customers}"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;${customer.lastName}&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;&lt;c:out value="${customer.address}" default="no address
+specified"/&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+&lt;td&gt;&lt;c:out value="${customer.birthDate}" default="no birth
+date specified"/&gt;&lt;/td&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;c:out value="${customer.address}"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;font color="red"&gt;no address specified&lt;/font&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/c:out&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/c:forEach&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/table&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/c:set&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Using customerTable in
+another JSP page <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;a
+href="../ShowSource.jsp?filename=/elsupport/Set2.jsp"&gt;&lt;img
+src="../images/code.gif" width="24" height="24"
+border="0"&gt;&lt;/a&gt; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;a
+href="../elsupport/Set2.jsp"&gt;&lt;img src="../images/execute.gif"
+width="24" height="24" border="0"&gt;&lt;/a&gt; <br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.36: Modified Setp.jsp<br>
+<br>
+9. Right click <span style="font-weight: bold;"><span
+ style="color: rgb(51, 51, 255);">JSTLExamples</span>
+</span>project
+node and select <span style="font-weight: bold;">Run</span>.<br>
+10. Click <span style="font-weight: bold;">General Purpose tags</span>.<br>
+11. Click execute icon of <span style="font-weight: bold;">&lt;set&gt;</span>.
+(Figure-1.31 above)<br>
+12. Click "execute" button beside <span style="font-weight: bold;">Using
+customerTable in another JSP page</span>.&nbsp; (Figure-1.32 above)<br>
+13. Observe that the birthday information is now displayed.&nbsp;
+(Figure-1.37 below)<br>
+<br>
+<img alt="" src="index_files/1_general11.png"
+ style="width: 789px; height: 726px;"><br>
+Figure-1.37: Birthday information is now displayed<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of
+the exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.4"></a>(1.4)
+Conditional Tags<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">In this step, you are going to try the
+following conditional tags on your own.<br>
+<ul>
+  <li style="font-weight: bold;">&lt;c: if ..&gt;</li>
+  <li><span style="font-weight: bold;">&lt;c:choose&gt;</span> along
+with <span style="font-weight: bold;">&lt;c:when&gt;</span> and <span
+ style="font-weight: bold;">&lt;c:otherwise&gt;</span><br>
+  </li>
+</ul>
+1. Select <span style="font-weight: bold;">Conditional Tags</span>
+link from the starting page of the browser.<br>
+2. Try <span style="font-weight: bold;">&lt;if&gt; Simple Conditional
+Execution </span>- do the execution and then take a look at the source
+code.<span style="font-weight: bold;"><br>
+</span>3. Try <span style="font-weight: bold;">&lt;choose&gt; Mutually
+Exclusive Conditional Execution<br>
+<br>
+</span>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of
+the exercise</a><br>
+<span style="font-weight: bold;"><br>
+</span></div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.5"></a>(1.5)
+Iterator Tags <br>
+</h3>
+<div style="margin-left: 40px;"><br>
+In this step, you are going to try the following iterator tags on your
+own.<br>
+<ul>
+  <li><span style="font-weight: bold;">&lt;c:forEach var="..."
+items="..."&gt;</span></li>
+  <li><span style="font-weight: bold;">&lt;c:forTokens var="..."
+items="..."&gt;<br>
+    </span></li>
+</ul>
+1. Select <span style="font-weight: bold;">Iterator Tags</span> link<br>
+2. Try <span style="font-weight: bold;">Simple</span><br>
+3. Try <span style="font-weight: bold;">Range</span><br>
+4. Try <span style="font-weight: bold;">Data Types</span><br>
+5. Try <span style="font-weight: bold;">Iteration Status</span><br>
+6. Try <span style="font-weight: bold;">&lt;forTokens&gt;<br>
+<br>
+</span>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of
+the exercise</a><br>
+<span style="font-weight: bold;"><br>
+</span></div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.6"></a>(1.6)
+Import Tags, &lt;c:import&gt;<br>
+</h3>
+<div style="margin-left: 40px;">
+<br>
+In this step, you are going to try the following import&nbsp; tags.<br>
+<ul>
+  <li><span style="font-weight: bold;">&lt;c:import url="..."/&gt;<br>
+    </span></li>
+</ul>
+1. Select <span style="font-weight: bold;">Import Tags Examples<br>
+</span>2.<span style="font-weight: bold;"> </span>Modify <span
+ style="font-weight: bold;">Absolute.jsp</span> as shown in Code-1.61
+below.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ taglib prefix="c"
+uri="http://java.sun.com/jsp/jstl/core" %&gt;<br>
+&lt;%@ taglib prefix="ex" uri="/jstl-examples-taglib" %&gt;<br>
+      <br>
+&lt;html&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt;JSTL: I/O
+Support -- Absolute URL Example&lt;/title&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;body bgcolor="#FFFFFF"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h3&gt;Absolute
+URL&lt;/h3&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h4&gt;CNN's RSS XML
+feed:&lt;/h4&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;blockquote&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;ex:escapeHtml&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="font-weight: bold;">&lt;c:import
+url="http://www.cnn.com/"/&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/ex:escapeHtml&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/blockquote&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.61: Modified Absolute.jsp<br>
+<br>
+3. Click execute link of <span style="font-weight: bold;">Absolute</span>.<br>
+4. Observe that contents of the HTML document pointed by the link is
+retrieved and displayed. (Figure-1.62 below)<br>
+<br>
+<img alt="" src="index_files/1_general12.png"
+ style="width: 783px; height: 713px;"><br>
+Figure-1.62: Contents of HTML document is retrieved and displayed<br>
+<br>
+5. Click backward button of the browser.<br>
+6. Click execute link of the <span style="font-weight: bold;">Absolute
+(FTP)</span>.<br>
+7. Observe that the contents of the FTP document pointed by the FTP
+link is retrieved and displayed. (Figure-1.63 below)<br>
+<br>
+<img alt="" src="index_files/1_general13.png"
+ style="width: 783px; height: 713px;"><br>
+Figure-1.63: Contents of FTP document is retrieved and displayed<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of
+the exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.7"></a>(1.7)
+Encode tags, &lt;c:url&gt;<br>
+</h3>
+<div style="margin-left: 40px;">
+<br>
+In this step, you are going to try the following encode tags.<br>
+<ul>
+  <li><span style="font-weight: bold;">&lt;c:url value="..."/&gt;</span></li>
+</ul>
+</div>
+<div style="margin-left: 40px;">1. Select <span
+ style="font-weight: bold;">Import Tags</span>.<br>
+2. Select execute link of the <span style="font-weight: bold;">Encode</span>.<br>
+3. Observe the result. (Figure-1.70 below)&nbsp; This is the case where
+Cookie is used for transporting session id's.&nbsp; In the subsequent
+step, you are going to disable Cookies to see how URL rewriting works.<br>
+<br>
+<img alt="" src="index_files/1_general14.png"
+ style="width: 783px; height: 713px;"><br>
+Figure-1.70: URL encoding (when Cookie is enabled)<br>
+<br>
+4. Now you are going to disable Cookies.&nbsp; The steps shown here is
+for disabling Cookies for Firefox browser.&nbsp; Select <span
+ style="font-weight: bold;">Tools </span>from the top-level menu and
+then select <span style="font-weight: bold;">Options</span>.&nbsp;
+(Figure-1.71 below)<br>
+<br>
+<img alt="" src="index_files/1_url1.png"
+ style="width: 783px; height: 713px;"><br>
+Figure-1.71: Select Options<br>
+<br>
+5. Select <span style="font-weight: bold;">Privacy </span>and select <span
+ style="font-weight: bold;">Cookies</span> tab.<br>
+6. Uncheck <span style="font-weight: bold;">Allow sites to set Cookies</span>.
+(Figure-1.72 below)<br>
+<br>
+<img alt="" src="index_files/1_url2.png"
+ style="width: 595px; height: 534px;"><br>
+Figure-1.72: Disable Cookies<br>
+<br>
+7. Try excute link of the URL Encoding and observe that URL rewriting
+is now used.<br>
+<br>
+<img alt="" src="index_files/1_url3.png"
+ style="width: 783px; height: 713px;"><br>
+Figure-1.73: URL Rewriting is used for transporting session id's when
+Cookies is disabled<br>
+<br>
+8. Enable Cookies again<br>
+<br>
+</div>
+<div style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <a href="#Exercise_1">return to top of
+the exercise</a><br>
+<span style="font-weight: bold;"></span></div>
+<p style="margin-left: 40px;"></p>
+<h3 style="margin-left: 40px;" class="tutorial">Summary</h3>
+<p style="margin-left: 40px;">In this exercise,&nbsp; you have tried
+various core tags such &lt;c:out&gt;, &lt;c:set&gt;, &lt;c:foreach&gt;,
+&lt;c:import&gt;, &lt;c:url&gt; etc.<br>
+</p>
+<p style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="#Tutorial_Exercises">return to the top</a>
+<br>
+</p>
+<p style="margin-left: 40px;"><br>
+<br>
+</p>
+<!-- ===================================================================================== -->
+<h2><a name="Exercise_2"></a>Exercise 2: "I18N (Internationalization)
+&amp; Formatting
+Tags"<br>
+</h2>
+<p style="margin-left: 40px;">In this exercise, you are going to learn
+how to use "I18N and Formatting" tags.<br>
+</p>
+<ul>
+  <ul>
+  </ul>
+  <ol>
+    <li><a href="#2.1">Resource bundle<br>
+      </a></li>
+    <li><a href="#2.2">Parameter replacement examples</a><br>
+    </li>
+    <li><a href="#2.3">Formatting dates and times using browser-based
+locales</a><br>
+    </li>
+  </ol>
+</ul>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.1"></a>(2.1)
+Resource bundle<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">0. Build and run the <span
+ style="font-weight: bold;">JSTLExamples </span>project as you did in <a
+ href="#1.1">step 1.1</a> above.<br>
+1. Click execute link of the <span style="font-weight: bold;">Demo</span>
+in the browser. (Figure-2.10 below)<br>
+</div>
+<br>
+<div style="margin-left: 40px;"><img alt="" src="index_files/2_i181.png"
+ style="width: 783px; height: 670px;"><br>
+Figure-2.10: Excute Demo<br>
+<br>
+2. Observe key/String-value pairs of the default language is
+displayed.&nbsp;
+(Figure-2.11 below)<br>
+<br>
+<img alt="" src="index_files/2_i182.png"
+ style="width: 783px; height: 871px;"><br>
+Figure-2.11: Key/value pairs of the default language are displayed<br>
+<br>
+3. Click <span style="font-weight: bold;">French </span>from the <span
+ style="font-weight: bold;">Set application-based locale</span>.
+(Figure-2.12 below)<br>
+4. Observe that key-value pairs are now in French.<br>
+<br>
+<img alt="" src="index_files/2_i183.png"
+ style="width: 783px; height: 871px;"><br>
+Figure-2.12: Key-value pairs in French<br>
+<br>
+Now let's understand what is happening.&nbsp; We will take a look at
+the <span style="font-weight: bold;">Demo.jsp</span> which reflects
+the Figure-2.11 and Figure-2.12 above and Java source code in which
+key/value pairs of localized strings are set.<br>
+<br>
+4. Double-click <span style="font-weight: bold;">Demo.jsp</span> under<span
+ style="font-weight: bold;"> JSTLExamples-&gt;Web Pages-&gt;format</span>
+to open it in the source editor. (Code-2.13 below)&nbsp; Please pay
+attention to the bold fonted code fragment below.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ page
+import="javax.servlet.jsp.jstl.core.Config, java.util.*" %&gt;<br>
+      <br>
+&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;<br>
+&lt;%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %&gt;<br>
+      <br>
+&lt;html&gt;<br>
+&lt;head&gt;<br>
+&nbsp; &lt;title&gt;JSTL: Formatting/I18N Support -- Demo
+Example&lt;/title&gt;<br>
+&lt;/head&gt;<br>
+&lt;body bgcolor="#FFFFFF"&gt;<br>
+      <br>
+&lt;h3&gt;Demo&lt;/h3&gt;<br>
+&lt;p&gt;<br>
+The following bundles exist in the web application: 'Resources',
+'Resources_de', 'Resources_fr', 'Resources_it'. <br>
+'Resources' is the 'base' bundle and contains all messages in English.
+The italian bundle only holds one message<br>
+(key=greetingMorning).<br>
+&lt;/p&gt;<br>
+      <span style="font-weight: bold;">&lt;c:if test="${!empty
+param.locale}"&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp; &lt;fmt:setLocale
+value="${param.locale}" scope="page"/&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&lt;/c:if&gt;</span><br>
+      <br>
+      <span style="font-weight: bold;">&lt;c:if test="${!empty
+param.fallback}"&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp; &lt;% Config.set(request,
+Config.FMT_FALLBACK_LOCALE,
+request.getParameter("fallback")); %&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&lt;/c:if&gt;</span><br>
+      <br>
+&lt;table&gt;<br>
+&lt;tr&gt;<br>
+&nbsp; &lt;td&gt;&lt;b&gt;Set application-based
+locale:&lt;/b&gt;&lt;/td&gt;<br>
+&nbsp; &lt;td&gt;<br>
+      <span style="font-weight: bold;">&lt;a
+href='?locale=fr&amp;fallback=&lt;c:out
+value="${param.fallback}"/&gt;'&gt;French&lt;/a&gt; &amp;#149;</span><br>
+&lt;a href='?locale=de&amp;fallback=&lt;c:out
+value="${param.fallback}"/&gt;'&gt;German&lt;/a&gt; &amp;#149;<br>
+&lt;a href='?locale=it&amp;fallback=&lt;c:out
+value="${param.fallback}"/&gt;'&gt;Italian&lt;/a&gt; &amp;#149;<br>
+&lt;a href='?locale=es&amp;fallback=&lt;c:out
+value="${param.fallback}"/&gt;'&gt;Spanish (no bundle)&lt;/a&gt;
+&amp;#149;<br>
+&lt;a href='?locale=&amp;fallback=&lt;c:out
+value="${param.fallback}"/&gt;'&gt;None&lt;/a&gt;<br>
+&nbsp; &lt;/td&gt;<br>
+&lt;/tr&gt;<br>
+&lt;tr&gt;<br>
+&nbsp; &lt;td align="right"&gt;&lt;b&gt;Set fallback
+locale:&lt;/b&gt;&lt;/td&gt;<br>
+&nbsp; &lt;td&gt;<br>
+&lt;a href='?locale=&lt;c:out
+value="${param.locale}"/&gt;&amp;fallback=fr'&gt;French&lt;/a&gt;
+&amp;#149;<br>
+&lt;a href='?locale=&lt;c:out
+value="${param.locale}"/&gt;&amp;fallback=de'&gt;German&lt;/a&gt;
+&amp;#149;<br>
+&lt;a href='?locale=&lt;c:out
+value="${param.locale}"/&gt;&amp;fallback=it'&gt;Italian&lt;/a&gt;
+&amp;#149;<br>
+&lt;a href='?locale=&lt;c:out
+value="${param.locale}"/&gt;&amp;fallback=es'&gt;Spanish (no
+bundle)&lt;/a&gt; &amp;#149;<br>
+&lt;a href='?locale=&lt;c:out
+value="${param.locale}"/&gt;&amp;fallback='&gt;None&lt;/a&gt;<br>
+&nbsp; &lt;/td&gt;<br>
+&lt;/table&gt;<br>
+&lt;p&gt;<br>
+      <br>
+Request parameter "locale": &lt;c:out
+value="${param.locale}"/&gt;&lt;br&gt;<br>
+&lt;i&gt;(This value is used to set the application based locale for
+this example)&lt;/i&gt;<br>
+&lt;p&gt;<br>
+      <br>
+Application based locale: &lt;%=Config.find(pageContext,
+Config.FMT_LOCALE)%&gt;&lt;br&gt;<br>
+&lt;i&gt;(javax.servlet.jsp.jstl.fmt.locale configuration
+setting)&lt;/i&gt;<br>
+&lt;p&gt;<br>
+      <br>
+Browser-Based locales: <br>
+&lt;% <br>
+&nbsp; Enumeration e = request.getLocales();<br>
+&nbsp; while (e.hasMoreElements()) {<br>
+&nbsp;&nbsp;&nbsp; Locale locale = (Locale)e.nextElement();<br>
+&nbsp;&nbsp;&nbsp; out.print(locale);<br>
+&nbsp;&nbsp;&nbsp; out.print(" ");<br>
+&nbsp; }<br>
+%&gt;<br>
+&lt;br&gt;<br>
+&lt;i&gt;(ServletRequest.getLocales() on the incoming request)&lt;/i&gt;<br>
+&lt;p&gt;<br>
+      <br>
+Fallback locale: &lt;%=Config.find(pageContext,
+Config.FMT_FALLBACK_LOCALE)%&gt;&lt;br&gt;<br>
+&lt;i&gt;(javax.servlet.jsp.jstl.fmt.fallbackLocale configuration
+setting)&lt;/i&gt;<br>
+&lt;p&gt;<br>
+      <br>
+&lt;jsp:useBean id="now" class="java.util.Date" /&gt;<br>
+&lt;h4&gt;<br>
+&lt;fmt:formatDate value="${now}" dateStyle="full"/&gt; &amp;#149;<br>
+&lt;fmt:formatDate value="${now}" type="time"/&gt;<br>
+&lt;/h4&gt;<br>
+      <br>
+&lt;p&gt;<br>
+      <br>
+&lt;fmt:bundle
+basename="org.apache.taglibs.standard.examples.i18n.Resources"&gt;<br>
+&lt;table cellpadding="5" border="1"&gt;<br>
+&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;th align="left"&gt;KEY&lt;/th&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;th align="left"&gt;VALUE&lt;/th&gt;<br>
+&nbsp; &lt;/tr&gt;<br>
+&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;td&gt;greetingMorning&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;td&gt;&lt;fmt:message
+key="greetingMorning"/&gt;&lt;/td&gt;<br>
+&nbsp; &lt;/tr&gt;<br>
+&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;td&gt;greetingEvening&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;td&gt;&lt;fmt:message
+key="greetingEvening"/&gt;&lt;/td&gt;<br>
+&nbsp; &lt;/tr&gt;<br>
+&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;td&gt;currentTime&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;fmt:message key="currentTime"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;fmt:param
+value="${now}"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/fmt:message&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/td&gt;<br>
+&nbsp; &lt;/tr&gt;<br>
+&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;td&gt;serverInfo&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;td&gt;&lt;fmt:message
+key="serverInfo"/&gt;&lt;/td&gt;<br>
+&nbsp; &lt;/tr&gt;<br>
+&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;td&gt;undefinedKey&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;td&gt;&lt;fmt:message
+key="undefinedKey"/&gt;&lt;/td&gt;<br>
+&nbsp; &lt;/tr&gt;<br>
+&lt;/table&gt;<br>
+&lt;/fmt:bundle&gt;<br>
+      <br>
+&lt;p&gt;<br>
+      <br>
+&lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.13: Demo.jsp <br>
+<br>
+5. Expand <span style="font-weight: bold;">JSTLExamples-&gt;Source
+Packages-&gt;org.apache.taglibs.standard.examples.i18n</span>.<br>
+6. Observe that there are several Java files that captures key/value
+pairs for default language (English in this case) and several locales.
+(Figure-2.14 below)<br>
+<br>
+<img alt="" src="index_files/2_i184.png"
+ style="width: 839px; height: 707px;"><br>
+Figure-2.14: Resources files<br>
+<br>
+6. Double-click <span style="font-weight: bold;">Resourcs.java</span>
+to open it in the source editor.&nbsp;
+This file maintains the key/value pairs of the default language - in
+this example, English. (Code-2.15 below)<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">package
+org.apache.taglibs.standard.examples.i18n;<br>
+      <br>
+import java.util.*;<br>
+      <br>
+public class Resources extends ListResourceBundle {<br>
+&nbsp;&nbsp;&nbsp; private static Object[][] contents;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; static {<br>
+&nbsp;&nbsp;&nbsp; contents = new Object[][] {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "greetingMorning", "Good
+Morning!" },<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "greetingEvening", "Good
+Evening!" },<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "serverInfo", "Name/Version of
+Servlet Container: {0}, "<br>
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
++ "Java Version: {1}" },<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "currentTime", "Current time:
+{0}" },<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "com.acme.labels.cancel",
+"Cancel" },<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {
+"java.lang.ArithmeticException", "division by 0" }<br>
+&nbsp;&nbsp;&nbsp; };<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; public Object[][] getContents() {<br>
+&nbsp;&nbsp;&nbsp; return contents;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.x: Resources.java<br>
+<br>
+7. Double-click <span style="font-weight: bold;">Resourcs_fr.java</span>
+to open it in the source editor.&nbsp;
+This file maintains the key/value pairs of the French. (Code-2.15 below)<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">package
+org.apache.taglibs.standard.examples.i18n;<br>
+      <br>
+import java.util.*;<br>
+      <br>
+public class Resources_fr extends ListResourceBundle {<br>
+&nbsp;&nbsp;&nbsp; private static Object[][] contents;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; static {<br>
+&nbsp;&nbsp;&nbsp; contents = new Object[][] {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "greetingMorning", "Bonjour!!"
+},<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "greetingEvening", "Bonsoir!" },<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "serverInfo", "Nom/Version du
+Servlet Container: {0}, "<br>
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
++ "Version Java: {1}" },<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "currentTime", "Nous sommes le:
+{0}" },<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; { "com.acme.labels.cancel",
+"Annuler" },<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {
+"java.lang.ArithmeticException", "division par 0" }<br>
+&nbsp;&nbsp;&nbsp; };<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; public Object[][] getContents() {<br>
+&nbsp;&nbsp;&nbsp; return contents;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.15: Resources_fr.java<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="#Exercise_2">return to top of
+the exercise</a><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.2"></a>(2.2)
+Parameter replacement examples<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+1. Click execute link of the <span style="font-weight: bold;">Parameter
+Replacement</span> in the browser. <br>
+2. Observe the result.&nbsp; Note that page that is displayed is&nbsp; <span
+ style="font-weight: bold;">ParametricReplacement.jsp</span>.
+(Figure-2.20 below)<br>
+<br>
+<img alt="" src="index_files/2_i18n5.png"
+ style="width: 751px; height: 616px;"><br>
+Figure-2.20: Parametric replacement<br>
+<br>
+3. In the NetBeans, double click <span style="font-weight: bold;">ParametricReplacement.jsp
+</span>under <span style="font-weight: bold;">JSTLExamples-&gt;Web
+Pages-&gt;format </span>to open it in the source editor.<br>
+4. Modify it as shown in Code-2.21 below.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ taglib prefix="c"
+uri="http://java.sun.com/jsp/jstl/core" %&gt;<br>
+&lt;%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %&gt;<br>
+      <br>
+&lt;html&gt;<br>
+&lt;head&gt;<br>
+&nbsp; &lt;title&gt;JSTL: Formatting/I18N Support -- Parametric
+Replacement Example&lt;/title&gt;<br>
+&lt;/head&gt;<br>
+&lt;body bgcolor="#FFFFFF"&gt;<br>
+&lt;h3&gt;Parametric Replacement&lt;/h3&gt;<br>
+      <br>
+&lt;jsp:useBean id="now" class="java.util.Date" /&gt;<br>
+      <br>
+&lt;fmt:setLocale value="de"/&gt;<br>
+&lt;fmt:setBundle
+basename="org.apache.taglibs.standard.examples.i18n.Resources"
+var="deBundle"/&gt;<br>
+      <br>
+&lt;fmt:formatDate value="${now}" type="both"
+var="currentDateString"/&gt;<br>
+&lt;fmt:parseDate value="${currentDateString}" type="both"
+var="currentDate"/&gt;<br>
+      <br>
+&lt;ul&gt;<br>
+&nbsp;&lt;li&gt; Using single &amp;lt;param&amp;gt; with 'value'
+evaluating to String:&lt;br&gt;<br>
+&nbsp; &lt;fmt:message key="currentTime" bundle="${deBundle}"&gt;<br>
+&nbsp;&nbsp; &lt;fmt:param value="${currentDateString}"/&gt;<br>
+&nbsp; &lt;/fmt:message&gt;<br>
+&nbsp;<br>
+&nbsp;&lt;li&gt; Using single &amp;lt;param&amp;gt; with 'value'
+evaluating to &lt;tt&gt;java.util.Date&lt;/tt&gt;:&lt;br&gt;<br>
+&nbsp; &lt;fmt:message key="currentTime" bundle="${deBundle}"&gt;<br>
+&nbsp;&nbsp; &lt;fmt:param value="${currentDate}"/&gt;<br>
+&nbsp; &lt;/fmt:message&gt;<br>
+      <br>
+&nbsp;&lt;li&gt; Using single &amp;lt;param&amp;gt; with body:&lt;br&gt;<br>
+&nbsp; &lt;fmt:message key="currentTime" bundle="${deBundle}"&gt;<br>
+&nbsp;&nbsp; &lt;fmt:param&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;fmt:formatDate value="${now}" type="both"/&gt;<br>
+&nbsp;&nbsp; &lt;/fmt:param&gt;<br>
+&nbsp; &lt;/fmt:message&gt;<br>
+      <br>
+&nbsp;&lt;li&gt; Using multiple parameters:&lt;br&gt;<br>
+&nbsp; &lt;fmt:message key="serverInfo" bundle="${deBundle}"&gt;<br>
+&nbsp;&nbsp; &lt;c:forEach var="arg" items="${serverInfoArgs}"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;fmt:param value="${arg}"/&gt;<br>
+&nbsp;&nbsp; &lt;/c:forEach&gt;<br>
+&nbsp; &lt;/fmt:message&gt;<br>
+&lt;/ul&gt;<br>
+      <br>
+&lt;ul&gt;<br>
+&nbsp;&lt;fmt:setLocale value="es"/&gt;<br>
+&nbsp;&lt;fmt:setBundle
+basename="org.apache.taglibs.standard.examples.i18n.Resources"
+var="esBundle"/&gt;<br>
+&nbsp;&lt;li&gt;Locale set to Spanish yields a locale-less localization
+context. Formatting still done<br>
+&nbsp;&nbsp;&nbsp;&nbsp; using the preferred locale:&lt;br&gt;<br>
+&nbsp; &lt;fmt:message key="currentTime" bundle="${esBundle}"&gt;<br>
+&nbsp;&nbsp; &lt;fmt:param value="${currentDate}"/&gt;<br>
+&nbsp; &lt;/fmt:message&gt;<br>
+&nbsp;&lt;/li&gt;<br>
+      <br>
+&nbsp;&lt;fmt:setLocale value="en"/&gt;<br>
+&nbsp;&lt;fmt:setBundle
+basename="org.apache.taglibs.standard.examples.i18n.Resources"
+var="enBundle"/&gt;<br>
+&nbsp;&lt;li&gt;Locale set to English yields a locale-less localization
+context. Formatting still done<br>
+&nbsp;&nbsp;&nbsp;&nbsp; using the preferred locale:&lt;br&gt;<br>
+&nbsp; &lt;fmt:message key="currentTime" bundle="${esBundle}"&gt;<br>
+&nbsp;&nbsp; &lt;fmt:param value="${currentDate}"/&gt;<br>
+&nbsp; &lt;/fmt:message&gt;<br>
+&nbsp;&lt;/li&gt;<br>
+&lt;/ul&gt;<br>
+      <br>
+&lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.21: ParametricReplacement.jsp<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Exercise_2">return to top of
+the exercise</a><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.3"></a>(2.3)
+Formatting dates and times using browser-based locales<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+1. Click execute link ofthe 2nd <span style="font-weight: bold;">Date</span>.
+(Figure-2.30 below)<br>
+<br>
+<img alt="" src="index_files/2_idate1.png"
+ style="width: 751px; height: 616px;"><br>
+Figure-2.30: Date<br>
+<br>
+2. Observe the result. (Figure-2.31 below)<br>
+<br>
+<img alt="" src="index_files/2_idate2.png"
+ style="width: 759px; height: 692px;"><br>
+Figure-2.31: Result of executing Date, which shows Formatting dates and
+times using browser-based locale<br>
+<br>
+3. Observe the locale that is sent from the browser<br>
+<ul>
+  <li>Open <span style="font-weight: bold;">HTTP Monitor</span> window</li>
+  <li>Choose <span style="font-weight: bold;">GET FormatDataTime.jsp</span>
+on the left</li>
+  <li>Select <span style="font-weight: bold;">Client </span>and
+Server tab</li>
+  <li>Observe that the Locale(s) is whatever locale you set in your
+browser, in this example it is set to <span style="font-weight: bold;">en-us</span>.
+(Figure-2.32 below)<br>
+  </li>
+</ul>
+<br>
+<img alt="" src="index_files/2_idate3.png"
+ style="width: 844px; height: 699px;"><br>
+Figure-2.32: Observe the local that is sent by the browser<br>
+<br>
+Now we are going to change the language preference of the browser to
+Korean (or whatever language of your choice) and see how the
+<span style="font-weight: bold;">FormatDateTimeBrowserLocale.jsp</span>
+gets displayed.<br>
+<br>
+4. Change language preference (locale) of your browser.&nbsp; (The
+example below assumes you are using Firefox browser.)<br>
+<br>
+Note: If you are not using Firefox as your browser, please see <a
+ href="http://www.w3.org/International/questions/qa-lang-priorities#answer">this
+link</a> for the information on how to change language preference on
+your browser.<br>
+<ul>
+  <li>&nbsp;Select <span style="font-weight: bold;">Tools </span>from
+the top-level menu and select <span style="font-weight: bold;">Options</span>.
+(Figure-2.32 below)<br>
+  </li>
+</ul>
+</div>
+<div style="margin-left: 40px;"><img alt=""
+ src="index_files/2_locale1.png" style="width: 751px; height: 616px;"><br>
+Figure-2.32: Select Options of Firefox browser<br>
+<ul>
+  <li>Select <span style="font-weight: bold;">Advanced</span>. <br>
+  </li>
+  <li>Click <span style="font-weight: bold;">Edit Language... </span>button
+(Figure-2.33 below)<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_locale2.png"
+ style="width: 595px; height: 534px;"><br>
+Figure-2.33: Select Advanced and Edit Languages<br>
+<br>
+<ul>
+  <li>Select a language of your choice (Korean/South Korea [ko-kr] in
+this example) from the drop-down menu.</li>
+  <li>Click <span style="font-weight: bold;">Add </span>button.
+(Figure-2.34 below)<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_locale3.png"
+ style="width: 427px; height: 334px;"><br>
+Figure-2.34: Add a language of your choice<br>
+<ul>
+  <li>Click Move Up so that the language you chose is on the top
+(Figure-2.35 below)<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_locale4.png"
+ style="width: 427px; height: 334px;"><br>
+Figure-2.35: Move it to the top<br>
+<ul>
+  <li>Click <span style="font-weight: bold;">OK </span>of the Options
+dialog box to close it.<br>
+  </li>
+</ul>
+5. Click execute link ofthe 2nd <span style="font-weight: bold;">Date</span>
+and see the result. (Figure-2.36 below)<br>
+<br>
+<img alt="" src="index_files/2_locale5.png"
+ style="width: 751px; height: 616px;"><br>
+Figure-2.36: The Korean is set as a language of preference<br>
+<br>
+6. Observe that the browser now sends <span style="font-weight: bold;">ko-kr</span>
+as a locale. (Figure-2.37 below)<br>
+<br>
+<img alt="" src="index_files/2_locale6.png"
+ style="width: 844px; height: 699px;"><br>
+Figure-2.37: Ko-kr is now set as a locale<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Exercise_2">return to top of
+the exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial">Summary</h3>
+<p style="margin-left: 40px;">In this exercise, you have exercised the
+internationalization and formatting tags.<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <a
+ href="#Tutorial_Exercises">return
+to the top</a> </p>
+<div class="indent"></div>
+<p></p>
+<div class="indent">
+<div class="indent">
+<p><br>
+</p>
+</div>
+<p> </p>
+</div>
+<!-- ======================================================================================= -->
+<br>
+<h2><a name="Exercise_3"></a>Exercise 3: SQL tags<br>
+</h2>
+<p style="margin-left: 40px;">In this exercise, you are going to use
+Java DB database server that comes with GlassFish.<br>
+</p>
+<ul>
+  <ol start="1">
+    <li><a href="#3.1">Set up session attributes for SQL tag examples</a><br>
+    </li>
+    <li><a href="#3.2">Query Iterate</a><br>
+    </li>
+    <li><a href="#3.3">Update</a></li>
+    <li><a href="#3.4">Direct Query</a></li>
+    <li><a href="#3.5">Query Parameters</a></li>
+    <li><a href="#3.6">Transaction</a><br>
+    </li>
+  </ol>
+</ul>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="3.1"></a>(3.1)
+Setting up session attributes for SQL tag examples<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">1.&nbsp; In the NetBeans, right click <span
+ style="font-weight: bold;">JSTLExamples </span>project node and
+select <span style="font-weight: bold;">Run</span>.<br>
+2.&nbsp; Observe that Browser gets displayed.&nbsp; Select <span
+ style="font-weight: bold;">SQL Tags</span> under <span
+ style="font-weight: bold;">Examples</span>.<br>
+<br>
+<img alt="" src="index_files/3_sql2.png"
+ style="width: 694px; height: 777px;"><br>
+Figure-3.10: Select SQL Tags<br>
+<br>
+3. Observe that <span style="font-weight: bold;">SQL Tags Examples</span>
+page gets displayed.&nbsp; (Figure-3.11 below)<br>
+4. Make sure the <span style="font-weight: bold;">Driver </span>field
+is set as <span
+ style="font-weight: bold; color: rgb(51, 51, 255); text-decoration: underline;">org.apache.derby.jdbc.ClientDriver</span>.&nbsp;
+<br>
+5. Make sure the <span style="font-weight: bold;">URL </span>field is
+set as <span
+ style="font-weight: bold; color: rgb(51, 51, 255); text-decoration: underline;">jdbc:derby://localhost:1527/sample;create=true</span>.
+<br>
+6. Enter <span style="font-weight: bold;"><span
+ style="color: rgb(51, 51, 255);">app </span></span><span
+ style="color: rgb(0, 0, 0);">and</span><span style="font-weight: bold;"><span
+ style="color: rgb(51, 51, 255);"> app</span>
+</span>in the <span style="font-weight: bold;">User Name</span>
+and&nbsp;<span style="font-weight: bold;"> Password </span>fields.<br>
+7. Click <span style="font-weight: bold;">Submit </span>button.<br>
+<br>
+<img alt="" src="index_files/3_sql3.png"
+ style="width: 694px; height: 777px;"><br>
+Figure-3.11: Set the Driver and URL for the Derby database<br>
+<br>
+8. Observe that <span style="font-weight: bold;">DataBase Tags Examples</span>
+page gets displayed.<br>
+<br>
+<img alt="" src="index_files/3_sql3.1.png"
+ style="width: 795px; height: 730px;"><br>
+<br>
+9. (In the NetBeans IDE) Double click <span style="font-weight: bold;">index.jsp</span>
+under <span style="font-weight: bold;">JSTLExamples-&gt;Web
+Pages-&gt;sql</span> to open it in the source editor.<br>
+10. Observe that when you click <span style="font-weight: bold;">Submit
+</span>button, it will be sent to <span
+ style="font-weight: bold; text-decoration: underline; color: rgb(51, 51, 255);">session.jsp</span>.<br>
+<br>
+<img alt="" src="index_files/3_sql5.png"
+ style="width: 847px; height: 722px;"><br>
+Figure-3.12: index.jsp<br>
+<br>
+11. Double click <span style="font-weight: bold;">session.jsp</span>
+under <span style="font-weight: bold;">JSTLExamples-&gt;Web
+Pages-&gt;sql</span> to open it in the source editor.<br>
+12. Observe that the <span style="font-weight: bold;">session.jsp</span>
+is basically setting up several attributes in the session scope.&nbsp;
+These attributes will be used by the other jsp pages later.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ taglib prefix="c"
+uri="http://java.sun.com/jsp/jstl/core" %&gt;<br>
+      <br>
+&lt;html&gt;<br>
+&lt;head&gt;<br>
+&nbsp;&nbsp; &lt;title&gt;Jakarta DBTAGS Taglib Example&lt;/title&gt;<br>
+&lt;/head&gt;<br>
+&lt;body bgcolor="white"&gt;<br>
+      <br>
+&lt;c:set var="myDbUrl" value="${param.dbUrl}" scope="session"/&gt;<br>
+&lt;c:set var="myDbDriver" value="${param.dbDriver}"
+scope="session"/&gt;<br>
+&lt;c:set var="myDbUserName" value="${param.dbUserName}"
+scope="session"/&gt;<br>
+&lt;c:set var="myDbPassword" value="${param.dbPassword}"
+scope="session"/&gt;<br>
+      <br>
+&lt;%@ include file="links.html" %&gt;<br>
+      <br>
+&lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-3.13: session.jsp<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="#Exercise_3">return to top of
+the exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="3.2"></a>(3.2)
+Query update<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+<br>
+1. Click execute link of the <span style="font-weight: bold;">Query
+Iterate</span>.&nbsp; It is an example of showing how to iterate over
+the result of a query. (Figure-3.14 below)<br>
+<br>
+<img alt="" src="index_files/3_sql4.png"
+ style="width: 694px; height: 777px;"><br>
+Figure-3.14: DataBase Tags Examples page<br>
+<span style="font-weight: bold;"></span><br>
+2. Observe the result. Note that the JSP page that gets displayed is <span
+ style="font-weight: bold;">./sql/QueryIterate.jsp</span>.&nbsp;
+(Figure-3.15 below)<br>
+<br>
+<img alt="" src="index_files/3_sql1.png"
+ style="width: 694px; height: 777px;"><br>
+Figure-3.15: Result of SQL Query execution<br>
+<br>
+3. Double click <span style="font-weight: bold;">QueryIterate.jsp </span>under
+<span style="font-weight: bold;">JSTLExamples-&gt;Web Pages-&gt;sql </span>to
+open it in the source editor.<span style="font-weight: bold;"><br>
+</span>4. Study the <span style="font-weight: bold;">QueryIterate.jsp
+</span>especially paying attention to the bold-fonted comments and
+headers. (Figure-3.16 below)&nbsp; Some of these comments are not in
+the actual code and only added here in order to aid your understanding.<span
+ style="font-weight: bold;"><br>
+</span><br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ taglib prefix="sql"
+uri="http://java.sun.com/jsp/jstl/sql" %&gt;<br>
+&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;<br>
+      <br>
+&lt;html&gt;<br>
+&lt;head&gt;<br>
+&nbsp; &lt;title&gt;JSTL: SQL action examples&lt;/title&gt;<br>
+&lt;/head&gt;<br>
+&lt;body bgcolor="#FFFFFF"&gt;<br>
+      <br>
+&lt;h1&gt;SQL Query Execution using an iterator&lt;/h1&gt;<br>
+      <br>
+      <br>
+&lt;!-- NOTE: the sql:setDataSource tag is for prototyping and simple
+applications. You should really use a DataSource object instead --!&gt;<br>
+      <br>
+&lt;sql:setDataSource<br>
+&nbsp; var="example"<br>
+&nbsp; driver="${sessionScope.myDbDriver}"<br>
+&nbsp; url="${sessionScope.myDbUrl}"<br>
+&nbsp; user="${sessionScope.myDbUserName}"<br>
+&nbsp; password="${sessionScope.myDbPassword}"<br>
+/&gt;<br>
+      <br>
+      <br>
+&lt;sql:transaction dataSource="${example}"&gt;<br>
+      <br>
+&nbsp; <span style="font-weight: bold;">&lt;!-- Create a table called
+mytable --!&gt;</span><br>
+&nbsp; &lt;sql:update var="newTable"&gt;<br>
+&nbsp;&nbsp;&nbsp; create table mytable (<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nameid int primary key,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name varchar(80)<br>
+&nbsp;&nbsp;&nbsp; )<br>
+&nbsp; &lt;/sql:update&gt;<br>
+      <br>
+&nbsp;&nbsp; <span style="font-weight: bold;">&lt;!-- Add 3 new rows
+to the mytable --!&gt;</span><br>
+&nbsp; &lt;sql:update var="updateCount"&gt;<br>
+&nbsp;&nbsp;&nbsp; INSERT INTO mytable VALUES (1,'Paul Oakenfold')<br>
+&nbsp; &lt;/sql:update&gt;<br>
+&nbsp; &lt;sql:update var="updateCount"&gt;<br>
+&nbsp;&nbsp;&nbsp; INSERT INTO mytable VALUES (2,'Timo Maas')<br>
+&nbsp; &lt;/sql:update&gt;<br>
+&nbsp; &lt;sql:update var="updateCount"&gt;<br>
+&nbsp;&nbsp;&nbsp; INSERT INTO mytable VALUES (3,'Paul van Dyk')<br>
+&nbsp; &lt;/sql:update&gt;<br>
+      <br>
+&nbsp; <span style="font-weight: bold;">&lt;!-- Perform a query --!&gt;</span><br>
+&nbsp; &lt;sql:query var="deejays"&gt;<br>
+&nbsp;&nbsp;&nbsp; SELECT * FROM mytable<br>
+&nbsp; &lt;/sql:query&gt;<br>
+      <br>
+&lt;/sql:transaction&gt;<br>
+      <br>
+&lt;hr&gt;<br>
+      <br>
+      <span style="font-weight: bold;">&lt;h2&gt;Iterating over each
+Row of the result&lt;/h2&gt;</span><br>
+      <br>
+&lt;table border="1"&gt;<br>
+&nbsp; &lt;c:forEach var="row" items="${deejays.rowsByIndex}"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;c:forEach var="column"
+items="${row}"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td&gt;&lt;c:out
+value="${column}"/&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/c:forEach&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/tr&gt;<br>
+&nbsp; &lt;/c:forEach&gt;<br>
+&lt;/table&gt;<br>
+      <br>
+&lt;hr&gt;<br>
+      <br>
+      <span style="font-weight: bold;">&lt;h2&gt;Iterating over Columns
+without knowing the index&lt;/h2&gt;</span><br>
+      <br>
+&lt;table border="1"&gt;<br>
+&nbsp; &lt;c:forEach var="row" items="${deejays.rows}"&gt;<br>
+&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;td&gt;Name: &lt;c:out
+value="${row.NAMEID}"/&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;td&gt;Value: &lt;c:out
+value="${row.NAME}"/&gt;&lt;/td&gt;<br>
+&nbsp; &lt;/tr&gt;<br>
+&nbsp; &lt;/c:forEach&gt;<br>
+&lt;/table&gt;<br>
+      <br>
+&lt;hr&gt;<br>
+      <br>
+&lt;h2&gt;Putting it all together&lt;/h2&gt;<br>
+      <br>
+      <span style="font-weight: bold;">&lt;%-- Easiest example showing
+how to populate a table --%&gt;</span><br>
+&lt;table border="1"&gt;<br>
+&nbsp; &lt;tr&gt;<br>
+&nbsp; &lt;%-- Get the column names for the header of the table --%&gt;<br>
+&nbsp; &lt;c:forEach var="columnName" items="${deejays.columnNames}"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;th&gt;&lt;c:out
+value="${columnName}"/&gt;&lt;/th&gt;<br>
+&nbsp; &lt;/c:forEach&gt;<br>
+      <br>
+&nbsp; &lt;%-- Get the value of each column while iterating over rows
+--%&gt;<br>
+&nbsp; &lt;c:forEach var="row" items="${deejays.rowsByIndex}"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;c:forEach var="column"
+items="${row}"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td&gt;&lt;c:out
+value="${column}"/&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/c:forEach&gt;<br>
+&nbsp; &lt;/c:forEach&gt;<br>
+&lt;/table&gt;<br>
+      <br>
+      <br>
+&lt;sql:update var="newTable" dataSource="${example}"&gt;<br>
+&nbsp; drop table mytable<br>
+&lt;/sql:update&gt;<br>
+      <br>
+      <br>
+&lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-3.16: QueryIterate.jsp<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Exercise_3">return to top of
+the exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="3.3"></a>(3.3)
+Update<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">In this step, you are going to learn
+how to insert and delete rows from a database table using SQL tags.<br>
+<br>
+1. Click execute link of the <span style="font-weight: bold;">Update</span>.&nbsp;
+It is an example of showing database updates.<br>
+2. Observe the result. Note that the JSP page that gets displayed is <span
+ style="font-weight: bold;">./sql/Update.jsp</span>.&nbsp;
+(Figure-3.30 below)<br>
+<br>
+<img alt="" src="index_files/3_sql6.png"
+ style="width: 710px; height: 695px;"><br>
+Figure-3.30: SQL Upate Execution<br>
+<br>
+</div>
+<div style="margin-left: 40px;"><span style="color: rgb(255, 0, 0);">Trouble-shooting</span>:
+If experience "<span style="font-weight: bold;">... invalid driver
+class name: "java.lang.ClassNotFoundException:</span> " as shown below
+in Figure-3.31 below, it is because the database driver related session
+attributes were not set as described in step 3.1 above.&nbsp; <br>
+<span style="color: rgb(51, 51, 255);">Solution</span>: Do the step 3.1
+above again.<br>
+<br>
+<img alt="" src="index_files/3_error2.png"
+ style="width: 751px; height: 777px;"><br>
+Figure-3.31: Exception you get when you do not set driver related
+session attributes<br>
+<br>
+3. Double click <span style="font-weight: bold;">Update.jsp </span>under
+<span style="font-weight: bold;">JSTLExamples-&gt;Web Pages-&gt;sql </span>to
+open it in the source editor.<span style="font-weight: bold;"><br>
+</span>4. Study the <span style="font-weight: bold;">Update.jsp
+</span>especially paying attention to the bold-fonted comments and
+headers. (Code-3.32 below)&nbsp; Some of these comments are not in
+the actual code and only added here in order to aid your understanding.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ taglib prefix="sql"
+uri="http://java.sun.com/jsp/jstl/sql" %&gt;<br>
+&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;<br>
+      <br>
+&lt;html&gt;<br>
+&lt;head&gt;<br>
+&nbsp; &lt;title&gt;JSTL: SQL action examples&lt;/title&gt;<br>
+&lt;/head&gt;<br>
+&lt;body bgcolor="#FFFFFF"&gt;<br>
+      <br>
+&lt;h1&gt;SQL Update Execution&lt;/h1&gt;<br>
+      <br>
+      <br>
+&lt;!-- NOTE: the sql:setDataSource tag is for prototyping and simple
+applications. You should really use a DataSource object instead --!&gt;<br>
+      <br>
+&lt;sql:setDataSource<br>
+&nbsp; var="example"<br>
+&nbsp; driver="${sessionScope.myDbDriver}"<br>
+&nbsp; url="${sessionScope.myDbUrl}"<br>
+&nbsp; user="${sessionScope.myDbUserName}"<br>
+&nbsp; password="${sessionScope.myDbPassword}"<br>
+/&gt;<br>
+      <br>
+&lt;hr&gt;<br>
+      <br>
+&lt;sql:transaction dataSource="${example}"&gt;<br>
+      <br>
+&nbsp; &lt;sql:update var="newTable"&gt;<br>
+&nbsp;&nbsp;&nbsp; create table mytable (<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nameid int primary key,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name varchar(80)<br>
+&nbsp;&nbsp;&nbsp; )<br>
+&nbsp; &lt;/sql:update&gt;<br>
+      <br>
+&lt;h2&gt;Inserting three rows into table&lt;/h2&gt;<br>
+&nbsp; &lt;sql:update var="updateCount"&gt;<br>
+&nbsp;&nbsp;&nbsp; INSERT INTO mytable VALUES (1,'Paul Oakenfold')<br>
+&nbsp; &lt;/sql:update&gt;<br>
+&nbsp; &lt;sql:update var="updateCount"&gt;<br>
+&nbsp;&nbsp;&nbsp; INSERT INTO mytable VALUES (2,'Timo Maas')<br>
+&nbsp; &lt;/sql:update&gt;<br>
+&nbsp; &lt;sql:update var="updateCount"&gt;<br>
+&nbsp;&nbsp;&nbsp; INSERT INTO mytable VALUES (3,'Paul van Dyk')<br>
+&nbsp; &lt;/sql:update&gt;<br>
+      <br>
+      <span style="font-weight: bold;">&lt;p&gt;DONE: Inserting three
+rows into table&lt;/p&gt;</span><br>
+      <br>
+      <br>
+&nbsp; &lt;sql:query var="deejays"&gt;<br>
+&nbsp;&nbsp;&nbsp; SELECT * FROM mytable<br>
+&nbsp; &lt;/sql:query&gt;<br>
+      <br>
+&lt;/sql:transaction&gt;<br>
+      <br>
+      <span style="font-weight: bold;">&lt;%-- An example showing how
+to populate a table --%&gt;</span><br>
+&lt;table border="1"&gt;<br>
+&nbsp; &lt;%-- Get the column names for the header of the table --%&gt;<br>
+&nbsp; &lt;c:forEach var="columnName" items="${deejays.columnNames}"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;th&gt;&lt;c:out
+value="${columnName}"/&gt;&lt;/th&gt;<br>
+&nbsp; &lt;/c:forEach&gt;<br>
+      <br>
+&nbsp;<span style="font-weight: bold;"> &lt;%-- Get the value of each
+column while iterating over rows --%&gt;</span><br>
+&nbsp; &lt;c:forEach var="row" items="${deejays.rows}"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;c:forEach var="column" items="${row}"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td&gt;&lt;c:out
+value="${column.value}"/&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/c:forEach&gt;<br>
+&nbsp; &lt;/tr&gt;<br>
+&nbsp; &lt;/c:forEach&gt;<br>
+&lt;/table&gt;<br>
+      <br>
+      <br>
+      <span style="font-weight: bold;">&lt;h2&gt;Deleting second row
+from table&lt;/h2&gt;</span><br>
+      <br>
+&nbsp; &lt;sql:update var="updateCount" dataSource="${example}"&gt;<br>
+&nbsp;&nbsp;&nbsp; DELETE FROM mytable WHERE nameid=2<br>
+&nbsp; &lt;/sql:update&gt;<br>
+      <br>
+&lt;p&gt;DONE: Deleting second row from table&lt;/p&gt;<br>
+      <br>
+&lt;sql:query var="deejays" dataSource="${example}"&gt;<br>
+&nbsp; SELECT * FROM mytable<br>
+&lt;/sql:query&gt;<br>
+      <br>
+      <br>
+&lt;%-- Yet another example showing how to populate a table --%&gt;<br>
+&lt;table border="1"&gt;<br>
+&nbsp; &lt;c:forEach var="row" items="${deejays.rows}"
+varStatus="status"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;%-- Get the column names for the header of the
+table --%&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;c:choose&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;c:when test="${status.count ==
+1}"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;%-- Each row is a Map
+object key'd by the column name --%&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;c:forEach var="metaData"
+items="${row}"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;th&gt;&lt;c:out value="${metaData.key}"/&gt;&lt;/th&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/c:forEach&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/c:when&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/c:choose&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;c:forEach var="column" items="${row}"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;%-- Get the value of each column
+while iterating over rows --%&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td&gt;&lt;c:out
+value="${column.value}"/&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/c:forEach&gt;<br>
+&nbsp; &lt;/tr&gt;<br>
+&nbsp; &lt;/c:forEach&gt;<br>
+&lt;/table&gt;<br>
+      <br>
+      <br>
+&lt;sql:update var="newTable" dataSource="${example}"&gt;<br>
+&nbsp; drop table mytable<br>
+&lt;/sql:update&gt;<br>
+      <br>
+      <br>
+&lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-3.32: Update.jsp<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Exercise_3">return to top of
+the exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="3.4"></a>(3.4)
+Direct Query<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+In this step, you are going to learn
+how th result of a query can be directly accessed.<br>
+<br>
+1. Click execute link of the <span style="font-weight: bold;">Direct
+Query</span>.&nbsp; <br>
+2. Observe the result. Note that the JSP page that gets displayed is <span
+ style="font-weight: bold;">./sql/QueryDirect.jsp</span>.&nbsp;
+(Figure-3.40 below)<br>
+<br>
+<img alt="" src="index_files/3_sql8.png"
+ style="width: 763px; height: 715px;"><br>
+Figure-3.40: SQL Directy Query Execution<br>
+<br>
+3. Double click <span style="font-weight: bold;">QueryDirect.jsp </span>under
+<span style="font-weight: bold;">JSTLExamples-&gt;Web Pages-&gt;sql </span>to
+open it in the source editor.<span style="font-weight: bold;"><br>
+</span>4. Study the <span style="font-weight: bold;">QueryDirect.jsp
+</span>especially paying attention to the bold-fonted comments and
+headers. (Code-3.41 below)&nbsp; Some of these comments are not in
+the actual code and only added here in order to aid your understanding.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ taglib prefix="sql"
+uri="http://java.sun.com/jsp/jstl/sql" %&gt;<br>
+&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;<br>
+      <br>
+&lt;html&gt;<br>
+&lt;head&gt;<br>
+&nbsp; &lt;title&gt;JSTL: SQL action examples&lt;/title&gt;<br>
+&lt;/head&gt;<br>
+&lt;body bgcolor="#FFFFFF"&gt;<br>
+      <br>
+&lt;h1&gt;SQL Direct Query Execution&lt;/h1&gt;<br>
+&lt;p&gt;This example demonstrates how the row and columns can be
+directly accessed using various direct mechanisms.&lt;p&gt;<br>
+      <br>
+      <br>
+&lt;!-- NOTE: the sql:setDataSource tag is for prototyping and simple
+applications. You should really use a DataSource object instead --!&gt;<br>
+      <br>
+&lt;sql:setDataSource<br>
+&nbsp; var="example"<br>
+&nbsp; driver="${sessionScope.myDbDriver}"<br>
+&nbsp; url="${sessionScope.myDbUrl}"<br>
+&nbsp; user="${sessionScope.myDbUserName}"<br>
+&nbsp; password="${sessionScope.myDbPassword}"<br>
+/&gt;<br>
+      <br>
+&lt;sql:transaction dataSource="${example}"&gt;<br>
+      <br>
+&nbsp; &lt;sql:update var="newTable"&gt;<br>
+&nbsp;&nbsp;&nbsp; create table mytable (<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nameid int primary key,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name varchar(80)<br>
+&nbsp;&nbsp;&nbsp; )<br>
+&nbsp; &lt;/sql:update&gt;<br>
+      <br>
+&nbsp; &lt;sql:update var="updateCount"&gt;<br>
+&nbsp;&nbsp;&nbsp; INSERT INTO mytable VALUES (1,'Paul Oakenfold')<br>
+&nbsp; &lt;/sql:update&gt;<br>
+&nbsp; &lt;sql:update var="updateCount"&gt;<br>
+&nbsp;&nbsp;&nbsp; INSERT INTO mytable VALUES (2,'Timo Maas')<br>
+&nbsp; &lt;/sql:update&gt;<br>
+&nbsp; &lt;sql:update var="updateCount"&gt;<br>
+&nbsp;&nbsp;&nbsp; INSERT INTO mytable VALUES (3,'Paul van Dyk')<br>
+&nbsp; &lt;/sql:update&gt;<br>
+      <br>
+&nbsp; &lt;sql:query var="deejays"&gt;<br>
+&nbsp;&nbsp;&nbsp; SELECT * FROM mytable<br>
+&nbsp; &lt;/sql:query&gt;<br>
+      <br>
+&lt;/sql:transaction&gt;<br>
+      <br>
+&lt;hr&gt;<br>
+      <br>
+      <span style="font-weight: bold;">&lt;h2&gt;Using the Row index
+and Column name&lt;/h2&gt;</span><br>
+Row[0].NAMEID: &lt;c:out value="${deejays.rows[0].NAMEID}" /&gt;<br>
+&lt;br&gt;<br>
+Row[0].NAME: &lt;c:out value="${deejays.rows[0].NAME}" /&gt;<br>
+&lt;br&gt;<br>
+Row[1].NAMEID: &lt;c:out value="${deejays.rows[1].NAMEID}" /&gt;<br>
+&lt;br&gt;<br>
+Row[1].NAME: &lt;c:out value="${deejays.rows[1].NAME}" /&gt;<br>
+&lt;br&gt;<br>
+Row[2].NAMEID: &lt;c:out value="${deejays.rows[2].NAMEID}" /&gt;<br>
+&lt;br&gt;<br>
+Row[2].NAME: &lt;c:out value="${deejays.rows[2].NAME}" /&gt;<br>
+&lt;br&gt;<br>
+      <br>
+&lt;hr&gt;<br>
+      <br>
+      <span style="font-weight: bold;">&lt;h2&gt;Using the Row and
+Column index&lt;/h2&gt;</span><br>
+Row[0][0]: &lt;c:out value="${deejays.rowsByIndex[0][0]}" /&gt;<br>
+&lt;br&gt;<br>
+Row[0][1]: &lt;c:out value="${deejays.rowsByIndex[0][1]}" /&gt;<br>
+&lt;br&gt;<br>
+Row[1][0]: &lt;c:out value="${deejays.rowsByIndex[1][0]}" /&gt;<br>
+&lt;br&gt;<br>
+Row[1][1]: &lt;c:out value="${deejays.rowsByIndex[1][1]}" /&gt;<br>
+&lt;br&gt;<br>
+Row[2][0]: &lt;c:out value="${deejays.rowsByIndex[2][0]}" /&gt;<br>
+&lt;br&gt;<br>
+Row[2][1]: &lt;c:out value="${deejays.rowsByIndex[2][1]}" /&gt;<br>
+&lt;br&gt;<br>
+      <br>
+&lt;sql:update var="newTable" dataSource="${example}"&gt;<br>
+&nbsp; drop table mytable<br>
+&lt;/sql:update&gt;<br>
+      <br>
+&lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-3.41: QueryDirect.jsp<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Exercise_3">return to top of
+the exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="3.5"></a>(3.5)
+Query Parameters<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+In this step, you are going to learn
+how query parameters can be used to create an SQL query.<br>
+<br>
+1. Click execute link of the <span style="font-weight: bold;">Query
+Parameters</span>. <br>
+2. Observe the result. Note that the JSP page that gets displayed is <span
+ style="font-weight: bold;">./sql/QuertParam.jsp</span>.&nbsp;
+(Figure-3.50 below)<br>
+<br>
+<img alt="" src="index_files/3_sql9.png"
+ style="width: 763px; height: 715px;"><br>
+Figure-3.50: SQL Query Execution using parameters<br>
+<br>
+3. Double click <span style="font-weight: bold;">QueryParam.jsp </span>under
+<span style="font-weight: bold;">JSTLExamples-&gt;Web Pages-&gt;sql </span>to
+open it in the source editor.<span style="font-weight: bold;"><br>
+</span>4. Study the <span style="font-weight: bold;">QueryParam.jsp
+</span>especially paying attention to the bold-fonted comments and
+headers. (Code-3.51 below)&nbsp; Some of these comments are not in
+the actual code and only added here in order to aid your understanding.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ taglib prefix="sql"
+uri="http://java.sun.com/jsp/jstl/sql" %&gt;<br>
+&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;<br>
+      <br>
+&lt;html&gt;<br>
+&lt;head&gt;<br>
+&nbsp; &lt;title&gt;JSTL: SQL action examples&lt;/title&gt;<br>
+&lt;/head&gt;<br>
+&lt;body bgcolor="#FFFFFF"&gt;<br>
+      <br>
+&lt;% request.setAttribute("newName", new String("Paul van Dyk")); %&gt;<br>
+      <br>
+&lt;h1&gt;SQL Query Execution using parameters&lt;/h1&gt;<br>
+&lt;p&gt;Using parameter marker's to insert values in the SQL
+statements&lt;/p&gt;<br>
+      <br>
+      <br>
+      <br>
+&lt;!-- NOTE: the sql:setDataSource tag is for prototyping and simple
+applications. You should really use a DataSource object instead --!&gt;<br>
+      <br>
+&lt;sql:setDataSource<br>
+&nbsp; var="example"<br>
+&nbsp; driver="${sessionScope.myDbDriver}"<br>
+&nbsp; url="${sessionScope.myDbUrl}"<br>
+&nbsp; user="${sessionScope.myDbUserName}"<br>
+&nbsp; password="${sessionScope.myDbPassword}"<br>
+/&gt;<br>
+      <br>
+&lt;sql:transaction dataSource="${example}"&gt;<br>
+      <br>
+&nbsp; &lt;sql:update var="newTable"&gt;<br>
+&nbsp;&nbsp;&nbsp; create table mytable (<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nameid int primary key,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name varchar(80)<br>
+&nbsp;&nbsp;&nbsp; )<br>
+&nbsp; &lt;/sql:update&gt;<br>
+      <br>
+&nbsp; &lt;sql:update var="updateCount"&gt;<br>
+&nbsp;&nbsp;&nbsp; INSERT INTO mytable VALUES (1,'Paul Oakenfold')<br>
+&nbsp; &lt;/sql:update&gt;<br>
+      <br>
+&nbsp; &lt;sql:update var="updateCount"&gt;<br>
+&nbsp;&nbsp;&nbsp; INSERT INTO mytable VALUES (?,'Timo Maas')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;sql:param value="2"/&gt;<br>
+&nbsp; &lt;/sql:update&gt;<br>
+      <br>
+&nbsp; &lt;sql:update var="updateCount"&gt;<br>
+&nbsp;&nbsp;&nbsp; INSERT INTO mytable VALUES (?,?)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;sql:param value="3"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;sql:param value="${newName}"/&gt;<br>
+&nbsp; &lt;/sql:update&gt;<br>
+      <br>
+&nbsp; <span style="font-weight: bold;">&lt;!-- Save the result of the
+query in a variable called deejay --!&gt;</span><br>
+&nbsp; &lt;sql:query var="deejay"&gt;<br>
+&nbsp;&nbsp;&nbsp; SELECT * FROM mytable<br>
+&nbsp; &lt;/sql:query&gt;<br>
+      <br>
+&lt;/sql:transaction&gt;<br>
+      <br>
+      <span style="font-weight: bold;">&lt;!-- Use parameters --!&gt;</span><br>
+&lt;table border="1"&gt;<br>
+&nbsp; &lt;c:forEach var="row" items="${deejay.rows}"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td&gt;&lt;c:out
+value="${row.NAMEID}"/&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td&gt;&lt;c:out
+value="${row.NAME}"/&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/tr&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/c:forEach&gt;<br>
+&lt;/table&gt;<br>
+      <br>
+&lt;sql:update var="newTable" dataSource="${example}"&gt;<br>
+&nbsp; drop table mytable<br>
+&lt;/sql:update&gt;<br>
+      <br>
+      <br>
+&lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-3.51:&nbsp; QueryParam.jsp<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Exercise_3">return to top of
+the exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="3.6"></a>(3.6)
+Transaction<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">In this step, you are going to learn
+how to perform database operations in a transaction.<br>
+<br>
+1. Click execute link of the <span style="font-weight: bold;">Transaction</span>.
+<br>
+2. Observe the result. Note that the JSP page that gets displayed is <span
+ style="font-weight: bold;">./sql/Transaction.jsp</span>.&nbsp;
+(Figure-3.40 below)<br>
+<br>
+<img alt="" src="index_files/3_sql7.png"
+ style="width: 752px; height: 695px;"><br>
+Figure-3.40: Transaction.jsp<br>
+<br>
+3. Double click <span style="font-weight: bold;">Transaction.jsp </span>under
+<span style="font-weight: bold;">JSTLExamples-&gt;Web Pages-&gt;sql </span>to
+open it in the source editor.<span style="font-weight: bold;"><br>
+</span>4. Study the <span style="font-weight: bold;">Transaction.jsp
+</span>especially paying attention to the bold-fonted comments and
+headers. (Code-3.42 below)&nbsp; Some of these comments are not in
+the actual code and only added here in order to aid your understanding.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ taglib prefix="sql"
+uri="http://java.sun.com/jsp/jstl/sql" %&gt;<br>
+      <br>
+&lt;html&gt;<br>
+&lt;head&gt;<br>
+&nbsp; &lt;title&gt;JSTL: SQL action examples&lt;/title&gt;<br>
+&lt;/head&gt;<br>
+&lt;body bgcolor="#FFFFFF"&gt;<br>
+      <br>
+&lt;h1&gt;SQL Transactions&lt;/h1&gt;<br>
+      <br>
+      <br>
+&lt;!-- NOTE: the sql:setDataSource tag is for prototyping and simple
+applications. You should really use a DataSource object instead --!&gt;<br>
+      <br>
+&lt;sql:setDataSource<br>
+&nbsp; var="example"<br>
+&nbsp; driver="${sessionScope.myDbDriver}"<br>
+&nbsp; url="${sessionScope.myDbUrl}"<br>
+&nbsp; user="${sessionScope.myDbUserName}"<br>
+&nbsp; password="${sessionScope.myDbPassword}"<br>
+/&gt;<br>
+      <br>
+&lt;p&gt;You can group transactions together using the
+&amp;lt;sql:transaction&amp;gt; tag.&lt;/p&gt;<br>
+      <br>
+      <span style="font-weight: bold;">&lt;h2&gt;Creating table using a
+transaction&lt;/h2&gt;</span><br>
+      <br>
+&lt;sql:transaction dataSource="${example}"&gt;<br>
+&nbsp; &lt;sql:update var="newTable"&gt;<br>
+&nbsp;&nbsp;&nbsp; create table mytable (<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nameid int primary key,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name varchar(80)<br>
+&nbsp;&nbsp;&nbsp; )<br>
+&nbsp; &lt;/sql:update&gt;<br>
+&lt;/sql:transaction&gt;<br>
+      <br>
+&lt;p&gt;DONE: Creating table using a transaction&lt;/p&gt;<br>
+      <br>
+&lt;hr&gt;<br>
+      <br>
+      <span style="font-weight: bold;">&lt;h2&gt;Populating table in
+one transaction&lt;/h2&gt;</span><br>
+      <br>
+&lt;sql:transaction dataSource="${example}"&gt;<br>
+&nbsp; &lt;sql:update var="updateCount"&gt;<br>
+&nbsp;&nbsp;&nbsp; INSERT INTO mytable VALUES (1,'Paul Oakenfold')<br>
+&nbsp; &lt;/sql:update&gt;<br>
+&nbsp; &lt;sql:update var="updateCount"&gt;<br>
+&nbsp;&nbsp;&nbsp; INSERT INTO mytable VALUES (2,'Timo Maas')<br>
+&nbsp; &lt;/sql:update&gt;<br>
+&nbsp; &lt;sql:update var="updateCount"&gt;<br>
+&nbsp;&nbsp;&nbsp; INSERT INTO mytable VALUES (3,'Paul van Dyk')<br>
+&nbsp; &lt;/sql:update&gt;<br>
+&lt;/sql:transaction&gt;<br>
+      <br>
+&lt;p&gt;DONE: Populating table in one transaction&lt;/p&gt;<br>
+      <br>
+&lt;sql:update var="newTable" dataSource="${example}"&gt;<br>
+&nbsp; drop table mytable<br>
+&lt;/sql:update&gt;<br>
+      <br>
+&lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-3.42: Transaction.jsp<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Exercise_3">return to top of
+the exercise</a><br>
+</div>
+<div style="margin-left: 40px;"><br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial">Summary<br>
+</h3>
+<div style="margin-left: 40px;">
+<br>
+In this exercise, you have exercises various SQL tags for performing
+database operations.<br>
+</div>
+<div style="margin-left: 40px;"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; <a href="../ajaxbasics2/index.html#Tutorial_Exercises">return
+to the top</a><br>
+<br>
+</div>
+<span style="font-weight: bold;"><br>
+</span>
+<h2><a name="Exercise_4"></a>Exercise 4: XML tags<br>
+</h2>
+<p style="margin-left: 40px;">In this exercise, you are going to
+exercise XML tags.<br>
+</p>
+<ul>
+  <ol>
+    <li><a href="index.html#3.1">Out</a><br>
+    </li>
+    <li><a href="#4.2">Parse</a><br>
+    </li>
+    <li><a href="#4.3">Transform</a></li>
+  </ol>
+</ul>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="4.1"></a>(4.1)
+Out<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">1. In the NetBeans, right click <span
+ style="font-weight: bold;">JSTLExamples </span>project node and
+select <span style="font-weight: bold;">Run</span>.<br>
+2. Observe that Browser gets displayed.&nbsp; Select <span
+ style="font-weight: bold;">XML Tags</span> under <span
+ style="font-weight: bold;">Examples</span>.<br>
+3. Observe that <span style="font-weight: bold;">XML Examples</span>
+page gets displayed.&nbsp; (Figure-3.11 below)<br>
+4. Click execute link of the <span style="font-weight: bold;">Out</span>.
+<br>
+5. Observe the result. Note that the JSP page that gets displayed is <span
+ style="font-weight: bold;">./xml/Out.jsp</span>.&nbsp;
+(Figure-4.10 below)<br>
+<br>
+<img alt="" src="index_files/4_xml1.png"
+ style="width: 763px; height: 849px;"><br>
+Figure-4.10: Out.jsp<br>
+<br>
+3. Double click <span style="font-weight: bold;">Out.jsp </span>under
+<span style="font-weight: bold;">JSTLExamples-&gt;Web Pages-&gt;sql </span>to
+open it in the source editor.<span style="font-weight: bold;"><br>
+</span>4. Study the <span style="font-weight: bold;">Out.jsp
+</span>especially paying attention to the bold-fonted comments and
+headers. (Code-4.11 below)&nbsp; Some of these comments are not in
+the actual code and only added here in order to aid your understanding.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ taglib prefix="c"
+uri="http://java.sun.com/jsp/jstl/core" %&gt;<br>
+&lt;%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %&gt;<br>
+      <br>
+&lt;html&gt;<br>
+&lt;head&gt;<br>
+&nbsp; &lt;title&gt;JSTL: XML Support -- Parse / Out&lt;/title&gt;<br>
+&lt;/head&gt;<br>
+      <br>
+&lt;body bgcolor="#FFFFFF"&gt;<br>
+      <br>
+&lt;h3&gt;&amp;lt;x:parse&amp;gt; / &amp;lt;x:out&amp;gt;&lt;/h3&gt;<br>
+      <br>
+&lt;c:import var="docString" url="games.xml"/&gt;<br>
+      <br>
+&lt;x:parse var="doc" doc="${docString}"/&gt;<br>
+      <br>
+&lt;table border=1&gt;<br>
+&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;td valign="top"&gt;&lt;pre&gt;&lt;c:out
+value="${docString}"/&gt;&lt;/pre&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;td valign="top"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;table border=1&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;th&gt;Expression&lt;/th&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;th&gt;Result&lt;/th&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/tr&gt;<br>
+&lt;%--<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;td&gt;3 +
+3&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;&lt;pre&gt;&lt;x:out select="3 +
+3"/&gt;&lt;/pre&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/tr&gt;<br>
+--%&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;$doc//sport&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;&lt;pre&gt;&lt;x:out
+select="$doc//sport"/&gt;&lt;/pre&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;$doc/games/country/*&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;&lt;pre&gt;&lt;x:out
+select="$doc/games/country/*"/&gt;&lt;/pre&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;$doc//*&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;&lt;pre&gt;&lt;x:out
+select="$doc//*"/&gt;&lt;/pre&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;$doc/games/country&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;&lt;pre&gt;&lt;x:out
+select="$doc/games/country"/&gt;&lt;/pre&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;$doc/games/country[last()]&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;&lt;pre&gt;&lt;x:out
+select="$doc/games/country[last()]"/&gt;&lt;/pre&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;$doc//@id&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;&lt;pre&gt;&lt;x:out
+select="$doc//@id"/&gt;&lt;/pre&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;$doc//country[@id='Denmark']&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td&gt;&lt;pre&gt;&lt;x:out
+select="$doc//country[@id='Denmark']"/&gt;&lt;/pre&gt;&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/table&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/td&gt;<br>
+&nbsp; &lt;/tr&gt;<br>
+&lt;/table&gt;<br>
+      <br>
+&lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-4.11: Out.jsp<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="#Exercise_4">return to top of
+the exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="4.2"></a>(4.2)
+Parse<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">In this step, you are going to learn
+how to parse a XML document directly from an object.<br>
+<br>
+1. Click execute link of the <span style="font-weight: bold;">Parse</span>.
+<br>
+2. Observe the result. Note that the JSP page that gets displayed is <span
+ style="font-weight: bold;">./xml/Parse.jsp</span>.&nbsp;
+(Figure-4.20 below)<br>
+<br>
+<img alt="" src="index_files/4_xml2.png"
+ style="width: 693px; height: 599px;"><br>
+Figure-4.20: Parse from Objects and URLs<br>
+</div>
+<div style="margin-left: 40px;"><br>
+</div>
+<div style="margin-left: 40px;">3. Double click <span
+ style="font-weight: bold;">Parse.jsp </span>under <span
+ style="font-weight: bold;">JSTLExamples-&gt;Web Pages-&gt;xml </span>to
+open it in the source editor.<span style="font-weight: bold;"><br>
+</span>4. Study the <span style="font-weight: bold;">Parse.jsp
+</span>especially paying attention to the bold-fonted comments and
+headers. (Code-4.21 below)&nbsp; Some of these comments are not in
+the actual code and only added here in order to aid your understanding.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ taglib prefix="c"
+uri="http://java.sun.com/jsp/jstl/core" %&gt;<br>
+&lt;%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %&gt;<br>
+      <br>
+&lt;html&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt;JSTL: XML
+Support -- Parse&lt;/title&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;body bgcolor="#FFFFFF"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h3&gt;Parse from Objects
+and URLs&lt;/h3&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">&lt;!--&nbsp; Save the XML fragment as
+xmText variable --!&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;c:set var="xmlText"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;a&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;b&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;c&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+foo<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/c&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/b&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;d&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+bar<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/d&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/a&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/c:set&gt;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">&lt;!--&nbsp; Parse xmlText into a variable
+called a --!&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;x:parse var="a"
+doc="${xmlText}" /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold;"> &lt;!--&nbsp; Display the String value of
+the node set of all the c element under the dom node&nbsp; --!&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;x:out select="$a//c"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">&lt;!--&nbsp; Display the String value of
+the node set of all the d element under c element&nbsp; --!&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;x:out
+select="$a/a/d"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-4.21: Parse.jsp<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Exercise_4">return to top of
+the exercise</a><br>
+</div>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="4.3"></a>(4.3)
+Transform<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">In this step, you are going to learn
+how to apply XSLT transformation.<br>
+<br>
+1. Click execute link of the <span style="font-weight: bold;">Transform</span>.
+<br>
+2. Observe the result. Note that the JSP page that gets displayed is <span
+ style="font-weight: bold;">./xml/Transform.jsp</span>.&nbsp;
+(Figure-4.30 below)<br>
+<br>
+<img alt="" src="index_files/4_xml3.png"
+ style="width: 760px; height: 709px;"><br>
+Figure-4.30: Transforming XML document<br>
+<br>
+3. Double click <span style="font-weight: bold;">Transform.jsp </span>under
+<span style="font-weight: bold;">JSTLExamples-&gt;Web Pages-&gt;xml </span>to
+open it in the source editor.<span style="font-weight: bold;"><br>
+</span>4. Study the <span style="font-weight: bold;">Transform.jsp
+</span>especially paying attention to the bold-fonted comments and
+headers. (Code-4.31 below)&nbsp; Some of these comments are not in
+the actual code and only added here in order to aid your understanding.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ taglib prefix="c"
+uri="http://java.sun.com/jsp/jstl/core" %&gt;<br>
+&lt;%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %&gt;<br>
+      <br>
+&lt;html&gt;<br>
+&lt;head&gt;<br>
+&nbsp; &lt;title&gt;JSTL: XML Support -- Transform&lt;/title&gt;<br>
+&lt;/head&gt;<br>
+&lt;body bgcolor="#FFFFFF"&gt;<br>
+&lt;h3&gt;Parse / Expr&lt;/h3&gt;<br>
+      <br>
+&lt;c:set var="xml"&gt;<br>
+&nbsp; &lt;a&gt;&lt;b&gt;header!&lt;/b&gt;&lt;/a&gt;<br>
+&lt;/c:set&gt;<br>
+      <br>
+&lt;c:set var="xsl"&gt;<br>
+&nbsp; &lt;?xml version="1.0"?&gt;<br>
+&nbsp; &lt;xsl:stylesheet<br>
+&nbsp;&nbsp;&nbsp; xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+version="1.0"&gt;<br>
+      <br>
+&nbsp; &lt;xsl:template match="text()"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;h1&gt;&lt;xsl:value-of select="."/&gt;&lt;/h1&gt;<br>
+&nbsp; &lt;/xsl:template&gt;<br>
+      <br>
+&nbsp; &lt;/xsl:stylesheet&gt;<br>
+&lt;/c:set&gt;<br>
+      <br>
+Prints "header" as a header:&lt;br /&gt;<br>
+&lt;x:transform doc="${xml}" xslt="${xsl}"/&gt;<br>
+      <br>
+&lt;hr /&gt;<br>
+      <br>
+Prints "header" in normal size:&lt;br /&gt;<br>
+&lt;x:transform doc="${xml}" xslt="${xsl}" var="doc"/&gt;<br>
+&lt;x:out select="$doc//h1"/&gt;<br>
+      <br>
+&lt;hr size="5" /&gt;<br>
+      <br>
+&lt;hr /&gt;<br>
+      <span style="font-weight: bold;">&lt;h3&gt;Transformations using
+output from XPath expressions&lt;/h3&gt;</span><br>
+      <br>
+&lt;x:parse var="xml" doc="${xml}" /&gt;<br>
+&lt;x:set var="miniDoc" select="$xml//b" /&gt;<br>
+&lt;x:transform xslt="${xsl}" doc="${miniDoc}" /&gt;<br>
+&lt;hr /&gt;<br>
+      <br>
+      <span style="font-weight: bold;">&lt;h3&gt;Inline
+transformations&lt;/h3&gt;</span><br>
+      <br>
+&lt;x:transform xslt="${xsl}"&gt;<br>
+&nbsp; &lt;a&gt;<br>
+&nbsp;&nbsp; &lt;b&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;c&gt;Paragraph one!&lt;/c&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;c&gt;Paragraph foo!&lt;/c&gt;<br>
+&nbsp;&nbsp; &lt;/b&gt;<br>
+&nbsp; &lt;/a&gt;<br>
+&lt;/x:transform&gt;<br>
+      <br>
+&lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-4.31: Transform.jsp<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Exercise_4">return to top of
+the exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial">Summary<br>
+</h3>
+<div style="margin-left: 40px;">
+<br>
+In this exercise, you have exercises various XML tags, especially
+parsing and transformation.<br>
+</div>
+<div style="margin-left: 40px;"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; <a href="../ajaxbasics2/index.html#Tutorial_Exercises">return
+to the top</a><br>
+<br>
+<br>
+</div>
+<div style="margin-left: 40px;"></div>
+<br>
+<h2><a name="Homework_Exercise"></a><a name="Homework"></a>Homework
+Exercise (for people
+who
+are taking Sang Shin's "Java EE Programming online course") <br>
+</h2>
+<br>
+<div style="margin-left: 40px;"><span style="color: rgb(0, 0, 0);">1.
+The homework is to modify the <span style="font-weight: bold;">HelloWeb</span>
+</span><span style="color: rgb(0, 0, 0);">project as described
+below.&nbsp; The <span style="font-weight: bold;">HelloWeb </span>project
+is provided as part of hands-on lab as </span><span
+ style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/jstlexamples/samples/HelloWeb</span>.&nbsp;
+(You might want to create a new project by copying
+the <span style="font-weight: bold;">HelloWeb</span> project.&nbsp;
+You can name the homework project in any way you want
+but here I am going to call it <span style="font-weight: bold;">MyHelloWeb</span>.)<span
+ style="color: rgb(0, 0, 0);"></span>
+<ul>
+  <li>The goal of the homework<br>
+  </li>
+  <ul>
+    <li>The result of submitting the name when you run the <span
+ style="font-weight: bold;">HelloWeb </span>should look like <a
+ href="#Figure-1.22">Figure-1.22</a> above.&nbsp; (Basically you are
+adding the code fragments from <span style="font-weight: bold;">./elsupport/Out.jsp
+      </span>of the <span style="font-weight: bold;">JSTLExamples </span>project
+to the <span style="font-weight: bold;">HelloWeb </span>project.)<span
+ style="font-weight: bold;"><br>
+      </span></li>
+  </ul>
+  <li>The tasks you need to do</li>
+  <ul>
+    <li>Please add code to the <span style="font-weight: bold;">index.jsp</span>
+for setting <span style="font-weight: bold;">customerTable </span>variable
+using JSTL tags.&nbsp;
+(Search for "<span style="font-weight: bold;">JSTL homework exercise</span>"
+comment in the <span style="font-weight: bold;">index.jsp</span> of
+the <span style="font-weight: bold;">HelloWeb </span>project and add
+your own code underneath it.)<br>
+    </li>
+    <li>Please add code to the <span style="font-weight: bold;">response.jsp</span>
+for displaying the information using JSTL tags. (Search for "<span
+ style="font-weight: bold;">JSTL homework exercise</span>" comment in
+the <span style="font-weight: bold;">response.jsp</span> of the <span
+ style="font-weight: bold;">HelloWeb </span>project and add your own
+code underneath it.)</li>
+  </ul>
+  <li>Things that are already done for you</li>
+  <ul>
+    <li>The <span style="font-weight: bold;">"customers"/"Customers"</span>
+name/object pair is created and saved for you already as an attribute
+in the
+ServletContext when the application is deployed.&nbsp; The code in
+which this is initialized is <span style="font-weight: bold;">Init.java</span>
+under <span style="font-weight: bold;">HelloWeb-&gt;Source
+Packages-&gt;org.apache.taglibs.standard.examples.startup</span>.&nbsp;
+The <span style="font-weight: bold;">Customers </span>is a collection
+of <span style="font-weight: bold;">Customer </span>object.</li>
+  </ul>
+</ul>
+2<span style="color: rgb(0, 0, 0);">. Send the following files to</span><span
+ style="color: rgb(0, 0, 0);">
+<a href="mailto:j2eehomeworks@sun.com">j2eehomeworks@sun.com</a>
+with </span><span style="font-weight: bold; color: rgb(0, 0, 0);">Subject
+</span><span style="color: rgb(0, 0, 0);">as </span><span
+ style="font-weight: bold; color: rgb(0, 0, 0);">J2EEHomework-jstlexamples.</span><br
+ style="color: rgb(0, 0, 0);">
+<span style="font-weight: bold; color: rgb(0, 0, 0);"></span>
+<ul style="color: rgb(0, 0, 0);">
+  <li>Zip file of the the<span style="font-weight: bold;"> MyHelloWeb</span>
+NetBeans project.&nbsp; (Someone else
+should be able to open and run it as a NetBeans project.)&nbsp; You can
+use your favorite zip utility or you can use "jar" utility that comes
+with JDK as following.<br>
+  </li>
+  <ul>
+    <li>cd &lt;parent directory that contains <span
+ style="font-weight: bold;">MyHelloWeb</span> directory&gt;
+(assuming you named your project as <span style="font-weight: bold;">MyHelloWeb</span>)<br>
+    </li>
+    <li>jar cvf MyHelloWeb.zip MyHelloWeb (<span
+ style="font-weight: bold;">MyHelloWeb </span>should contain <span
+ style="font-weight: bold;">nbproject </span>directory)<br>
+    </li>
+  </ul>
+  <li>Captured output screen&nbsp;<span style="font-weight: bold;"> </span>-
+name it as <span style="font-weight: bold;">J2EEHomework-jstlexamples.gif</span>
+or<span style="font-weight: bold;">J2EEHomework-jstlexamples</span><span
+ style="font-weight: bold;">.jpg</span> (or <span
+ style="font-weight: bold;">J2EEHomework-jstlexamples.&lt;whatver
+graphics format&gt;</span>)</li>
+  <ul>
+    <li>Any screen capture that shows that your program is working is
+good enough.&nbsp; <br>
+    </li>
+  </ul>
+  <li>If you decide to use
+different IDE other than NetBeans, the zip
+file should contain all the files that are needed for rebuilding the
+project - war file with necessary source files is OK.</li>
+</ul>
+</div>
+<div style="margin-left: 40px;"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;<a href="../ajaxbasics2/index.html#Tutorial_Exercises">
+return to the top</a></div>
+<div class="indent"><br>
+<br>
+<br>
+</div>
+<br>
+<p> </p>
+<!-- ======================================================================================== -->
+</body>
+</html>

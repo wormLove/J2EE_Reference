@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="false" />
+    <constant name="struts.custom.i18n.resources" value="ApplicationResources" />
+
+    <package name="mypackage" extends="struts-default" namespace="/mypackage">
+		
+        <interceptors>
+            <interceptor name="mylogging" class="mypackage.MyLoggingInterceptor">
+            </interceptor>
+            <interceptor-stack name="loggingStack">
+                <interceptor-ref name="mylogging" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
+        <global-results>
+            <result name="login">/login.jsp</result>
+        </global-results>
+
+        <action name="login" class="mypackage.LoginAction">
+            <interceptor-ref name="loggingStack"/>
+            <result name="success" >/pages/welcome.jsp</result>
+            <result name="error">Login.jsp</result>
+        </action>
+        <action name="customer" class="mypackage.CustomerAction">
+            <interceptor-ref name="loggingStack"/>
+            <result name="success" >/pages/SuccessCustomer.jsp </result>
+            <result name="input" >/pages/customer.jsp</result>
+        </action>
+        <action name="customer-form">
+            <interceptor-ref name="loggingStack"/>
+            <result name="success">/pages/customer.jsp</result>
+        </action>
+    </package>
+</struts>

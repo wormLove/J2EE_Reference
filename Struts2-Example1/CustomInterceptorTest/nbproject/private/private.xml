@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/H:/example1/CustomInterceptorTest/src/java/struts.xml</file>
+        <file>file:/H:/example1/CustomInterceptorTest/src/java/mypackage/MyLoggingInterceptor.java</file>
+        <file>file:/H:/example1/CustomInterceptorTest/web/Login.jsp</file>
+        <file>file:/H:/example1/CustomInterceptorTest/src/java/ApplicationResources.properties</file>
+        <file>file:/H:/example1/CustomInterceptorTest/src/java/mypackage/CustomerAction-validation.xml</file>
+        <file>file:/H:/example1/CustomInterceptorTest/web/pages/Customer.jsp</file>
+        <file>file:/H:/example1/CustomInterceptorTest/web/pages/SuccessCustomer.jsp</file>
+        <file>file:/H:/example1/CustomInterceptorTest/web/pages/Welcome.jsp</file>
+        <file>file:/H:/example1/CustomInterceptorTest/src/java/mypackage/LoginAction.java</file>
+        <file>file:/H:/example1/CustomInterceptorTest/src/java/mypackage/CustomerAction.java</file>
+        <file>file:/H:/example1/CustomInterceptorTest/web/WEB-INF/web.xml</file>
+    </open-files>
+</project-private>

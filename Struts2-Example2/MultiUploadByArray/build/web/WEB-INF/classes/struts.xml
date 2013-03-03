@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="fileupload" extends="struts-default" namespace="/fileupload">
+
+        	<action name="multipleUploadByArray">
+			<result>/pages/multipleUploadByArray.jsp</result>
+		</action>
+
+		<action name="doMultipleUploadByArray" class="fileupload.MultipleFileUploadByArrayAction" method="upload">
+			<result>/pages/multipleUploadByArraySuccess.jsp</result>
+		</action>
+
+    </package>
+</struts>
+

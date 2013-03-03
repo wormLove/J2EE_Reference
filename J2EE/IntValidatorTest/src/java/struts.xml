@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <!-- Rose India Struts 2 Tutorials -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />
+
+    <package name="example" namespace="/example" extends="struts-default">
+
+    <!-- Add actions here -->
+
+    <!-- string validation -->
+
+    <action name="intValidation" class="example.NumAction">
+      <result name="input">/index.jsp</result>
+      <result name="error">/index.jsp</result>
+            <result>/example/intSuccess.jsp</result>
+        </action>
+
+      <!-- Add actions here -->
+    </package>
+
+
+    <!-- Add packages here -->
+
+</struts>

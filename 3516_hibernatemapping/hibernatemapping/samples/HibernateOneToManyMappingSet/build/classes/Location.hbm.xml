@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="Location" table="locations">
+        <id name="id" column="uid" type="long">
+            <generator class="native"/>
+        </id>
+        <property name="name" type="string"/>
+        <property name="address" type="string"/>
+    </class>
+</hibernate-mapping>

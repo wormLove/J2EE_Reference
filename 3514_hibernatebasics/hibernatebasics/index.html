@@ -1,0 +1,3150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <script src="index_files/tigris.txt" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="index_files/netbeans.css">
+  <title>LAB-3514: Hibernate Basics</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta name="SourceCastVersion" content="2.6.2.4.10">
+  <link rel="shortcut icon" href="http://www.netbeans.org/favicon.ico"
+ type="image/x-icon">
+  <meta name="keywords"
+ content="NetBeans, IDE, Platform, free, open source, developer">
+  <link rel="stylesheet" href="index_files/netbeans_002.css">
+  <meta name="author" content="Sang Shin">
+  <style type="text/css">
+#search {height:100%;}
+#topmodule {align:right;}
+  </style>
+  <script language="JavaScript" type="text/javascript">
+<!--
+function get_sc_login() {
+  var sclogin = "guest";
+  return (sclogin);
+}
+var username=get_sc_login();
+//-->
+  </script>
+</head>
+<body onload="loginfocus()" class="composite"
+ style="background-image: url(index_files/beige.jpg);">
+<!-- begin TopTabs --><!-- end TopTabs --><!-- start NavCol --><!-- end NavCol --><!-- Servlet-Specific template --><!-- Show servlet name if it is a servlet -->
+<br>
+<br>
+<h1 style="text-align: center;">Hibernate Basics<br>
+</h1>
+<div class="articledate" style="margin-left: 0px; text-align: center;"><a
+ href="http://www.javapassion.com/SangShinSchedule.html#Bio">Sang Shin</a>,
+<a href="mailto:sang.shin@sun.com">sang.shin@sun.com</a>, Sun
+Microsystems, <a href="http://www.javapassion.com/j2ee">www.javapassion.com/j2ee</a><br>
+<br>
+<img alt="" src="index_files/l2_shin_sang_portrait.gif"
+ style="width: 100px; height: 88px;"><br>
+<a href="mailto:sang.shin@sun.com"><i></i></a></div>
+<p>This hands-on lab takes you through the basics of building Hibernate
+application. The topics that will be covered in this lab include
+transactional behavior, basic DAO (Data Access Object) pattern,
+etc.&nbsp; It is expected that you have done Hibernate Step By
+Step hands-on lab. In this lab, you are going to open and run various
+NetBeans projects that are provided as part of the hands-on lab zip
+file and then study the code.<br>
+</p>
+<br>
+<p></p>
+<p align="center"><b>Expected duration: 150 minutes</b></p>
+<div class="indent">
+<h3 class="tutorial"><a name="software"></a>Software Needed</h3>
+<p>Before you begin, you need to install the following software on your
+computer. The Hibernate library files&nbsp; are
+already included as part of the hands-on lab zip file so you don't have
+to download Hibernate yourself.</p>
+<ul>
+</ul>
+<ul>
+  <li>Java Standard Development Kit (JDK™) version
+6.0 (<a href="http://java.sun.com/javase/downloads/index.jsp">download</a>)<br>
+  </li>
+  <ul>
+    <li>If you already have installed JDK 5.0 or JDK 6.0, you
+can skip this.</li>
+  </ul>
+  <li>NetBeans IDE 6.1 (<a
+ href="http://www.netbeans.org/community/releases/61/">download</a>) <br>
+  </li>
+  <ul>
+    <li>Download either "<span style="font-weight: bold;">Web &amp;
+Java EE</span>" or "<span style="font-weight: bold;">All</span>"
+bundles.</li>
+    <li>When you install NetBeans IDE, it will ask you which JDK
+you want to use. </li>
+  </ul>
+  <li>3514_hibernatebasics.zip (<a
+ href="http://www.javapassion.com/handsonlabs/3514_hibernatebasics.zip">download</a>)</li>
+  <ul>
+    <li>Download it and unzip it in a directory of your choice.&nbsp;
+We will call the directory as &lt;LAB_UNZIPPED_DIRECTORY&gt; in this
+document. </li>
+    <li>It
+contains Hibernate 3.2 library files and Derby
+client driver so you don't need to download Hibernate yourself.<br>
+    </li>
+  </ul>
+</ul>
+<br>
+<h3 class="tutorial"><a name="Change_Log"></a>Change Log<br>
+</h3>
+<ul>
+  <li>April 24th, 2007: Created</li>
+  <li>May5th, 2007: Homework is added</li>
+  <li>April 10th, 2008: Projects are created using NetBeans library,
+Event handling exercise is moved to hibernateevent hands-on lab</li>
+  <li>June 12th, 2008: Hibernate plug-in of NetBeans 6.1 is used.</li>
+  <li>Sep. 9th, 2008: Event handling exercise is moved to another lab<br>
+  </li>
+</ul>
+<br>
+<br>
+<h3 class="tutorial"><a name="Tutorial_Exercises"></a>Lab Exercises</h3>
+<ul>
+  <li><a href="#Exercise_0">Exercise 0: Start Derby database server and
+create "mydatabase" database</a><br>
+  </li>
+  <li><a href="#Exercise_1">Exercise 1: Perform persistence operations
+in a transaction (30
+minutes)</a><br>
+  </li>
+  <li><a href="#Exercise_2">Exercise 2: Use Dao pattern (30 minutes)</a><br>
+  </li>
+  <li><a href="#Exercise_3">Exercise 3: Use different key generation
+(30 minutes)</a></li>
+  <li><a href="#Exercise_4">Exercise 4: Session management (30 minutes)</a></li>
+  <li><a href="#Homework">Homework
+Exercise (for people who
+are taking Sang Shin's "Java EE Programming online course")</a></li>
+</ul>
+<ul>
+  <ul>
+  </ul>
+</ul>
+</div>
+<!-- ===================================================================================== --><br>
+<h2><a name="Exercise_0"></a>Exercise 0: Start Java DB (code-named as
+Derby) database server
+and create "mydatabase" database<br>
+</h2>
+<ol>
+1. Start the Java DB (Derby) database server if you have not done so
+yet.&nbsp; <br>
+  <ul>
+    <li>If you don't know how to start the Java DB database server,
+please see <a
+ href="http://www.javapassion.com/handsonlabs/hibernatestepbystep/#0.1">"Start
+Derby database server"</a> of the "Hibernate Step by
+Step" hands-on lab.</li>
+  </ul>
+2. Create "mydatabase" database if you have not done so yet.&nbsp; <br>
+  <ul>
+    <li>If you don't know how to create a database over Java DB
+database server, please see <a
+ href="http://www.javapassion.com/handsonlabs/hibernatestepbystep/#0.2">"Create
+a database of your own called
+mydatabase"</a> of the "Hibernate Step by Step" hands-on lab.</li>
+  </ul>
+</ol>
+<div style="margin-left: 40px;">3. Install HIbernate plug-in to the
+NetBeans IDE, as described <a
+ href="http://www.javapassion.com/handsonlabs/hibernatestepbystep/#0.3">here</a>.</div>
+<ol>
+  <br>
+  <span style="text-decoration: underline;"><span
+ style="font-weight: bold;"> </span></span>
+</ol>
+<div style="margin-left: 40px;"></div>
+<h2><a name="Exercise_1"></a>Exercise 1: Perform persistence operations
+in a transaction<br>
+</h2>
+<ol>
+In this exercise, you are going to exercise transactional demarcation
+operations such as creating transactional context object, committing,
+and performing rollback.<br>
+  <br>
+  <ol>
+    <li><a href="#1.1">Open and run
+"HibernateTransactionWithoutRollback" project</a></li>
+    <li><a href="#1.2">Look under the hood of the
+"HibernateTransactionWithoutRollback" project</a></li>
+    <li><a href="#1.3">Open and run "HibernateTransactionWithRollback"
+project</a></li>
+    <li><a href="#1.4">Look under the hood of the
+"HibernateTransactionWithRollback"
+project</a></li>
+  </ol>
+</ol>
+<div style="margin-left: 40px;"></div>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.1"></a>(1.1)
+Open and run "HibernateTransactionWithoutRollback" project<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+1. Open <span style="font-weight: bold;">HibernateTransactionWithoutRollback</span>
+NetBeans project.&nbsp; <br>
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">Open Project (Ctrl+Shift+O)</span>. The <span
+ style="font-weight: bold;">Open Project</span> dialog box appears.</li>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/hibernatebasics/samples</span>
+directory.&nbsp; <br>
+  </li>
+  <ul>
+    <li>If you unzipped the <span style="font-weight: bold;">3514_hibernatebasics.zip</span>
+file under <span style="font-weight: bold;">C:\handsonlabs</span>
+directory under Windows, the directory to which you want
+to browse down should be <span style="font-weight: bold;">C:\handsonlabs\hibernatebasics\samples.</span></li>
+    <li>If you unzipped the <span style="font-weight: bold;">3514_hibernatebasics.zip</span>
+file under <span style="font-weight: bold;">$HOME/handsonlabs</span>
+directory under Solaris/Linux, the directory to which you want
+to browse down should be <span style="font-weight: bold;">$HOME/handsonlabs/hibernatebasics/samples.</span><span
+ style="font-weight: bold;"></span></li>
+  </ul>
+  <li>Select <span style="font-weight: bold; color: rgb(255, 0, 0);">HibernateTransactionWithoutRollback</span>.&nbsp;
+  </li>
+  <li>Click <span style="font-weight: bold;">Open Project</span>.&nbsp;
+    <br>
+  </li>
+  <li>Observe that the <span style="font-weight: bold;">HibernateTransactionWithoutRollback</span>
+project node appears under <span style="font-weight: bold;">Projects </span>tab
+window.</li>
+</ul>
+<div style="margin-left: 40px;"></div>
+</div>
+<p style="margin-left: 40px;"></p>
+<p style="margin-left: 40px;">2. Build and run <span
+ style="font-weight: bold;">HibernateTransactionWithoutRollback</span>
+project. <br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right-click <span style="font-weight: bold;">HibernateTransactionWithoutRollback</span>
+project and select <span style="font-weight: bold;">Run</span>.&nbsp;</li>
+  <li>Observe the result in the Output window as shown in Figure-1.11
+below.</li>
+</ul>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">Name of product retrieved from
+database = ProductNameOld1<br>
+Begin transaction...<br>
+Changing name of product to ProductNameNew by product.setName() method<br>
+      <br>
+About to do Commit...<br>
+Name of product before Commit = ProductNameNew<br>
+After Commit...<br>
+Name of product after Commit = ProductNameNew<br>
+      <br>
+Changing name of product to ProductNameSangShin by product.setName()
+method<br>
+Name of product before Refresh = ProductNameSangShin<br>
+      <br>
+About to Refresh...<br>
+Name of product after Refresh = ProductNameNew<br>
+Name of product after Commit = ProductNameNew<br>
+      <br>
+******** Table: Product *******<br>
++-------------+--------------------------------+--------------------------------+------------------------+-------------+<br>
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ID&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DESCRIPTION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+PRICE&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; |&nbsp;
+SUPPLIERID <br>
++-------------+--------------------------------+--------------------------------+------------------------+-------------+<br>
+| 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; |
+ProductNameNew&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| Description for Product 1 |
+2.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp;&nbsp;
+| 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+|<br>
+| 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+|
+ProductNameOld2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| Description for Product 2&nbsp; |
+22.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+| 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; |<br>
+| 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; |
+ProductNameOld3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| Description for Product 3&nbsp; |
+30.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+| 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; |<br>
++-------------+--------------------------------+--------------------------------+------------------------+-------------+<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Figure-1.11: Result<br>
+<br>
+<br>
+<span style="color: rgb(255, 0, 0);">Trouble-shooting</span>: If you
+see the following error condition in the Output window, it is highly
+likely due to the fact the database server is not running.<br>
+<span style="color: rgb(51, 51, 255);">Solution</span>: Start the
+database server as described in <a
+ href="http://www.javapassion.com/handsonlabs/hibernatestepbystep/index.html#Exercise_0">Exercise
+0 above</a>.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">15&nbsp;&nbsp; [main] WARN&nbsp;
+org.hibernate.cfg.SettingsFactory&nbsp; - Could not obtain connection
+metadata<br>
+org.apache.derby.client.am.DisconnectException:
+java.security.PrivilegedActionException : <span
+ style="font-weight: bold;">Error opening socket to
+server localhost on port 1527 with message</span> : null<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.apache.derby.client.net.NetAgent.&lt;init&gt;(Unknown Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.apache.derby.client.net.NetConnection.newAgent_(Unknown Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.apache.derby.client.am.Connection.&lt;init&gt;(Unknown Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.apache.derby.client.net.NetConnection.&lt;init&gt;(Unknown Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.apache.derby.jdbc.ClientDriver.connect(Unknown Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+java.sql.DriverManager.getConnection(DriverManager.java:582)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+java.sql.DriverManager.getConnection(DriverManager.java:154)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.hibernate.connection.DriverManagerConnectionProvider.getConnection(DriverManagerConnectionProvider.java:110)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:76)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.hibernate.cfg.Configuration.buildSettings(Configuration.java:1933)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.hibernate.cfg.Configuration.buildSessionFactory(Configuration.java:1216)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+HibernateUtil.&lt;clinit&gt;(HibernateUtil.java:26)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at Main.main(Main.java:9)<br>
+Got an exception! <br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Figure-1.12: Error condition when database server is not running<br>
+<span style="color: rgb(51, 51, 255);"></span><br>
+</div>
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of the
+exercise</a><br>
+<br>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.2"></a>(1.2)
+Look under the hood of the "HibernateTransactionWithoutRollback" project<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+1. Study the <span style="font-weight: bold;">Main.java</span>.&nbsp;
+Pay special attention to the bold-fonted parts.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import java.util.*;<br>
+      <br>
+import java.sql.*;<br>
+import org.hibernate.*;<br>
+import org.hibernate.cfg.*;<br>
+import org.hibernate.criterion.*;<br>
+      <br>
+public class Main {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static void main(String[] args) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Set up database tables
+and test data<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.droptable("drop table Product");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HibernateUtil.setup("create
+table Product ( id int, name VARCHAR(30), description VARCHAR(30),
+price double,supplierId int)");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prepareTestData();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Perform the read operation<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SessionFactory factory = new
+Configuration().configure().buildSessionFactory();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session session =
+factory.openSession();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Perform a read operation
+just to verify the product name in the database<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Product product = null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; product =
+(Product)session.createQuery("from Product where
+name='ProductNameOld1'").uniqueResult();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("Name of
+product retrieved from database = " + product.getName());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Begin transaction and do a commit</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>System.out.println("Begin transaction...");<br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Transaction tx = session.beginTransaction();</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+System.out.println("Changing name of product to ProductNameNew by
+product.setName() method");<br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+product.setName("ProductNameNew");</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>System.out.println("\nAbout to do Commit...");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Name of product before Commit = " +
+product.getName());<br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+System.out.println("After Commit...");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Name of product after Commit = " +
+product.getName());<br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Begin transaction and do Refresh </span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx = session.beginTransaction();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>System.out.println("\nChanging name of product to
+ProductNameSangShin
+by product.setName() method");<br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+product.setName("ProductNameSangShin");</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+System.out.println("Name of product before Refresh = " +
+product.getName());<br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// The object will be refreshed with the data from the database<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Note that product name
+ProductNameSangShin in the product object will be<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // replaced by the
+ProductNameNew from the database.<br style="font-weight: bold;">
+      </span> <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+System.out.println("\nAbout to Refresh...");<br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.refresh(product);</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+System.out.println("Name of product after Refresh = " +
+product.getName());<br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>System.out.println("Name of product after Commit = " +
+product.getName());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Display tables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.checkData("select * from Product");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; // Below are utility methods<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; private static void prepareTestData(){<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session session =
+HibernateUtil.currentSession();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transaction tx =
+session.beginTransaction();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Product product1 = new
+Product("ProductNameOld1","Description for Product 1", 2.0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.save(product1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Product product12 = new
+Product("ProductNameOld2","Description for Product 2", 22.0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.save(product12);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Product product2 = new
+Product("ProductNameOld3", "Description for Product 3", 30.0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.save(product2);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HibernateUtil.closeSession();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.21:Main.java<br>
+<br>
+2. Study <span style="font-weight: bold;">Product.java</span>
+as shown in Code-1.22 below.&nbsp; Note that the Product class is a
+POJO class.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">public class Product {<br>
+&nbsp;&nbsp;&nbsp; private int id;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; private String name;<br>
+&nbsp;&nbsp;&nbsp; private String description;<br>
+&nbsp;&nbsp;&nbsp; private double price;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public Product() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; super();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public Product(String name, String description,
+double price) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; super();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.name = name;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.description =
+description;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.price = price;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public String getDescription() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return description;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; public void setDescription(String description) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.description =
+description;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; public int getId() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return id;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; public void setId(int id) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.id = id;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; public String getName() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return name;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; public void setName(String name) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.name = name;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public double getPrice() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return price;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; public void setPrice(double price) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.price = price;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.22: Product.java<br>
+<br>
+3. Study<span style="font-weight: bold;"> Product.hbm.xml</span>.&nbsp;
+This is the mapping file for the Product class.<br>
+<ul>
+</ul>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version='1.0'
+encoding='utf-8'?&gt;<br>
+&lt;!DOCTYPE hibernate-mapping<br>
+PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"<br>
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;<br>
+      <br>
+&lt;hibernate-mapping&gt;<br>
+&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp; &lt;class
+name="Product"&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;id name="id" type="int"&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;generator class="increment"/&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/id&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;property name="name" type="string"/&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;property name="description" type="string"/&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;property name="price" type="double"/&gt;&nbsp; </span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &lt;/class&gt;</span><br>
+&lt;/hibernate-mapping&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.23: Product.hbm.xml<br>
+<br>
+4. Study<span style="font-weight: bold;"> hibernate.cfg.xml</span>.&nbsp;
+This is hibernate configuration file.&nbsp; <br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version='1.0'
+encoding='utf-8'?&gt;<br>
+&lt;!DOCTYPE hibernate-configuration PUBLIC<br>
+"-//Hibernate/Hibernate Configuration DTD//EN"<br>
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"&gt;<br>
+&lt;hibernate-configuration&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;session-factory&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- Database connection
+settings --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="connection.driver_class"&gt;org.apache.derby.jdbc.ClientDriver&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="connection.url"&gt;jdbc:derby://localhost:1527/mydatabase&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="connection.username"&gt;app&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="connection.password"&gt;app&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- JDBC connection pool
+(use the built-in) --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="connection.pool_size"&gt;1&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- SQL dialect --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="dialect"&gt;org.hibernate.dialect.DerbyDialect&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- Echo all executed
+SQL to stdout --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="show_sql"&gt;false&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;!-- Mapping files --&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;mapping resource="Product.hbm.xml"/&gt;</span><span
+ style="font-weight: bold;"></span><br>
+&nbsp;&nbsp;&nbsp; &lt;/session-factory&gt;<br>
+&lt;/hibernate-configuration&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.23: hibernate.cfg.xml<br>
+<br>
+<span style="color: rgb(51, 51, 255); font-weight: bold;"></span>&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of the
+exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.3"></a>(1.3)
+Open and run "HibernateTransactionWithRollback" project<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+In this step, you are going to exercise "rollback" operation.<br>
+<br>
+1. Open <span style="font-weight: bold;">HibernateTransactionWithRollback</span>
+NetBeans project.&nbsp; <br>
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">Open Project (Ctrl+Shift+O)</span>. The <span
+ style="font-weight: bold;">Open Project</span> dialog box appears.</li>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/hibernatebasics/samples</span>
+directory.&nbsp; <br>
+  </li>
+  <li>Select <span style="font-weight: bold; color: rgb(255, 0, 0);">HibernateTransactionWithRollback</span>.&nbsp;
+  </li>
+  <li>Click <span style="font-weight: bold;">Open Project</span>.&nbsp;
+    <br>
+  </li>
+  <li>Observe that the <span style="font-weight: bold;">HibernateTransactionWithRollback</span>
+project node appears under <span style="font-weight: bold;">Projects </span>tab
+window.</li>
+</ul>
+</div>
+<p style="margin-left: 40px;">2. Build and run <span
+ style="font-weight: bold;">HibernateTransactionWithRollback</span>
+project. <br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right-click <span style="font-weight: bold;">HibernateTransactionWithRollback</span>
+project and select <span style="font-weight: bold;">Run</span>.&nbsp;</li>
+  <li>Observe the result in the Output window as shown in Figure-1.31
+below.</li>
+</ul>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">Name of product retrieved from
+database = ProductNameOld1<br>
+Begin transaction...<br>
+Changing name of product to ProductNameNew...<br>
+      <br>
+About to do Rollback...<br>
+Name of product before rollback = ProductNameNew<br>
+After Rollback...<br>
+Name of product after rollback = ProductNameNew<br>
+      <br>
+About to Refresh...<br>
+Name of product after refresh = ProductNameOld1<br>
+Name of product after commit = ProductNameOld1<br>
+      <br>
+******** Table: Product *******<br>
++-------------+--------------------------------+--------------------------------+------------------------+-------------+<br>
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ID&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DESCRIPTION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+PRICE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; |&nbsp;
+SUPPLIERID <br>
++-------------+--------------------------------+--------------------------------+------------------------+-------------+<br>
+| 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+|
+ProductNameOld1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| Description for Product 1&nbsp; |
+2.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+| 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+|
+ProductNameOld2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| Description for Product 2&nbsp; |
+22.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+| 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+|
+ProductNameOld3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| Description for Product 3&nbsp; |
+30.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
++-------------+--------------------------------+--------------------------------+------------------------+-------------+<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Figure-1.31: Result<br>
+<br>
+&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of the
+exercise</a>
+<div style="margin-left: 40px;"><br>
+</div>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.4"></a>(1.4)
+Look under the hood of the "HibernateTransactionWithRollback" project<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+1. Study the <span style="font-weight: bold;">Main.java</span>.&nbsp;
+Pay special attention to the bold-fonted parts.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import java.util.*;<br>
+      <br>
+import java.sql.*;<br>
+import org.hibernate.*;<br>
+import org.hibernate.cfg.*;<br>
+import org.hibernate.criterion.*;<br>
+      <br>
+public class Main {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static void main(String[] args) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Set up database tables
+and test data<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.droptable("drop table Product");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HibernateUtil.setup("create
+table Product ( id int, name VARCHAR(30), description VARCHAR(30),
+price double,supplierId int)");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prepareTestData();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Perform the read operation<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SessionFactory factory = new
+Configuration().configure().buildSessionFactory();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session session =
+factory.openSession();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Perform a read operation
+just to verify the product name in the database<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Product product = null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; product =
+(Product)session.createQuery("from Product where
+name='ProductNameOld1'").uniqueResult();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("Name of
+product retrieved from database = " + product.getName());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">// Begin transaction and do Rollback</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("Begin
+transaction...");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold;"> Transaction tx =
+session.beginTransaction();</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("Changing
+name of product to ProductNameNew...");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold;"> product.setName("ProductNameNew");</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("\nAbout
+to do Rollback...");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("Name of
+product before rollback = " + product.getName());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold;"> tx.rollback();</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("After
+Rollback...");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("Name of
+product after rollback = " + product.getName());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">// Begin transaction and do Refresh and
+commit</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx = session.beginTransaction();</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("\nAbout
+to Refresh...");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold;"> session.refresh(product);</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("Name of
+product after refresh = " + product.getName());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold;"> tx.commit();</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("Name of
+product after commit = " + product.getName());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Display tables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.checkData("select * from Product");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; // Below are utility methods<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; private static void prepareTestData(){<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session session =
+HibernateUtil.currentSession();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transaction tx =
+session.beginTransaction();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Product product1 = new
+Product("ProductNameOld1","Description for Product 1", 2.0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.save(product1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Product product12 = new
+Product("ProductNameOld2","Description for Product 2", 22.0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.save(product12);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Product product2 = new
+Product("ProductNameOld3", "Description for Product 3", 30.0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.save(product2);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HibernateUtil.closeSession();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.41:Main.java<br>
+<br>
+<span style="color: rgb(51, 51, 255); font-weight: bold;"></span>&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of the
+exercise</a></div>
+<div style="margin-left: 40px;"><br>
+</div>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial">Summary<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+In this exercise, you have learned how to operation persistence
+operations within a transactional context.<br>
+</div>
+<div style="margin-left: 40px;"></div>
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;"><br>
+</div>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#Tutorial_Exercises">return to the top</a><br>
+</div>
+<br>
+<br>
+<h2><a name="Exercise_2"></a>Exercise 2: Use a DAO (Data Access Object)
+pattern<br>
+</h2>
+<p style="margin-left: 40px;">In this exercise, you are going to learn
+how to use DAO pattern.&nbsp; DAO pattern separates business logic from
+persistence code.<br>
+</p>
+<ol style="margin-left: 40px;">
+  <li><a href="#2.1">Open and run "HibernateSimpleDao" project</a><br>
+  </li>
+  <li><a href="#2.2">Look under the hood of the "HibernateSimpleDao"
+project</a></li>
+  <li><a href="#2.3">Open and run "HibernateSimpleDaoInterface" project</a></li>
+  <li><a href="#2.4">Look under the hood of the
+"HibernateSimpleDaoInterface" project</a><br>
+  </li>
+</ol>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.1"></a>(2.1)
+Open and run "HibernateSimpleDao" project<br>
+</h3>
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;"><br>
+</div>
+1. Open <span style="font-weight: bold;">HibernateSimpleDao</span>
+NetBeans project.&nbsp; <br>
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">Open Project (Ctrl+Shift+O)</span>. The <span
+ style="font-weight: bold;">Open Project</span> dialog box appears.</li>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/hibernatebasics/samples</span>
+directory.&nbsp; <br>
+  </li>
+  <li>Select <span style="font-weight: bold; color: rgb(255, 0, 0);">HibernateSimpleDao</span>.&nbsp;
+  </li>
+  <li>Click <span style="font-weight: bold;">Open Project</span>.&nbsp;
+    <br>
+  </li>
+  <li>Observe that the <span style="font-weight: bold;">HibernateSimpleDao</span>
+project node appears under <span style="font-weight: bold;">Projects </span>tab
+window.</li>
+</ul>
+</div>
+<p style="margin-left: 40px;">2. Build and run <span
+ style="font-weight: bold;">HibernateSimpleDao</span>
+project. <br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right-click <span style="font-weight: bold;">HibernateSimpleDao</span>
+project and select <span style="font-weight: bold;">Run</span>.&nbsp;</li>
+  <li>Observe the result in the Output window as shown in Figure-2.11
+below.</li>
+</ul>
+</div>
+<div style="margin-left: 40px;">
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">Performing create Dao
+operation....<br>
+Perrforming find Dao operation...<br>
+Name of the event found = JavaOne conference<br>
+Perrforming update Dao operation...<br>
+Performing findAll Dao operation...<br>
+Number of entries in the database table = 2<br>
+      <br>
+******** Table: events *******<br>
++-------------+----------------------+<br>
+|&nbsp;&nbsp;&nbsp;&nbsp; UID &nbsp; &nbsp; &nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; |<br>
++-------------+----------------------+<br>
+| 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
+&nbsp; | New
+Conference&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+| 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; |
+Noname conference&nbsp;&nbsp;&nbsp; <br>
++-------------+----------------------+<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Figure-2.11: Result<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_2">return to top of the
+exercise</a><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.2"></a>(2.2)
+look under the hood of the "HibernateSimpleDao" project<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+</div>
+<div style="margin-left: 40px;">
+1. Study the <span style="font-weight: bold;">Main.java</span>.&nbsp;
+Pay special attention to the bold-fonted parts.&nbsp; Note that the
+business logic in the Main.java does not have any persistence
+technology specific code.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import java.util.*;<br>
+      <br>
+import org.hibernate.*;<br>
+import org.hibernate.criterion.*;<br>
+      <br>
+public class Main {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static void main(String[] args) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Set up database table<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.droptable("drop table EVENTS");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HibernateUtil.setup("create
+table EVENTS ( uid int, name VARCHAR(20), start_Date date, duration
+int)");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Create Dao object</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SimpleEventDao eventDao = new SimpleEventDao();</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">// Perform create Dao operation</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Performing create Dao operation....");<br>
+&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;
+Event event1 = new Event();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+event1.setName("JavaOne conference");</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+eventDao.create(event1);</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Event event2 = new Event();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+event2.setName("Noname conference");</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+eventDao.create(event2);</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">// Perform find Dao operation</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Perrforming find Dao operation...");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+Event foundEvent = eventDao.find(event1.getId());</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("Name of
+the event found = " + foundEvent.getName());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">// Perform update Dao operation</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Perrforming update Dao operation...");<br>
+&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+event1.setName("New Conference");</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+eventDao.update(event1);</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold;"> // Perform findAll Dao operation</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Performing findAll Dao operation...");<br>
+&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+List eventList = eventDao.findAll();</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("Number
+of entries in the database table = " + eventList.size());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Display the contents of
+the database table<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.checkData("select uid, name from events");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.21: Main.java<br>
+<br>
+2. Study <span style="font-weight: bold;">SimpleEventDao.java</span>.&nbsp;
+This class defines SimpleEventDao class which captures all persistence
+operations - create(), delete(), find(), update(), findAll() - against
+persistent objects, in this example, Event object.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import
+org.hibernate.HibernateException;<br>
+import org.hibernate.Session;<br>
+import org.hibernate.Transaction;<br>
+import org.hibernate.Query;<br>
+import org.apache.commons.logging.Log;<br>
+import org.apache.commons.logging.LogFactory;<br>
+      <br>
+import java.util.List;<br>
+      <br>
+      <br>
+/**<br>
+&nbsp;* The Data Access Object for managing the persistent Events.<br>
+&nbsp;*<br>
+&nbsp;*/<br>
+public class SimpleEventDao {<br>
+&nbsp;&nbsp;&nbsp; Log log = LogFactory.getLog(SimpleEventDao.class);<br>
+&nbsp;&nbsp;&nbsp; private Session session;<br>
+&nbsp;&nbsp;&nbsp; private Transaction tx;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; public SimpleEventDao() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateFactory.buildIfNeeded();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Insert a new Event into the database.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param event<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;"> public void
+create(Event event)</span> <span style="font-weight: bold;">throws
+DataAccessLayerException</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+startOperation();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.save(event);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch (HibernateException
+e) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+handleException(e);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } finally {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateFactory.close(session);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Delete a detached Event from the database.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param event<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;"> public void
+delete(Event event) throws DataAccessLayerException</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+startOperation();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.delete(event);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch (HibernateException
+e) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+handleException(e);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } finally {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateFactory.close(session);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Find an Event by its primary key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param id<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">public Event
+find(Long id) throws DataAccessLayerException</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Event event = null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+startOperation();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+event = (Event) session.load(Event.class, id);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch (HibernateException
+e) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+handleException(e);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } finally {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//HibernateFactory.close(session);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return event;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Updates the state of a detached Event.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param event<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">public void
+update(Event event) throws DataAccessLayerException</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+startOperation();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.update(event);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch (HibernateException
+e) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+handleException(e);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } finally {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateFactory.close(session);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Finds all Events in the database.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;"> public List
+findAll() throws DataAccessLayerException</span>{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; List events = null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+startOperation();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Query query = session.createQuery("from Event");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+events =&nbsp; query.list();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch (HibernateException
+e) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+handleException(e);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } finally {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateFactory.close(session);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return events;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; private void handleException(HibernateException e)
+throws DataAccessLayerException {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateFactory.rollback(tx);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throw new
+DataAccessLayerException(e);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; private void startOperation() throws
+HibernateException {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session =
+HibernateFactory.openSession();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx =
+session.beginTransaction();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.22: SimpleEventDao.java<br>
+<br>
+3. Study the <span style="font-weight: bold;">Event.java</span>.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import java.io.Serializable;<br>
+import java.util.Date;<br>
+import java.util.Set;<br>
+import java.util.LinkedHashSet;<br>
+      <br>
+public class Event implements Serializable {<br>
+&nbsp;&nbsp;&nbsp; private Long id;<br>
+&nbsp;&nbsp;&nbsp; private int duration;<br>
+&nbsp;&nbsp;&nbsp; private String name;<br>
+&nbsp;&nbsp;&nbsp; private Date startDate;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; public Event() {<br>
+      <br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; public Event(String name) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.name = name;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @hibernate.id generator-class="native"
+column="uid"<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public Long getId() { return id; }<br>
+&nbsp;&nbsp;&nbsp; public void setId(Long id) { this.id = id; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @hibernate.property column="name"<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public String getName() { return name; }<br>
+&nbsp;&nbsp;&nbsp; public void setName(String name) { this.name =
+name;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @hibernate.property column="start_date"<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public Date getStartDate() { return startDate; }<br>
+&nbsp;&nbsp;&nbsp; public void setStartDate(Date startDate) {
+this.startDate = startDate; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @hibernate.property column="duration"<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public int getDuration() { return duration; }<br>
+&nbsp;&nbsp;&nbsp; public void setDuration(int duration) {
+this.duration = duration; }<br>
+      <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.23: Event.java<br>
+<br>
+4. Study <span style="font-weight: bold;">Event.hbm.xml</span>.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version="1.0"?&gt;<br>
+&lt;!DOCTYPE hibernate-mapping PUBLIC<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "-//Hibernate/Hibernate
+Mapping DTD 3.0//EN"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&lt;hibernate-mapping &gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;class name="Event" table="events"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;id name="id"
+column="uid" type="long"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;generator class="increment"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/id&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name="name"
+type="string"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="startDate" column="start_date" type="date"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name="duration"
+type="integer"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/class&gt;<br>
+&lt;/hibernate-mapping&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.24: Event.hbm.xml<br>
+<br>
+5. Study <span style="font-weight: bold;">hibernate.cfg.xml</span>.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version='1.0'
+encoding='utf-8'?&gt;<br>
+&lt;!DOCTYPE hibernate-configuration PUBLIC<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "-//Hibernate/Hibernate
+Configuration DTD 3.0//EN"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"&gt;<br>
+      <br>
+&lt;hibernate-configuration&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; &lt;session-factory&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- Database connection
+settings --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="connection.driver_class"&gt;org.apache.derby.jdbc.ClientDriver&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="connection.url"&gt;jdbc:derby://localhost:1527/mydatabase&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="connection.username"&gt;app&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="connection.password"&gt;app&lt;/property&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- JDBC connection pool
+(use the built-in) --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="connection.pool_size"&gt;1&lt;/property&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- SQL dialect --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="dialect"&gt;org.hibernate.dialect.DerbyDialect&lt;/property&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- Echo all executed
+SQL to stdout --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="show_sql"&gt;false&lt;/property&gt;<br>
+      <br>
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;!-- Mapping files --&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold;"> &lt;mapping resource="Event.hbm.xml"/&gt;</span><br>
+&nbsp;&nbsp;&nbsp; &lt;/session-factory&gt;<br>
+      <br>
+&lt;/hibernate-configuration&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.25: hibernate.cfg.xml<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="#Exercise_2">return to top of the exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.3"></a>(2.3)
+Open and run "HibernateSimpleDaoInterface" project<br>
+</h3>
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;"><br>
+</div>
+In general, the DAO object should be accessed through an interface
+instead of a class.&nbsp; In this step, you are going to access DAO
+objects through an interface, <span style="font-weight: bold;">SimpleEventDaoInterface</span>.<br>
+<br>
+1. Open <span style="font-weight: bold;">HibernateSimpleDaoInterface</span>
+NetBeans project.&nbsp; <br>
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">Open Project (Ctrl+Shift+O)</span>. The <span
+ style="font-weight: bold;">Open Project</span> dialog box appears.</li>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/hibernatebasics/samples</span>
+directory.&nbsp; <br>
+  </li>
+  <li>Select <span style="font-weight: bold; color: rgb(255, 0, 0);">HibernateSimpleDaoInterface</span>.&nbsp;
+  </li>
+  <li>Click <span style="font-weight: bold;">Open Project</span>.&nbsp;
+    <br>
+  </li>
+  <li>Observe that the <span style="font-weight: bold;">HibernateSimpleDaoInterface</span>
+project node appears under <span style="font-weight: bold;">Projects </span>tab
+window.</li>
+</ul>
+</div>
+<p style="margin-left: 40px;">2. Build and run <span
+ style="font-weight: bold;">HibernateSimpleDaoInterface</span>
+project.&nbsp;&nbsp; <br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right-click <span style="font-weight: bold;">HibernateSimpleDaoInterface</span>
+project and select <span style="font-weight: bold;">Run</span>.&nbsp;</li>
+  <li>Observe the result in the Output window as shown in Figure-1.11
+below.</li>
+</ul>
+</div>
+<div style="margin-left: 40px;">
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">Performing create Dao
+operation....<br>
+Perrforming find Dao operation...<br>
+Name of the event found = JavaOne conference<br>
+Perrforming update Dao operation...<br>
+Performing findAll Dao operation...<br>
+Number of entries in the database table = 2<br>
+Perrforming find Dao operation...<br>
+Name of the event found = New Conference<br>
+      <br>
+******** Table: events *******<br>
++-------------+----------------------+<br>
+|&nbsp;&nbsp;&nbsp;&nbsp; UID&nbsp;&nbsp; &nbsp; &nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; |<br>
++-------------+----------------------+<br>
+| 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
+&nbsp; | New
+Conference&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+| 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; |
+Noname conference&nbsp;&nbsp;&nbsp; <br>
++-------------+----------------------+<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Figure-1.11: Result<br>
+<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_2">return to top of the
+exercise</a><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.4"></a>(2.4)
+look under the hood of the "HibernateSimpleDaoInterface" project<br>
+</h3>
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;"><br>
+</div>
+1. Study the <span style="font-weight: bold;">Main.java</span>.&nbsp;
+Pay special attention to the bold-fonted parts.&nbsp; In this code, the
+DAO objects are accessed through an interface called <span
+ style="font-weight: bold;">SimpleEventDaoInteface</span>.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import java.util.*;<br>
+      <br>
+import org.hibernate.*;<br>
+import org.hibernate.criterion.*;<br>
+      <br>
+public class Main {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static void main(String[] args) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Set up database table<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.droptable("drop table EVENTS");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HibernateUtil.setup("create
+table EVENTS ( uid int, name VARCHAR(20), start_Date date, duration
+int)");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Create Dao object and assign it to an interface and use</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// an SimpleEventDao implementation class.</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SimpleEventDaoInterface eventDao = new SimpleEventDao();</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Perform create Dao
+operation<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Performing create Dao operation....");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Event event1 = new Event();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; event1.setName("JavaOne
+conference");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eventDao.create(event1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Event event2 = new Event();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; event2.setName("Noname
+conference");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eventDao.create(event2);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Perform find Dao operation<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Perrforming find Dao operation...");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Event foundEvent =
+eventDao.find(event1.getId());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("Name of
+the event found = " + foundEvent.getName());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Perform update Dao
+operation<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Perrforming update Dao operation...");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; event1.setName("New
+Conference");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eventDao.update(event1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Perform findAll Dao
+operation<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Performing findAll Dao operation...");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; List eventList =
+eventDao.findAll();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("Number
+of entries in the database table = " + eventList.size());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Create Dao object from a different implementation of the same<br>
+&nbsp; &nbsp; &nbsp; &nbsp; // interface and assign it to an interface.</span><span
+ style="font-weight: bold;"></span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+eventDao = new SimpleEventDaoAnotherImpl();</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Perform find Dao operation<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Perrforming find Dao operation...");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; foundEvent =
+eventDao.find(event1.getId());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println("Name of
+the event found = " + foundEvent.getName());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Display the contents of
+the database table<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.checkData("select uid, name from events");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.21: Main.java<br>
+<br>
+2. Study <span style="font-weight: bold;">SimpleEventDaoInterface</span>.java.
+(Code-2.22 below)&nbsp; This is a Java interface that is created from <span
+ style="font-weight: bold;">SimpleEventDao </span>class through
+"Extract Interface" refactoring.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import java.util.List;<br>
+/**<br>
+&nbsp;*<br>
+&nbsp;* @author sang<br>
+&nbsp;*/<br>
+      <span style="font-weight: bold;">public interface
+SimpleEventDaoInterface</span> {<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Insert a new Event into the database.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param event<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; void create(Event event) throws
+DataAccessLayerException;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Delete a detached Event from the database.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param event<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; void delete(Event event) throws
+DataAccessLayerException;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Find an Event by its primary key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param id<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return <br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; Event find(Long id) throws DataAccessLayerException;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Finds all Events in the database.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return <br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; List findAll() throws DataAccessLayerException;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Updates the state of a detached Event.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param event<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; void update(Event event) throws
+DataAccessLayerException;<br>
+&nbsp;&nbsp;&nbsp; <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.22: SimpleEventDaoInterface.java<br>
+<br>
+3. Study SimpleEventDao.java.&nbsp; The SimpleEventDao class now
+implements SimpleEventDaoInterface.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import
+org.hibernate.HibernateException;<br>
+import org.hibernate.Session;<br>
+import org.hibernate.Transaction;<br>
+import org.hibernate.Query;<br>
+import org.apache.commons.logging.Log;<br>
+import org.apache.commons.logging.LogFactory;<br>
+      <br>
+import java.util.List;<br>
+      <br>
+      <br>
+/**<br>
+&nbsp;* The Data Access Object for managing the persistent Events.<br>
+&nbsp;*<br>
+&nbsp;* @author Patrick Peak<br>
+&nbsp;* @author Nick Heudecker<br>
+&nbsp;*/<br>
+      <span style="font-weight: bold;">public class SimpleEventDao
+implements SimpleEventDaoInterface {</span><br>
+&nbsp;&nbsp;&nbsp; Log log = LogFactory.getLog(SimpleEventDao.class);<br>
+&nbsp;&nbsp;&nbsp; private Session session;<br>
+&nbsp;&nbsp;&nbsp; private Transaction tx;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; public SimpleEventDao() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateFactory.buildIfNeeded();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Insert a new Event into the database.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param event<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public void create(Event event) throws
+DataAccessLayerException {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+startOperation();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.save(event);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch (HibernateException
+e) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+handleException(e);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } finally {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateFactory.close(session);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Delete a detached Event from the database.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param event<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public void delete(Event event) throws
+DataAccessLayerException {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+startOperation();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.delete(event);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch (HibernateException
+e) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+handleException(e);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } finally {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateFactory.close(session);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Find an Event by its primary key.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param id<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public Event find(Long id) throws
+DataAccessLayerException {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Event event = null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+startOperation();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+event = (Event) session.load(Event.class, id);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch (HibernateException
+e) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+handleException(e);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } finally {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//HibernateFactory.close(session);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return event;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Updates the state of a detached Event.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param event<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public void update(Event event) throws
+DataAccessLayerException {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+startOperation();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.update(event);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch (HibernateException
+e) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+handleException(e);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } finally {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateFactory.close(session);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Finds all Events in the database.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public List findAll() throws
+DataAccessLayerException{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; List events = null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+startOperation();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Query query = session.createQuery("from Event");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+events =&nbsp; query.list();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch (HibernateException
+e) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+handleException(e);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } finally {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateFactory.close(session);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return events;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; private void handleException(HibernateException e)
+throws DataAccessLayerException {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateFactory.rollback(tx);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throw new
+DataAccessLayerException(e);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; private void startOperation() throws
+HibernateException {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session =
+HibernateFactory.openSession();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx =
+session.beginTransaction();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.23: SimpleEventDao.java<br>
+<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_2">return to top of the
+exercise</a><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial">Summary</h3>
+<p style="margin-left: 40px;">In this exercise,&nbsp; you have learned
+how to use DAO design pattern in which persistence logic is hidden
+through a DAO object or a DAO interface.<br>
+<br>
+</p>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Tutorial_Exercises">return to
+the top</a><br>
+<br>
+<br>
+<h2><a name="Exercise_3"></a>Exercise 3: Use different key generation<br>
+</h2>
+<br>
+<div style="margin-left: 40px;">In this exercise, you are going to
+learn how to generate key using various schemes.<br>
+</div>
+<p style="margin-left: 40px;"></p>
+<ul>
+  <ul>
+  </ul>
+  <ol>
+    <li><a href="#3.1">Build and run
+"HibernateHelloWorldKeyByIncrement" (Use "increment" for key generatio</a><a
+ href="#3.1">n)</a></li>
+    <li><a href="#3.2">Look under the hood of the
+"HibernateHelloWorldKeyByIncrement" </a><br>
+    </li>
+    <li><a href="#3.3">Build and run "HibernateHelloWorldKeyByAssigned"
+(Use "assigned" for key generation)</a></li>
+    <li><a href="#3.4">Look under the hood of the
+"HibernateHelloWorldKeyByAssigned"</a> </li>
+    <li><a href="#3.5">Build and run "HibernateHelloWorldKeyByUUIDHex"
+(Use "UUIDHex" for key generation)</a></li>
+    <li><a href="#3.6">Look under the hood of the
+"HibernateHelloWorldKeyByUUIDHex"</a> </li>
+  </ol>
+</ul>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="3.1"></a>(3.1)
+Use "increment" for generating a key<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">
+1. Open <span style="font-weight: bold;">HibernateHelloWorldKeyByIncrement</span>
+NetBeans project.&nbsp; <br>
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">Open Project (Ctrl+Shift+O)</span>. The <span
+ style="font-weight: bold;">Open Project</span> dialog box appears.</li>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/hibernatebasics/samples</span>
+directory.&nbsp; <br>
+  </li>
+  <li>Select <span style="font-weight: bold; color: rgb(255, 0, 0);">HibernateHelloWorldKeyByIncrement</span>.&nbsp;
+  </li>
+  <li>Click <span style="font-weight: bold;">Open Project</span>.&nbsp;
+    <br>
+  </li>
+  <li>Observe that the <span style="font-weight: bold;">HibernateHelloWorldKeyByIncrement</span>
+project node appears under <span style="font-weight: bold;">Projects </span>tab
+window.</li>
+</ul>
+</div>
+<p style="margin-left: 40px;">2. Build and run <span
+ style="font-weight: bold;">HibernateHelloWorldKeyByIncrement</span>
+project. <br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right-click <span style="font-weight: bold;">HibernateHelloWorldKeyByIncrement</span>
+project and select <span style="font-weight: bold;">Run</span>.&nbsp;</li>
+  <li>Observe the result in the Output window as shown in Figure-3.11
+below.&nbsp; <br>
+  </li>
+</ul>
+</div>
+<div style="margin-left: 40px;">
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">First
+person, Id generated via
+increment = 1</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">Second person, Id generated via
+increment = 2</span><br>
+      <br>
+******** Table: Person *******<br>
++-------------+----------------------+<br>
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ID&nbsp; &nbsp; &nbsp; &nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CNAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; |<br>
++-------------+----------------------+<br>
+| 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+| Sang
+Shin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; |<br>
+| 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; |
+Young
+Shin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>
++-------------+----------------------+<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Figure-3.11: Result<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_3">return to top of the
+exercise</a><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="3.2"></a>(3.2)
+look under the hood of the "HibernateHelloWorldKeyByIncrement" project<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+</div>
+<div style="margin-left: 40px;">
+1. Study the <span style="font-weight: bold;">Main.java</span>.
+(Code-3.21 below)&nbsp;
+Pay special attention to the bold-fonted parts.<br>
+<br>
+</div>
+<table style="width: 100%; text-align: left; margin-left: 40px;"
+ border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import org.hibernate.*;<br>
+import org.hibernate.cfg.Configuration;<br>
+      <br>
+public class Main {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static void main(String[] args) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Set up database tables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.droptable("drop table Person");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HibernateUtil.setup("create
+table Person ( id int, cname VARCHAR(20))");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Create SessionFactory and
+Session object<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SessionFactory sessions =
+new Configuration().configure().buildSessionFactory();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session session =
+sessions.openSession();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Perform life-cycle
+operations under a transaction<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transaction tx = null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx =
+session.beginTransaction();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Create a Person object and save it</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Person p1 = new Person();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+p1.setName("Sang Shin");</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.save(p1);</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Create another Person object and save it.</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Person p2 = new Person();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+p2.setName("Young Shin");</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.save(p2);</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Retrieve the person objects</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Person person = (Person)session. get(Person.class, p1.getId());</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("First person, Id generated via increment = " +
+person.getId());</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+person = (Person)session.get(Person.class, p2.getId());</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Second person, Id generated via increment = " +
+person.getId());</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx =
+null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch ( HibernateException
+e ) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (
+tx != null ) tx.rollback();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+e.printStackTrace();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } finally {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.close();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Display tables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.checkData("select * from Person");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div style="margin-left: 40px;">
+Code-3.21: Main.java<br>
+<br>
+2. Study <span style="font-weight: bold;">Person.hbm.xml</span>.
+(Code-3.22 below)&nbsp; Note that the <span style="font-weight: bold;">class
+</span>attribute of the <span style="font-weight: bold;">generator </span>element
+is set to "<span style="font-weight: bold;">increment</span>".<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version='1.0'
+encoding='utf-8'?&gt;<br>
+&lt;!DOCTYPE hibernate-mapping<br>
+&nbsp;&nbsp; PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"<br>
+&nbsp;&nbsp;
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;<br>
+      <br>
+&lt;hibernate-mapping&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp; &lt;class name="Person"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;id name="id" type="int"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">&lt;generator class="increment"/&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/id&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name="name" column="cname"
+type="string"/&gt;<br>
+&nbsp;&nbsp; &lt;/class&gt;<br>
+&nbsp;&nbsp; <br>
+&lt;/hibernate-mapping&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-3.22: Person.hbm.xml<br>
+<br>
+</div>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_3">return to top of the
+exercise</a><br>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="3.3"></a>(3.3)
+Use "assigned" for generating a key<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">
+1. Open <span style="font-weight: bold;">HibernateHelloWorldKeyByAssigned</span>
+NetBeans project.&nbsp; <br>
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">Open Project (Ctrl+Shift+O)</span>. The <span
+ style="font-weight: bold;">Open Project</span> dialog box appears.</li>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/hibernatebasics/samples</span>
+directory.&nbsp; <br>
+  </li>
+  <li>Select <span style="font-weight: bold; color: rgb(255, 0, 0);">HibernateHelloWorldKeyByAssigned</span>.&nbsp;
+  </li>
+  <li>Click <span style="font-weight: bold;">Open Project</span>.&nbsp;
+    <br>
+  </li>
+  <li>Observe that the <span style="font-weight: bold;">HibernateHelloWorldKeyByAssigned</span>
+project node appears under <span style="font-weight: bold;">Projects </span>tab
+window.</li>
+</ul>
+</div>
+<p style="margin-left: 40px;">2 Build and run <span
+ style="font-weight: bold;">HibernateHelloWorldKeyByAssigned</span>
+project. <br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right-click <span style="font-weight: bold;">HibernateHelloWorldKeyByAssigned</span>
+project and select <span style="font-weight: bold;">Run</span>.&nbsp;</li>
+  <li>Observe the result in the Output window as shown in Figure-3.31
+below.&nbsp; <br>
+  </li>
+</ul>
+</div>
+<div style="margin-left: 40px;">
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">First
+person, Id generated via
+assigned = 233</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">Second person, Id generated via
+assigned = 411</span><br>
+      <br>
+******** Table: Person *******<br>
++-------------+----------------------+<br>
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ID&nbsp; &nbsp; &nbsp; &nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CNAME&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; |<br>
++-------------+----------------------+<br>
+| 233&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; | Sang
+Shin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+|<br>
+| 411&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; | Young
+Shin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>
++-------------+----------------------+<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Figure-3.31: Result<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_3">return to top of the
+exercise</a><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="3.4"></a>(3.4)
+look under the hood of the "HibernateHelloWorldKeyByAssigned" project<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+</div>
+<div style="margin-left: 40px;">
+1. Study the <span style="font-weight: bold;">Main.java</span>.
+(Code-3.41 below)&nbsp;
+Pay special attention to the bold-fonted parts.&nbsp; Note that since
+you are going to use "assigned" as a way of creating keys, you have to
+provide the key values yourself through <span
+ style="font-weight: bold;">setId()</span> method.<br>
+<br>
+</div>
+<table style="width: 100%; text-align: left; margin-left: 40px;"
+ border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import org.hibernate.*;<br>
+import org.hibernate.cfg.Configuration;<br>
+      <br>
+public class Main {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static void main(String[] args) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Set up database tables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.droptable("drop table Person");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HibernateUtil.setup("create
+table Person ( id int, cname VARCHAR(20))");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Create SessionFactory and
+Session object<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SessionFactory sessions =
+new Configuration().configure().buildSessionFactory();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session session =
+sessions.openSession();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Perform life-cycle
+operations under a transaction<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transaction tx = null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx =
+session.beginTransaction();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+Create a Person object and save it<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Person p1 = new Person();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+p1.setName("Sang Shin");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Since the Id generation scheme is now set as "assigned",</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// you have to assign it.</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+p1.setId(233);</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.save(p1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+Create another Person object and save it.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Person p2 = new Person();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+p2.setName("Young Shin");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Since the Id generation scheme is now set as "assigned",</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// you have to assign it.</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+p2.setId(411);</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.save(p2);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+Retrieve the person objects<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Person person = (Person)session. get(Person.class, p1.getId());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("First person, Id generated via assigned = " +
+person.getId());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+person = (Person)session.get(Person.class, p2.getId());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Second person, Id generated via assigned = " +
+person.getId());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx =
+null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch ( HibernateException
+e ) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (
+tx != null ) tx.rollback();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+e.printStackTrace();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } finally {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.close();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Display tables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.checkData("select * from Person");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div style="margin-left: 40px;">
+Code-3.41: Main.java<br>
+<br>
+2. Study <span style="font-weight: bold;">Person.hbm.xml</span>.
+(Code-3.42 below) Note that the <span style="font-weight: bold;">class
+</span>attribute of the <span style="font-weight: bold;">generator </span>element
+is set to "<span style="font-weight: bold;">assigned</span>".<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version='1.0'
+encoding='utf-8'?&gt;<br>
+&lt;!DOCTYPE hibernate-mapping<br>
+&nbsp;&nbsp; PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"<br>
+&nbsp;&nbsp;
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;<br>
+      <br>
+&lt;hibernate-mapping&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp; &lt;class name="Person"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;id name="id" type="int"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">&lt;generator class="assigned"/&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/id&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name="name" column="cname"
+type="string"/&gt;<br>
+&nbsp;&nbsp; &lt;/class&gt;<br>
+&nbsp;&nbsp; <br>
+&lt;/hibernate-mapping&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-3.42: Person.hbm.xml<br>
+<br>
+</div>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_3">return to top of the
+exercise</a><br>
+<div style="margin-left: 40px;"><br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="3.5"></a>(3.5)
+Use "uuid.hex" for generating a key<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">
+1. Open <span style="font-weight: bold;">HibernateHelloWorldKeyByUUIDHex</span>
+NetBeans project.&nbsp; <br>
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">Open Project (Ctrl+Shift+O)</span>. The <span
+ style="font-weight: bold;">Open Project</span> dialog box appears.</li>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/hibernatebasics/samples</span>
+directory.&nbsp; <br>
+  </li>
+  <li>Select <span style="font-weight: bold; color: rgb(255, 0, 0);">HibernateHelloWorldKeyByUUIDHex</span>.&nbsp;
+  </li>
+  <li>Click <span style="font-weight: bold;">Open Project</span>.&nbsp;
+    <br>
+  </li>
+  <li>Observe that the <span style="font-weight: bold;">HibernateHelloWorldKeyByUUIDHex</span>
+project node appears under <span style="font-weight: bold;">Projects </span>tab
+window.</li>
+</ul>
+</div>
+<p style="margin-left: 40px;">2. Build and run <span
+ style="font-weight: bold;">HibernateHelloWorldKeyByUUIDHex</span>
+project. <br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right-click <span style="font-weight: bold;">HibernateHelloWorldKeyByUUIDHex</span>
+project and select <span style="font-weight: bold;">Run</span>.&nbsp;</li>
+  <li>Observe the result in the Output window as shown in Figure-3.51
+below.&nbsp; <br>
+  </li>
+</ul>
+</div>
+<div style="margin-left: 40px;">
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">First
+person, Id generated via
+uuid.hex = 402882841223d08d011223d08fd00002</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">Second person, Id generated via
+uuid.hex =
+402882841223d08d011223d08fe00003</span><br>
+      <br>
+******** Table: Person *******<br>
++--------------------------------+----------------------+<br>
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CNAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>
++--------------------------------+----------------------+<br>
+| 402882841223d08d011223d08fd000 | Sang
+Shin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+| 402882841223d08d011223d08fe000 | Young
+Shin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
++--------------------------------+----------------------+<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Figure-3.51: Result<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_3">return to top of the
+exercise</a><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="3.6"></a>(3.6)
+look under the hood of the "HibernateHelloWorldKeyByUUIDHex" project<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+</div>
+<div style="margin-left: 40px;">
+1. Study the <span style="font-weight: bold;">Main.java</span>.&nbsp;
+(Code-3.61 below)
+Pay special attention to the bold-fonted parts.<br>
+<br>
+</div>
+<table style="width: 100%; text-align: left; margin-left: 40px;"
+ border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import org.hibernate.*;<br>
+import org.hibernate.cfg.Configuration;<br>
+      <br>
+public class Main {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static void main(String[] args) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Set up database tables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.droptable("drop table Person");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HibernateUtil.setup("create
+table Person ( id VARCHAR(50), cname VARCHAR(20))");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Create SessionFactory and
+Session object<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SessionFactory sessions =
+new Configuration().configure().buildSessionFactory();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session session =
+sessions.openSession();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Perform life-cycle
+operations under a transaction<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transaction tx = null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx =
+session.beginTransaction();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Create a Person object and save it</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Person p1 = new Person();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+p1.setName("Sang Shin");</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.save(p1);</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Create another Person object and save it.</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Person p2 = new Person();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+p2.setName("Young Shin");</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.save(p2);</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+Retrieve the person objects<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Person person = (Person)session.get(Person.class, p1.getId());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("First person, Id generated via uuid.hex = " +
+person.getId());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+person = (Person)session.get(Person.class, p2.getId());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Second person, Id generated via uuid.hex = " +
+person.getId());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx =
+null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch ( HibernateException
+e ) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (
+tx != null ) tx.rollback();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+e.printStackTrace();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } finally {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.close();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Display tables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.checkData("select * from Person");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div style="margin-left: 40px;">
+Code-3.61: Main.java<br>
+<br>
+2. Study <span style="font-weight: bold;">Person.hbm.xml</span>.&nbsp;
+(Code-3.62 below) Note that the <span style="font-weight: bold;">class
+</span>attribute of the <span style="font-weight: bold;">generator </span>element
+is set to "<span style="font-weight: bold;">uuid.hex</span>".<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version='1.0'
+encoding='utf-8'?&gt;<br>
+&lt;!DOCTYPE hibernate-mapping<br>
+PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"<br>
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;<br>
+      <br>
+&lt;hibernate-mapping&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;class name="Person"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;id name="id"
+type="string" unsaved-value="null"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold;">&nbsp; &lt;generator class="uuid.hex"/&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/id&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name="name"
+column="cname" type="string"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/class&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&lt;/hibernate-mapping&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-3.62: Person.hbm.xml<br>
+<br>
+</div>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_3">return to top of the
+exercise</a><br>
+<div style="margin-left: 40px;"><br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial">Summary</h3>
+<div style="margin-left: 40px;"><br>
+In this exercise, you have learned how to generate key values using
+different methods - increment, assigned, uuid.hex.<br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; <a href="index.html#Tutorial_Exercises">return
+to the top</a><br>
+<br>
+</div>
+<br>
+<h2><a name="Exercise_4"></a>Exercise 4: Session management<br>
+</h2>
+<br>
+<div style="margin-left: 40px;">In this exercise, you are going to
+exercise session management.<br>
+</div>
+<ul>
+  <ol>
+    <li><a href="#4.1">Build and run
+"HibernateSessionDisconnectReconnect" project</a><br>
+    </li>
+    <li><a href="#4.2">Look under the hood of the
+"HibernateSessionDisconnectReconnect" project</a><a href="#5.2"> </a></li>
+  </ol>
+</ul>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="4.1"></a>(4.1)
+Build and run "HibernateSessionDisconnectReconnect" project<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+</div>
+<div style="margin-left: 40px;">
+1. Open <span style="font-weight: bold;">HibernateSessionDisconnectReconnect</span>
+NetBeans project.&nbsp; <br>
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">Open Project (Ctrl+Shift+O)</span>. The <span
+ style="font-weight: bold;">Open Project</span> dialog box appears.</li>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/hibernatebasics/samples</span>
+directory.&nbsp; <br>
+  </li>
+  <li>Select <span style="font-weight: bold; color: rgb(255, 0, 0);">HibernateSessionDisconnectReconnect</span>.&nbsp;
+  </li>
+  <li>Click <span style="font-weight: bold;">Open Project</span>.&nbsp;
+    <br>
+  </li>
+  <li>Observe that the <span style="font-weight: bold;">HibernateSessionDisconnectReconnect</span>
+project node appears under <span style="font-weight: bold;">Projects </span>tab
+window.</li>
+</ul>
+</div>
+<p style="margin-left: 40px;">2.&nbsp; Build and run <span
+ style="font-weight: bold;">HibernateSessionDisconnectReconnect</span>
+project. <br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right-click <span style="font-weight: bold;">HibernateSessionDisconnectReconnect</span>
+project and select <span style="font-weight: bold;">Run</span>.&nbsp;</li>
+  <li>Observe the result in the Output window as shown in Figure-5.11
+below.&nbsp; <br>
+  </li>
+</ul>
+</div>
+<div style="margin-left: 40px;">
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">Product name = SamSung Phone<br>
+Product name = Solaris OS<br>
+Product name = Sun workstation<br>
+Product name = SamSung Phone<br>
+Product name = Solaris OS<br>
+Product name = Sun workstation<br>
+      <br>
+******** Table: Supplier *******<br>
++-------------+----------------------+<br>
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ID&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; |<br>
++-------------+----------------------+<br>
+| 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; |
+Sun
+Microsystems&nbsp;&nbsp;&nbsp;&nbsp; <br>
+| 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+|
+SamSung&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
++-------------+----------------------+<br>
+      <br>
+******** Table: Product *******<br>
++-------------+----------------------+----------------------+------------------------+-------------+<br>
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ID &nbsp; &nbsp; &nbsp;&nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NAME&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DESCRIPTION
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+PRICE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; |&nbsp;
+SUPPLIERID <br>
++-------------+----------------------+----------------------+------------------------+-------------+<br>
+| 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; |
+Sun
+workstation&nbsp; | Cool
+machine&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+2.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+| 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; |<br>
+| 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; |
+Solaris OS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
+| Coolest
+OS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+22.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; |<br>
+| 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; |
+SamSung Phone&nbsp; | Cool
+phone&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+30.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; |<br>
++-------------+----------------------+----------------------+------------------------+-------------+<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Figure-5.11: Result<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_5">return to top of the
+exercise</a><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="4.2"></a>(4.2)
+look under the hood of the "HibernateSessionDisconnectReconnect" project<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+</div>
+<div style="margin-left: 40px;">
+1. Study the <span style="font-weight: bold;">Main.java</span>.
+(Code-5.21 below)&nbsp;
+Pay special attention to the bold-fonted parts.<br>
+<br>
+</div>
+<table style="width: 100%; text-align: left; margin-left: 40px;"
+ border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import java.util.*;<br>
+      <br>
+import java.sql.*;<br>
+import org.hibernate.*;<br>
+import org.hibernate.cfg.*;<br>
+import org.hibernate.criterion.*;<br>
+      <br>
+public class Main {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param args <br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public static void main(String[] args) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Set up database table and
+test data<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.droptable("drop table Supplier");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.droptable("drop table Product");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HibernateUtil.setup("create
+table Supplier ( id int, name VARCHAR(20))");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HibernateUtil.setup("create
+table Product ( id int, name
+VARCHAR(20), description VARCHAR(20), price double,supplierId
+int)");&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prepareTestData();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Create Session object</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SessionFactory factory = new
+Configuration().configure().buildSessionFactory();</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Session session = factory.openSession();</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Perform a query operation<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Query query =
+session.createQuery("from Product order by name");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; List list = query.list();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Iterator i = list.iterator();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while(i.hasNext()) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Product p = (Product)i.next();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Product name = " + p.getName());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Disconnect the Session from the current JDBC connection. </span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// If the connection was obtained by Hibernate close it and return </span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// it to the connection pool; otherwise, return it to the application.</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Connection c = session.disconnect();</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Reconnect to the given JDBC connection. This is used by </span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// applications which require long transactions and use </span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// application-supplied connections.</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.reconnect(c);</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Create a Query object<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; query =
+session.createQuery("from Product order by name");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; list = query.list();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i = list.iterator();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while(i.hasNext()) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Product p = (Product)i.next();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Product name = " + p.getName());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Display tables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.checkData("select * from Supplier");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.checkData("select * from Product");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; // Below are utility methods<br>
+      <br>
+&nbsp;&nbsp;&nbsp; static public void displaySupplierList(List list) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Iterator iter =
+list.iterator();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!iter.hasNext()) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("No suppliers to display.");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while (iter.hasNext()) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Supplier supplier = (Supplier) iter.next();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+String msg = supplier.getName();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println(msg);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; private static void prepareTestData(){<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session session =
+HibernateUtil.currentSession();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transaction tx =
+session.beginTransaction();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Supplier supplier1 = new
+Supplier();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; supplier1.setName("Sun
+Microsystems");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.save(supplier1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Supplier supplier2 = new
+Supplier();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; supplier2.setName("SamSung");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.save(supplier2);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Product product1 = new
+Product("Sun workstation","Cool machine", 2.0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+product1.setSupplier(supplier1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+supplier1.getProducts().add(product1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.save(product1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Product product12 = new
+Product("Solaris OS","Coolest OS", 22.0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+product12.setSupplier(supplier1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+supplier1.getProducts().add(product12);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.save(product12);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Product product2 = new
+Product("SamSung Phone", "Cool phone", 30.0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+product2.setSupplier(supplier2);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+supplier2.getProducts().add(product2);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.save(product2);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HibernateUtil.closeSession();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+} </td>
+    </tr>
+  </tbody>
+</table>
+<div style="margin-left: 40px;">
+Code-5.21: Main.java<br>
+<br>
+</div>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a
+ href="index.html#Exercise_5">return to top of the
+exercise</a><br>
+<h3 style="margin-left: 40px;" class="tutorial">Summary</h3>
+<br>
+<div style="margin-left: 40px;">In this exercise, you have learned how
+to perform session management.<br>
+</div>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; <a href="index.html#Tutorial_Exercises">return
+to the top</a><br>
+<br>
+<br>
+<h2><a name="Homework"></a>Homework
+exercise (for people who
+are taking Sang Shin's "Java EE Programming online course")<br>
+</h2>
+<br>
+<div style="margin-left: 40px;">1. The homework is to modify the <span
+ style="font-weight: bold;">HibernateMyHobby</span>
+NetBeans project you did as an <a
+ href="http://www.javapassion.com/handsonlabs/hibernatestepbystep/#Homework">homework
+of the "LAB-3513: Building Hibernate Application Step By Step" hands-on
+lab</a>.&nbsp; You can name the new project in any way you want but
+here I am going to
+call to call it as <span style="font-weight: bold;">HibernateMyHobbyDaoInterface</span>.
+<br>
+<ul>
+  <li>Create a Dao interface and implementation class, which are called
+    <span style="font-weight: bold;">MyHobbyDaoInterface </span>and <span
+ style="font-weight: bold;">MyHobbyDaoImpl </span>respectively as you
+have seen in step 2.3 and 2.4.&nbsp; <br>
+  </li>
+  <li>The <span style="font-weight: bold;">MyHobbyDaoInterface </span>should
+have the following life-cycle methods.</li>
+  <ul>
+    <li>create, delete, find, findAll, and update</li>
+  </ul>
+  <li>Modify the <span style="font-weight: bold;">main.java</span> to
+use the <span style="font-weight: bold;">MyHobbyDaoInterface.</span></li>
+</ul>
+</div>
+<div style="margin-left: 40px;">2<span style="color: rgb(0, 0, 0);">.
+Send the following files to</span><span style="color: rgb(0, 0, 0);">
+<a href="mailto:j2eehomeworks@sun.com">j2eehomeworks@sun.com</a>
+with </span><span style="font-weight: bold; color: rgb(0, 0, 0);">Subject
+</span><span style="color: rgb(0, 0, 0);">as </span><span
+ style="font-weight: bold; color: rgb(0, 0, 0);">J2EEHomework-hibernatebasics.</span><br
+ style="color: rgb(0, 0, 0);">
+<span style="font-weight: bold; color: rgb(0, 0, 0);"></span>
+<ul style="color: rgb(0, 0, 0);">
+  <li>Zip file of the the<span style="font-weight: bold;">
+HibernateMyHobbyDaoInterface</span>
+NetBeans project.&nbsp; (Someone else
+should be able to open and run it as a NetBeans project.)&nbsp; You can
+use your favorite zip utility or you can use "jar" utility that comes
+with JDK as following.<br>
+  </li>
+  <ul>
+    <li>cd &lt;parent directory that contains <span
+ style="font-weight: bold;">HibernateMyHobbyDaoInterface</span>
+directory&gt;
+(assuming you named your project as <span style="font-weight: bold;">HibernateMyHobbyDaoInterface</span>)<br>
+    </li>
+    <li>jar cvf HibernateMyHobbyDaoInterface.zip
+HibernateMyHobbyDaoInterface (<span style="font-weight: bold;">HibernateMyHobbyDaoInterface
+      </span>should contain <span style="font-weight: bold;">nbproject
+      </span>directory)<br>
+    </li>
+  </ul>
+  <li>Captured output screen&nbsp;<span style="font-weight: bold;"> </span>-
+name it as <span style="font-weight: bold;">J2EEHomework-hibernatebasics.gif</span>
+or<span style="font-weight: bold;">J2EEHomework-hibernatebasics</span><span
+ style="font-weight: bold;">.jpg</span> (or <span
+ style="font-weight: bold;">J2EEHomework-hibernatebasics.&lt;whatver
+graphics format&gt;</span>)</li>
+  <ul>
+    <li>Any screen capture that shows that your program is working is
+good enough.&nbsp; <br>
+    </li>
+  </ul>
+  <li>If you decide to use
+different IDE other than NetBeans, the zip
+file should contain all the files that are needed for rebuilding the
+project - war file with necessary source files is OK.</li>
+</ul>
+<br>
+</div>
+<br>
+<br>
+<div style="margin-left: 40px;"><br>
+</div>
+<p> </p>
+<!-- ======================================================================================== -->
+</body>
+</html>

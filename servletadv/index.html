@@ -1,0 +1,1166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <script src="index_files/tigris.txt" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="index_files/netbeans.css">
+  <title>LAB-4005: Servlet Advanced</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta name="SourceCastVersion" content="2.6.2.4.10">
+  <link rel="shortcut icon" href="http://www.netbeans.org/favicon.ico"
+ type="image/x-icon">
+  <meta name="keywords"
+ content="NetBeans, IDE, Platform, free, open source, developer">
+  <link rel="stylesheet" href="index_files/netbeans_002.css">
+  <meta name="author" content="Sang Shin">
+  <style type="text/css">
+#search {height:100%;}
+#topmodule {align:right;}
+  </style>
+  <script language="JavaScript" type="text/javascript">
+<!--
+function get_sc_login() {
+  var sclogin = "guest";
+  return (sclogin);
+}
+var username=get_sc_login();
+//-->
+  </script>
+</head>
+<body onload="loginfocus()" class="composite"
+ style="background-image: url(index_files/beige.jpg);">
+<!-- begin TopTabs --><!-- end TopTabs --><!-- start NavCol --><!-- end NavCol --><!-- Servlet-Specific template --><!-- Show servlet name if it is a servlet -->
+<br>
+<br>
+<h1 style="text-align: center;">Servlet Advanced (Filtering, Life-cycle
+Event Handling, etc.)<br>
+</h1>
+<div class="articledate" style="margin-left: 0px; text-align: center;"><a
+ href="http://www.javapassion.com/SangShinSchedule.html#Bio">Sang Shin</a>,
+<a href="http://www.javapassion.com/j2ee/">www.javapassion.com/j2ee</a><a
+ href="mailto:sang.shin@sun.com"><i><br>
+</i></a></div>
+<div class="indent"><br>
+<div style="text-align: center;"><img alt=""
+ src="index_files/sangshin2009.jpg" style="width: 88px; height: 101px;"><br>
+<br>
+</div>
+The goal of this lab is to exercise advanced features of Servlet,
+especially filtering and life-cycle event handling.&nbsp;
+In the first exercise, you are going to add a filter or two to a Web
+application and observe how the doFilter() methods of the filters are
+being invoked.&nbsp; In the second exercise, you are going to add
+life-cycle event handlers to the same application and observe how those
+event handlers are being invoked.<br>
+<br>
+<div style="text-align: center;"><b>Expected duration: 60 minutes<br>
+<br>
+<br>
+</b>
+<div style="text-align: left;"><br>
+<h3 class="tutorial">Software Needed</h3>
+<br>
+Before you begin, you need to install JDK and NetBeans <a
+ href="http://www.javapassion.com/handsonlabs/webappstructure/#Exercise_0">as
+described here</a>.&nbsp; You also need to download and unzip the
+hands-on lab zip file below.
+<ul>
+  <li>4005_servletadv.zip (<a
+ href="http://www.javapassion.com/handsonlabs/4005_servletadv.zip">download</a>)</li>
+  <ul>
+    <li>The zip file contains this document and the lab contents<br>
+    </li>
+    <li>Download it and unzip in a directory of your choice</li>
+  </ul>
+</ul>
+<br>
+<h3 class="tutorial">OS platforms you can use<br>
+</h3>
+<ul>
+  <li>Windows</li>
+  <li>Solaris x86, Solaris Sparc</li>
+  <li>Linux</li>
+  <li>Mac OS X</li>
+</ul>
+<br>
+<h3 class="tutorial"><a name="Change_Log"></a>Change Log<br>
+</h3>
+<ul>
+  <li>Nov. 13th, 2006: Created</li>
+  <li>June 18th, 2008: Created with NetBeans 6.1</li>
+  <li>Aug. 5th, 2009: Tested with NetBeans 6.7.1<br>
+  </li>
+</ul>
+</div>
+<b></b></div>
+<br>
+<h3 class="tutorial"><a name="Tutorial_Exercises"></a>Lab Exercises</h3>
+<br>
+<ul>
+  <li><a href="#Exercise_1">Exercise 1: Build and configure sevlet
+filters to the hello2 application (30 minutes)</a><br>
+  </li>
+  <li><a href="#Exercise_2">Exercise 2: Add life-cycle event handlers
+to the hello2 application (30 minutes)<br>
+    </a></li>
+  <li><a href="#Homework_Exercise">Homework Exercise (for people who
+are taking Sang Shin's "AJAX online course")</a></li>
+</ul>
+</div>
+<br>
+<div style="margin-left: 40px;"><br>
+</div>
+<!-- ===================================================================================== -->
+<h2><a name="Exercise_1"></a>Exercise 1: Build and configure servlet
+filters<br>
+</h2>
+<i></i>
+<p style="margin-left: 40px;">In this exercise, you are going to open
+"hello2" NetBeans project first and then add a filter to it. <br>
+</p>
+<ul style="margin-left: 40px;">
+</ul>
+<div style="margin-left: 40px;">
+<ol>
+  <li><a href="#1.1">Open, build, and run "hello2" sample application</a></li>
+  <li><a href="#1.2">Add a Servlet filter to "hello2" sample application</a></li>
+  <li><a href="#1.3">Observe the web.xml file </a><br>
+  </li>
+</ol>
+</div>
+<ol style="margin-left: 40px;">
+</ol>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.1"></a>(1.1)
+Open, build, and run "hello2" sample Servlet application<br>
+</h3>
+<p style="margin-left: 40px;">0. Start NetBeans IDE.&nbsp; <br>
+1. Open <span
+ style="font-weight: bold; color: rgb(51, 51, 255); text-decoration: underline;">hello2</span>
+NetBeans project.&nbsp; <br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">Open Project (Ctrl+Shift+O)</span>. The <span
+ style="font-weight: bold;">Open Project</span> dialog box appears.</li>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/servletadv/samples</span>
+directory.&nbsp; <br>
+  </li>
+  <ul>
+    <li>Windows: If you unzipped the <span style="font-weight: bold;">4005_servletadv.zip</span>
+file under
+C:\
+directory, the directory to which you want
+to browse down should be <span style="font-weight: bold;">C:\servletadv\samples.</span></li>
+    <li>Solaris/Linux: If you unzipped the <span
+ style="font-weight: bold;">4005_servletadv.zip</span>
+file under $HOME
+directory, the directory to which you want
+to browse down should be <span style="font-weight: bold;">$HOME/servletadv/samples.</span><span
+ style="font-weight: bold;"></span></li>
+  </ul>
+  <li>Select <span
+ style="font-weight: bold; color: rgb(51, 51, 255); text-decoration: underline;">hello2</span>.&nbsp;
+  </li>
+  <li>Click <span style="font-weight: bold;">Open Project</span>.&nbsp;
+The <span style="font-weight: bold;">hello2</span>
+project node appears under <span style="font-weight: bold;">Projects </span>tab
+window.</li>
+</ul>
+</div>
+<p style="margin-left: 40px;">2 Build and run <span
+ style="font-weight: bold;">hello2 </span>project. <br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right-click <span style="font-weight: bold;">hello2</span>
+project and select <span style="font-weight: bold;">Run</span>. <br>
+  </li>
+  <li>Browser gets displayed.&nbsp; <br>
+  </li>
+  <li>Type your name in the input form
+field and click <span style="font-weight: bold;">Submit </span>button.<br>
+  </li>
+</ul>
+</div>
+<p style="margin-left: 40px;"><img alt="" src="index_files/1_duke.png"
+ style="width: 714px; height: 559px;"><br>
+Figure-1.12: Running hello2 project<br>
+</p>
+<p style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; <a href="index.html#Exercise_1">return to top of the exercise</a>
+</p>
+<p style="margin-left: 40px;"><span style="font-weight: bold;"></span></p>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.2"></a>(1.2)
+Add a Servlet filter to the hello2 application<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">In this step, you are going to add a
+filter to the hello2 application using NetBeans.<br>
+<br>
+</div>
+<div style="margin-left: 40px;">1.&nbsp; Right-click <span
+ style="font-weight: bold;">hello2 </span>project node and select <span
+ style="font-weight: bold;">New-&gt;Other</span>.&nbsp; <br>
+2.&nbsp; Choose <span style="font-weight: bold;"><span
+ style="text-decoration: underline;">Web</span> </span>under <span
+ style="font-weight: bold;">Categories </span>and select <span
+ style="font-weight: bold;"><span style="text-decoration: underline;">Filter</span>
+</span>under <span style="font-weight: bold;">File Types</span>.<br>
+3.&nbsp; Click <span style="font-weight: bold;">Next</span>.&nbsp;
+(Figure-1.20 below)<br>
+<br>
+<img alt="" src="index_files/1_duke2.png"
+ style="width: 737px; height: 505px;"><br>
+Figure-1.20: Add a Filter to the Web application<br>
+<br>
+4. Under <span style="font-weight: bold;">Name and Location</span>
+pane, for the <span style="font-weight: bold;">Class Name</span>
+field, type in <span style="font-weight: bold;"><span
+ style="color: rgb(255, 0, 0);">MyOwnFilter</span>
+</span>and for the Package field, type in <span
+ style="font-weight: bold; color: rgb(255, 0, 0);">mypackage</span>.&nbsp;
+(Figure-1.21 below)<br>
+<br>
+<img alt="" src="index_files/1_duke3.png"
+ style="width: 729px; height: 505px;"><br>
+Figure-1.21: Assign a Class Name and Package to the newly created Filter<br>
+<br>
+5. Click <span style="font-weight: bold;">Finish</span> to accept the
+default <span style="font-weight: bold;">Filter Name</span> and <span
+ style="font-weight: bold;">Filter Mappings</span> of the <span
+ style="font-weight: bold;">Configure Filter Deployment</span>
+pane.&nbsp; This will modify <span style="font-weight: bold;">web.xml</span>
+file.&nbsp; (Figure-1.22 below)<br>
+<br>
+<img alt="" src="index_files/1_duke4.png"
+ style="width: 729px; height: 505px;"><br>
+Figure-1.22: Configure Filter Deployment<br>
+<br>
+7. Right click on the gray-bar on the left side of the editor window
+and select <span style="font-weight: bold;">Show Line Numbers</span>
+if it has not been configured yet
+(Figure-1.24 below)<br>
+<br>
+<img alt="" src="index_files/1_duke6.png"
+ style="width: 794px; height: 596px;"><br>
+Figure-1.24: Show Line Numbers<br>
+<br>
+8.&nbsp; From line number 87 to 125, please find <span
+ style="font-weight: bold;">doFilter()</span> method as shown in
+Code-1.25
+below.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param request The servlet request we are
+processing<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param result The servlet response we are
+creating<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param chain The filter chain we are
+processing<br>
+&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @exception IOException if an input/output
+error occurs<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @exception ServletException if a servlet
+error occurs<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public void doFilter(ServletRequest request,
+ServletResponse response,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+FilterChain chain)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+throws IOException, ServletException {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (debug)
+log("MyOwnFilter:doFilter()");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; doBeforeProcessing(request,
+response);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Throwable problem = null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+chain.doFilter(request, response);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch(Throwable t) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+If an exception is thrown somewhere down the filter chain,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+we still want to execute our after processing, and then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+rethrow the problem after that.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+problem = t;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+t.printStackTrace();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; doAfterProcessing(request,
+response);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // If there was a problem,
+we want to rethrow it if it is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // a known type, otherwise
+log it.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (problem != null) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(problem instanceof ServletException) throw (ServletException)problem;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(problem instanceof IOException) throw (IOException)problem;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+sendProcessingError(problem, response);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.25: doFilter() method<br>
+<br>
+<img alt="" src="index_files/1_duke11.png"
+ style="width: 824px; height: 738px;"><br>
+<br>
+9.&nbsp; Uncomment the code fragments that were in commented
+state as shown in Code-1.26 below.&nbsp; They are highlighted in bold
+font.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&nbsp;&nbsp;&nbsp; private void
+doBeforeProcessing(ServletRequest request, ServletResponse response)<br>
+&nbsp;&nbsp;&nbsp; throws IOException, ServletException {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (debug)
+log("MyOwnFilter:DoBeforeProcessing");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Write code here to
+process the request and/or response before<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // the rest of the filter
+chain is invoked.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // For example, a logging
+filter might log items on the request object,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // such as the parameters.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">//&nbsp; ------------- uncomment the
+following code fragment -----------------</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+for (Enumeration en = request.getParameterNames();
+en.hasMoreElements(); ) {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+String name = (String)en.nextElement();</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+String values[] = request.getParameterValues(name);</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+int n = values.length;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+StringBuffer buf = new StringBuffer();</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+buf.append(name);</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+buf.append("=");</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+for(int i=0; i &lt; n; i++) {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+buf.append(values[i]);</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (i &lt; n-1)</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+buf.append(",");</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+log(buf.toString());</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// -------------- end of the uncommented code fragment
+------------------</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; private void doAfterProcessing(ServletRequest
+request, ServletResponse response)<br>
+&nbsp;&nbsp;&nbsp; throws IOException, ServletException {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (debug)
+log("MyOwnFilter:DoAfterProcessing");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Write code here to
+process the request and/or response after<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // the rest of the filter
+chain is invoked.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // For example, a logging
+filter might log the attributes on the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // request object after the
+request has been processed.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">//</span><span style="font-weight: bold;">&nbsp;
+------------- uncomment the following code fragment -----------------</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+for (Enumeration en = request.getAttributeNames();
+en.hasMoreElements(); ) {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+String name = (String)en.nextElement();</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Object value = request.getAttribute(name);</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+log("attribute: " + name + "=" + value.toString());</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//</span><span style="font-weight: bold;"> -------------- end of the
+uncommented code fragment ------------------</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // For example, a filter
+might append something to the response.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PrintWriter respOut = new
+PrintWriter(response.getWriter());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+respOut.println("&lt;P&gt;&lt;B&gt;This has been appended by an
+intrusive filter.&lt;/B&gt;");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.26: Uncomment the commented code fragments<br>
+<br>
+<img alt="" src="index_files/1_duke12.png"
+ style="width: 824px; height: 964px;"><br>
+<br>
+<img alt="" src="index_files/1_duke13.png"
+ style="width: 824px; height: 687px;"><br>
+<br>
+10. Right-click <span style="font-weight: bold;">hello2</span>
+project and select <span style="font-weight: bold;">Run</span>.
+<br>
+11. Browser gets displayed.&nbsp; Type your name in the input form
+field and click <span style="font-weight: bold;">Submit </span>button.&nbsp;&nbsp;
+This will send a HTTP request to the application, which is then passed
+through the filter.<br>
+<br>
+12. Click <span style="font-weight: bold;">GlassFish Log</span>
+tab window and observe that <span style="font-weight: bold;">username=Sang
+Shin</span>
+(or whatever your name you typed in)&nbsp; are displayed in the the log
+file of the deployment platform, in this case, GlassFish v2.&nbsp;
+(Figure-1.27 below)<br>
+<br>
+<img alt="" src="index_files/1_duke7.png"
+ style="width: 794px; height: 697px;"><br>
+Figure-1.27: Result of running the filter on the application<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; <a href="index.html#Exercise_1">return to top of the exercise</a><br>
+</div>
+<br>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.3"></a>(1.3)
+Take a look at the web.xml file<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">1. Double-click <span
+ style="font-weight: bold;">web.xml</span> under <span
+ style="font-weight: bold;">hello2-&gt;Configuration Files</span> to
+open it in the source editor.<br>
+2. Click <span style="font-weight: bold;">Filters </span>tab and
+observe the filter configurations.&nbsp; (Figure-1.28 below)<br>
+<br>
+<img alt="" src="index_files/1_duke9.png"
+ style="width: 794px; height: 697px;"><br>
+Figure-1.28: Filter configuration<br>
+<br>
+3. Click <span style="font-weight: bold;">XML </span>tab to see it as
+a file.<br>
+4. Observe the filter configuration through <span
+ style="font-weight: bold;">&lt;filter&gt;</span> and <span
+ style="font-weight: bold;">&lt;filter-mapping&gt;</span> elements in
+the <span style="font-weight: bold;">web.xml</span> file.&nbsp;
+(Figure-1.29 below)<br>
+<br>
+<img alt="" src="index_files/1_duke8.png"
+ style="width: 794px; height: 697px;"><br>
+Figure-1.29: web.xml file of the application<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; <a href="index.html#Exercise_1">return to top of the exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.4"></a>(1.4)
+Add another filter to the hello2 application<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">1. Add another filter to the hello2
+application following the steps mentioned in the 1.2 above.&nbsp; Name
+the filter as <span style="font-weight: bold;">MyOwnFilter2</span>.<br>
+2. Build and run the application and observe that logging messages are
+displayed in the GlassFish's log file from both <span
+ style="font-weight: bold;">MyOwnFilter </span>and <span
+ style="font-weight: bold;">MyOwnFilter2</span>.&nbsp; (Figure-1.30
+below)<br>
+<br>
+<span style="font-weight: bold;"></span></div>
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;"> </div>
+<img alt="" src="index_files/1_duke10.png"
+ style="width: 794px; height: 799px;"><br>
+Figure-1.30: Result of running the hello2 application with 2 filters<br>
+<br>
+3. Remove the logging statements of the filters in the code so that you
+don't see them in the next exercise.<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; <a href="index.html#Exercise_1">return to top of the exercise</a><br>
+</div>
+<div style="margin-left: 40px;"><br>
+</div>
+<p style="margin-left: 40px;"></p>
+<h3 style="margin-left: 40px;" class="tutorial">Summary</h3>
+<p style="margin-left: 40px;">In this exercise,&nbsp; you have created
+and added a new Servlet filter to the hello2 application, which
+displays the input parameters<br>
+</p>
+<p style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="#Tutorial_Exercises">return to the top</a>
+<br>
+</p>
+<p style="margin-left: 40px;"><br>
+<br>
+</p>
+<!-- ===================================================================================== -->
+<h2><a name="Exercise_2"></a>Exercise 2: Add Life-cycle event handlers
+to the hello2 application<br>
+</h2>
+<p style="margin-left: 40px;">In this exercise, you are going to add
+various life-cycle event handlers to the <span
+ style="font-weight: bold;">hello2 </span>application.<br>
+</p>
+<ul>
+  <ul>
+  </ul>
+  <ol>
+    <li><a href="#2.1">Add life-cycle event handlers to the hello2
+application</a><br>
+    </li>
+  </ol>
+</ul>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.1"></a>(2.1)&nbsp;
+Add life-cycle event handlers to the hello2 application<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">1.&nbsp; Right-click <span
+ style="font-weight: bold;">hello2 </span>project node and select <span
+ style="font-weight: bold;">New-&gt;File/Folder</span>.&nbsp; <br>
+2.&nbsp; Choose <span style="font-weight: bold;"><span
+ style="text-decoration: underline;">Web</span> </span>under <span
+ style="font-weight: bold;">Categories </span>and select <span
+ style="font-weight: bold;"><span style="text-decoration: underline;">Web
+Application Listener</span>
+</span>under <span style="font-weight: bold;">File Types</span>.<br>
+3.&nbsp; Click <span style="font-weight: bold;">Next</span>.&nbsp;
+(Figure-2.10 below)<br>
+<br>
+</div>
+<div style="margin-left: 40px;"><img alt=""
+ src="index_files/2_event1.png" style="width: 729px; height: 505px;"><br>
+Figure-2.10: Add life-cycle events to the application<br>
+</div>
+<div style="margin-left: 40px;"><br>
+4. For the <span style="font-weight: bold;">Class Name</span> field,
+type in <span
+ style="font-weight: bold; color: rgb(51, 51, 255); text-decoration: underline;">MyOwnEventListener</span>.&nbsp;
+For the <span style="font-weight: bold;">Package </span>field, type
+in <span style="font-weight: bold; color: rgb(51, 51, 255);">mypackage</span>.<br>
+5. Under Interface to implement section, select the following three
+event types. (Figure-2.11 below)<br>
+<ul>
+  <li style="font-weight: bold;">ContextListener</li>
+  <li style="font-weight: bold;">HTTP Session Listener</li>
+  <li><span style="font-weight: bold;">Request Listener (J2EE 1.4)</span><br>
+  </li>
+</ul>
+<br>
+<img alt="" src="index_files/2_event2.png"
+ style="width: 729px; height: 528px;"><br>
+Figure-2.11: Choose life-cycle event types<br>
+<br>
+5. Modify the <span style="font-weight: bold;">MyOwnEventListener.java</span>
+as shown in Code-2.12 below.&nbsp; The code fragments that need to be
+added are highlighed in bold and blue-colored font.&nbsp; Basically you
+are adding logging statements in each event handler.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">/*<br>
+&nbsp;* MyOwnEventListener.java<br>
+&nbsp;*<br>
+&nbsp;* Created on November 13, 2006, 8:44 AM<br>
+&nbsp;*/<br>
+      <br>
+package mypackage;<br>
+      <br>
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">import
+javax.servlet.ServletContext;</span><br>
+import javax.servlet.ServletContextListener;<br>
+import javax.servlet.ServletContextEvent;<br>
+import javax.servlet.http.HttpSessionListener;<br>
+import javax.servlet.http.HttpSessionEvent;<br>
+import javax.servlet.ServletRequestListener;<br>
+import javax.servlet.ServletRequestEvent;<br>
+      <br>
+/**<br>
+&nbsp;*<br>
+&nbsp;* @author&nbsp; sang<br>
+&nbsp;* @version<br>
+&nbsp;*<br>
+&nbsp;* Web application lifecycle listener.<br>
+&nbsp;*/<br>
+      <br>
+public class MyOwnEventListener implements ServletContextListener,
+HttpSessionListener, ServletRequestListener {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold; color: rgb(51, 51, 255);">ServletContext
+servletContext;</span><br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * ### Method from ServletContextListener ###<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Called when a Web application is first ready
+to process requests<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * (i.e. on Web server startup and when a
+context is added or reloaded).<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * For example, here might be database
+connections established<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * and added to the servlet context attributes.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public void contextInitialized(ServletContextEvent
+evt) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // TODO add your code here
+e.g.:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Connection con = // create connection<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+evt.getServletContext().setAttribute("con", con);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;<span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+servletContext&nbsp; = evt.getServletContext();</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+servletContext.log("contextInitialized() method is invoked");</span><br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * ### Method from ServletContextListener ###<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Called when a Web application is about to be
+shut down<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * (i.e. on Web server shutdown or when a
+context is removed or reloaded).<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Request handling will be stopped before this
+method is called.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * For example, the database connections can be
+closed here.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public void contextDestroyed(ServletContextEvent
+evt) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // TODO add your code here
+e.g.:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Connection con = (Connection) e.getServletContext().getAttribute("con");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+try { con.close(); } catch (SQLException ignored) { } // close
+connection<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;<span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+servletContext.log("contextDestroyed() method is invoked");</span><br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * ### Method from HttpSessionListener ###<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Called when a session is created.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public void sessionCreated(HttpSessionEvent evt) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // TODO add your code here:<br>
+&nbsp;<span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+servletContext.log("sessionCreated() method is invoked");</span><br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * ### Method from HttpSessionListener ###<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Called when a session is
+destroyed(invalidated).<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public void sessionDestroyed(HttpSessionEvent evt) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // TODO add your code here:<br>
+&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+servletContext.log("sessionDestroyed() method is invoked");</span><br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * ### Method from ServletRequestListener ###<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * The request is about to come into scope of
+the web application.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public void requestInitialized(ServletRequestEvent
+evt) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // TODO add your code here:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;
+servletContext.log("requestInitialized() method is invoked");</span><br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * ### Method from ServletRequestListener ###<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * <br>
+&nbsp;&nbsp;&nbsp;&nbsp; * The request is about to go out of scope of
+the web application.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public void requestDestroyed(ServletRequestEvent
+evt) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // TODO add your code here:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold; color: rgb(51, 51, 255);">servletContext.log("requestDestroyed()
+method is invoked");</span><br>
+&nbsp;&nbsp;&nbsp; }<br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.12: Add logging messages to the event handlers<br>
+<br>
+<br>
+</div>
+<div style="margin-left: 40px;">6. Right-click <span
+ style="font-weight: bold;">hello2</span>
+project and select <span style="font-weight: bold;">Run</span>.&nbsp;
+<br>
+7. Click <span style="font-weight: bold;">GlassFish Log</span>
+tab window and observe that messages are displayed in the the log
+file of the deployment platform, in this case, GlassFish.&nbsp;
+(Figure-2.13 below)&nbsp; Notice that the <span
+ style="font-weight: bold;">contextIntialized()</span> event handler
+gets invoked first since it is called once when the application is
+deployed.&nbsp; Observe also that the
+first HTTP request/response exchange between the browser and the
+application occurred and the <span style="font-weight: bold;">requestInitialized()</span>
+and <span style="font-weight: bold;">requestDestroyed()</span> event
+handlers are invoked .&nbsp; (Figure-2.13 below)<br>
+<br>
+<img alt="" src="index_files/2_event3.png"
+ style="width: 781px; height: 662px;"><br>
+Figure-2.13: Event handlers are called<br>
+<br>
+8. In the browser, type your name in the input form
+field and click <span style="font-weight: bold;">Submit </span>button.&nbsp;
+This will&nbsp; trigger, the 2nd HTTP request/response exchange between
+the browser and the web application.<br>
+9. Click <span style="font-weight: bold;">GlassFish Log</span>
+tab window and observe that messages are displayed in the the log
+file of the deployment platform, in this case, GlassFish.&nbsp;
+(Figure-2.14 below)&nbsp;&nbsp; <br>
+<br>
+Note: If you want to see the logging messages from scratch, right click
+on the display area and select <span style="font-weight: bold;">Clear</span>.<br>
+<br>
+<img alt="" src="index_files/2_event5.png"
+ style="width: 781px; height: 662px;"><br>
+Figure-2.14: Event handlers are called<br>
+<br>
+10.&nbsp; Modify the <span style="font-weight: bold;">GreetingServlet.java</span>
+under <span style="font-weight: bold;">hello2-&gt;Source
+Package-&gt;servlets</span> as shown in Code-2.15 below.&nbsp; The
+code fragment that needs to be
+added are highlighted in bold and blue-colored font.&nbsp; This will
+trigger the creation of the <span style="font-weight: bold;">HttpSession
+</span>object if it has not been
+created before, which in turn trigger the invocation of the <span
+ style="font-weight: bold;">sessionCreated()</span> event handler.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">package servlets;<br>
+      <br>
+import java.io.*;<br>
+import java.util.*;<br>
+import java.sql.*;<br>
+import javax.servlet.*;<br>
+import javax.servlet.http.*;<br>
+      <br>
+      <br>
+/**<br>
+&nbsp;* This is a simple example of an HTTP Servlet.&nbsp; It responds
+to the GET<br>
+&nbsp;* method of the HTTP protocol.<br>
+&nbsp;*/<br>
+public class GreetingServlet extends HttpServlet {<br>
+&nbsp;&nbsp;&nbsp; public void doGet(HttpServletRequest request,
+HttpServletResponse response)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throws ServletException,
+IOException {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+response.setContentType("text/html");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; response.setBufferSize(8192);<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PrintWriter out =
+response.getWriter();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold; color: rgb(51, 51, 255);">// Get a session</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HttpSession session = request.getSession();</span><br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // then write the data of
+the response<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; out.println("&lt;html&gt;" +
+"&lt;head&gt;&lt;title&gt;Hello&lt;/title&gt;&lt;/head&gt;");<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // then write the data of
+the response<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; out.println("&lt;body&nbsp;
+bgcolor=\"#ffffff\"&gt;" +<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"&lt;img src=\"duke.waving.gif\" alt=\"Duke waving\"&gt;" +<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"&lt;h2&gt;Hello, my name is Duke. What's yours?&lt;/h2&gt;" +<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"&lt;form method=\"get\"&gt;" +<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"&lt;input type=\"text\" name=\"username\" size=\"25\"&gt;" +
+"&lt;p&gt;&lt;/p&gt;" +<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"&lt;input type=\"submit\" value=\"Submit\"&gt;" +<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"&lt;input type=\"reset\" value=\"Reset\"&gt;" + "&lt;/form&gt;");<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; String username =
+request.getParameter("username");<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if ((username != null)
+&amp;&amp; (username.length() &gt; 0)) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+RequestDispatcher dispatcher =<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+getServletContext()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+.getRequestDispatcher("/response");<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(dispatcher != null) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+dispatcher.include(request, response);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+out.println("&lt;/body&gt;&lt;/html&gt;");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; out.close();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; public String getServletInfo() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return "The Hello servlet
+says hello.";<br>
+&nbsp;&nbsp;&nbsp; }<br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.15: Modified GreetingServlet.java<br>
+<br>
+11.&nbsp; Modify the <span style="font-weight: bold;">ResponseServlet.java</span>
+under <span style="font-weight: bold;">hello2-&gt;Source
+Package-&gt;mypackage</span> as shown in Code-2.16 below.&nbsp; The
+code fragment that needs to be
+added are highlighted in bold and blue-colored font.&nbsp; This will
+trigger the closing of the <span style="font-weight: bold;">HttpSession
+</span>object, which in turn trigger the invocation of the <span
+ style="font-weight: bold;">sessionDestroyed()</span> event handler.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">package servlets;<br>
+      <br>
+import java.io.*;<br>
+import java.util.*;<br>
+import java.sql.*;<br>
+import javax.servlet.*;<br>
+import javax.servlet.http.*;<br>
+      <br>
+      <br>
+/**<br>
+&nbsp;* This is a simple example of an HTTP Servlet.&nbsp; It responds
+to the GET<br>
+&nbsp;* method of the HTTP protocol.<br>
+&nbsp;*/<br>
+public class ResponseServlet extends HttpServlet {<br>
+&nbsp;&nbsp;&nbsp; public void doGet(HttpServletRequest request,
+HttpServletResponse response)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throws ServletException,
+IOException {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PrintWriter out =
+response.getWriter();<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // then write the data of
+the response<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; String username =
+request.getParameter("username");<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if ((username != null)
+&amp;&amp; (username.length() &gt; 0)) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+out.println("&lt;h2&gt;Hello, " + username + "!&lt;/h2&gt;");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold; color: rgb(51, 51, 255);"> // Close the
+HttpSession</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+request.getSession().invalidate();</span><br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; public String getServletInfo() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return "The Response servlet
+says hello.";<br>
+&nbsp;&nbsp;&nbsp; }<br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.16: Modified ResponseServlet.java<br>
+<br>
+12. Right-click <span style="font-weight: bold;">hello2</span>
+project and select <span style="font-weight: bold;">Run</span>.&nbsp;
+<br>
+13. Click <span style="font-weight: bold;">GlassFish Log</span>
+tab window and observe that messages are displayed in the the log
+file of the deployment platform, in this case, GlassFish.&nbsp;&nbsp;
+Notice that the <span style="font-weight: bold;">sessionCreated()</span>
+event handlers was invoked.&nbsp; (Figure-2.17 below)<br>
+<br>
+<img alt="" src="index_files/2_event6.png"
+ style="width: 781px; height: 662px;"><br>
+Figure-2.17: sessionCreated() event handler is invoked<br>
+<br>
+14. In the browser, type your name in the input form
+field and click <span style="font-weight: bold;">Submit </span>button.&nbsp;
+This will&nbsp; trigger, the 2nd HTTP request/response exchange between
+the browser and the web application.<br>
+15. Click <span style="font-weight: bold;">GlassFish</span>
+tab window and observe that messages are displayed in the the log
+file of the deployment platform, in this case, GlassFish.&nbsp;&nbsp;
+Notice that the <span style="font-weight: bold;">sessionDestroyed()</span>
+event handlers was invoked.&nbsp; (Figure-2.18 below)<br>
+<br>
+<img alt="" src="index_files/2_event8.png"
+ style="width: 781px; height: 662px;"><br>
+Figure-2.18: sessionDestroyed() event handler is invoked<br>
+<br>
+16. Undeploy the application. (Figure-2.19 below)<br>
+<ul>
+  <li>Select <span style="font-weight: bold;">Runtime </span>tab</li>
+  <li>Expand <span style="font-weight: bold;">Servers-&gt;GlassFish-&gt;Applications-&gt;Web
+Applications </span>and right click <span style="font-weight: bold;">hello2</span>.</li>
+  <li>Select <span style="font-weight: bold;">Undeploy</span>.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_event7.png"
+ style="width: 781px; height: 662px;"><br>
+Figure-2.19: Undeploy the application<br>
+<br>
+17.&nbsp; Click <span style="font-weight: bold;">GlassFish</span>
+tab window and observe that messages are displayed in the the log
+file of the deployment platform, in this case, GlassFish.&nbsp;&nbsp;
+Notice that the <span style="font-weight: bold;">contextDestroyed()</span>
+method gets invoked.&nbsp; (Figure-2.20 below)<br>
+<br>
+<img alt="" src="index_files/2_event9.png"
+ style="width: 781px; height: 662px;"><br>
+Figure-2.20: contextDestroyed() event handler is invoked<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; <a href="#Exercise_2">return to top of the exercise</a><br>
+</div>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial">Summary</h3>
+<p style="margin-left: 40px;">In this exercise, you have add several
+life-cycle event handlers to the hello2 application.<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <a
+ href="index.html#Tutorial_Exercises">Return to the top</a><br>
+<br>
+</p>
+<h2><a name="Homework_Exercise"></a>Homework Exercise (for people who
+are taking Sang Shin's "Java EE Programming online course") <br>
+</h2>
+<br>
+<div style="margin-left: 40px;"><span style="color: rgb(0, 0, 0);">1.
+The homework is to modify the </span><span
+ style="font-weight: bold; color: rgb(0, 0, 0);">hello2</span><span
+ style="color: rgb(0, 0, 0);"> project as described below.&nbsp; (You
+might want to create a new project by copying
+the </span><span style="font-weight: bold; color: rgb(0, 0, 0);">hello2
+</span><span style="color: rgb(0, 0, 0);">project. You can name
+the
+homework project in any way you want
+but here I am going to call it </span><span
+ style="font-weight: bold; color: rgb(0, 0, 0);">Myhello2</span><span
+ style="color: rgb(0, 0, 0);">.)</span><br>
+<ul>
+  <li>Add another event handler Java source file called <span
+ style="font-weight: bold;">MyOwnEventListener </span>that implements <span
+ style="font-weight: bold;">Http Session Attribute Listener</span>.<br>
+  </li>
+  <li>Modify <span style="font-weight: bold;">GreetingServlet.java</span>
+to add an attribute to the HttpSession.</li>
+  <li>Modify ResponseServlet.java to remove the attribute from the
+HttpSession.</li>
+  <li>Capture log file which shows that <span
+ style="font-weight: bold;">attributeAdded(HttpSessionBindingEvent evt)</span>
+and <span style="font-weight: bold;">attributeRemoved(HttpSessionBindingEvent
+evt) </span>event handlers are invoked when an attribute is added and
+removed respectively.<br>
+  </li>
+</ul>
+2<span style="color: rgb(0, 0, 0);">. Send the following files to</span><span
+ style="color: rgb(0, 0, 0);">
+<a href="mailto:j2eehomeworks@sun.com">j2eehomeworks@sun.com</a>
+with </span><span style="font-weight: bold; color: rgb(0, 0, 0);">Subject
+</span><span style="color: rgb(0, 0, 0);">as </span><span
+ style="font-weight: bold; color: rgb(0, 0, 0);">J2EEHomework-servletadv.</span><br
+ style="color: rgb(0, 0, 0);">
+<span style="font-weight: bold; color: rgb(0, 0, 0);"></span>
+<ul style="color: rgb(0, 0, 0);">
+  <li>Zip file of the the<span style="font-weight: bold;"> Myhello2</span>
+NetBeans project.&nbsp; (Someone else
+should be able to open and run it as a NetBeans project.)&nbsp; You can
+use your favorite zip utility or you can use "jar" utility that comes
+with JDK as following.<br>
+  </li>
+  <ul>
+    <li>cd &lt;parent directory that contains <span
+ style="font-weight: bold;">Myhello2</span> directory&gt;
+(assuming you named your project as <span style="font-weight: bold;">Myhello2</span>)<br>
+    </li>
+    <li>jar cvf Myhello2.zip Myhello2 (<span style="font-weight: bold;">Myhello2
+      </span>should contain <span style="font-weight: bold;">nbproject
+      </span>directory)<br>
+    </li>
+  </ul>
+  <li>Captured output screen&nbsp;<span style="font-weight: bold;"> </span>-
+name it as <span style="font-weight: bold;">J2EEHomework-servletadv.gif</span>
+or<span style="font-weight: bold;">J2EEHomework-servletadv</span><span
+ style="font-weight: bold;">.jpg</span> (or <span
+ style="font-weight: bold;">J2EEHomework-servletadv.&lt;whatver
+graphics format&gt;</span>)</li>
+  <ul>
+    <li>Any screen capture that shows that your program is working is
+good enough.&nbsp; <br>
+    </li>
+  </ul>
+  <li>If you decide to use
+different IDE other than NetBeans, the zip
+file should contain all the files that are needed for rebuilding the
+project - war file with necessary source files is OK.</li>
+</ul>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; <a href="#Tutorial_Exercises">return to the top</a></div>
+<br>
+<br>
+<br>
+<div class="indent"></div>
+<p></p>
+<div class="indent">
+<div class="indent">
+<p><br>
+</p>
+</div>
+<p> </p>
+</div>
+<!-- ======================================================================================= -->
+<div style="margin-left: 40px;"><br>
+</div>
+<div class="indent"><br>
+<br>
+<br>
+</div>
+<br>
+<p> </p>
+<!-- ======================================================================================== -->
+</body>
+</html>

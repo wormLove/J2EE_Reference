@@ -1,0 +1,3533 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <script src="index_files/tigris.txt" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="index_files/netbeans.css">
+  <title>LAB-4221: Struts 2 Basics</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta name="SourceCastVersion" content="2.6.2.4.10">
+  <link rel="shortcut icon" href="http://www.netbeans.org/favicon.ico"
+ type="image/x-icon">
+  <meta name="keywords"
+ content="NetBeans, IDE, Platform, free, open source, developer">
+  <link rel="stylesheet" href="index_files/netbeans_002.css">
+  <meta name="author" content="Sang Shin">
+  <style type="text/css">
+#search {height:100%;}
+#topmodule {align:right;}
+  </style>
+  <script language="JavaScript" type="text/javascript">
+<!--
+function get_sc_login() {
+  var sclogin = "guest";
+  return (sclogin);
+}
+var username=get_sc_login();
+//-->
+  </script>
+  <meta content="Struts 2 Basics" name="description">
+</head>
+<body onload="loginfocus()" class="composite"
+ style="background-image: url(index_files/beige.jpg);">
+<!-- begin TopTabs --><!-- end TopTabs --><!-- start NavCol --><!-- end NavCol --><!-- Servlet-Specific template --><!-- Show servlet name if it is a servlet -->
+<br>
+<br>
+<h1 style="text-align: center;">Struts 2 Basics<br>
+</h1>
+<div class="articledate" style="margin-left: 0px; text-align: center;"><a
+ href="http://www.javapassion.com/SangShinSchedule.html#Bio">Sang Shin</a>,
+<a href="mailto:sang.shin@sun.com">sang.shin@sun.com</a>, <a
+ href="http://www.javapassion.com/j2ee">www.javapassion.com/j2ee</a><a
+ href="mailto:sang.shin@sun.com"><i>
+</i></a></div>
+<div class="indent"><br>
+<br>
+<br>
+<b><br>
+</b>
+<div style="text-align: center;"><b>Expected duration: 90 minutes
+(excluding homework)<br>
+<br>
+</b></div>
+<br>
+<h3 class="tutorial">Prerequisites</h3>
+<p>This hands-on lab assumes you have some basic knowledge or
+programming experience on the following&nbsp; technologies. <br>
+</p>
+<ul>
+  <li>Servlet and JSP programming</li>
+  <li>MVC (Model, View, and Controller) architecture<br>
+  </li>
+</ul>
+<p></p>
+<br>
+<h3 class="tutorial">Software Needed</h3>
+<p>Before you begin, you need to install the following software on your
+computer.&nbsp; <br>
+</p>
+<ul>
+  <li>Java Standard Development Kit (JDK™) version
+6.0 (<a href="http://java.sun.com/javase/downloads/index.jsp">download</a>)<br>
+  </li>
+  <ul>
+    <li>If you already have installed JDK 5.0 or JDK 6.0, you
+can skip this.</li>
+  </ul>
+  <li>NetBeans IDE 6.1 (<a
+ href="http://www.netbeans.org/community/releases/61/">download</a>) <br>
+  </li>
+  <ul>
+    <li>Download either "<span style="font-weight: bold;">Web &amp;
+Java EE</span>" or "<span style="font-weight: bold;">All</span>"
+bundles. ("All" is prefered)</li>
+    <li>When you install NetBeans IDE, it will ask you which JDK
+you want to use.</li>
+  </ul>
+  <li>Struts 2 Javadoc (<a
+ href="http://mirror.candidhosting.com/pub/apache/struts/documentation/struts-2.0.11-docs.zip">download</a>)</li>
+  <ul>
+    <li>You can configure the Struts 2 Javadoc file so that you can do
+context sensitive Javadoc on Struts 2 APIs. The API document resides <span
+ style="font-weight: bold;">&lt;Struts2-Unzipped-Directory&gt;/docs/struts-core/apidocs</span>.<br>
+    </li>
+  </ul>
+  <li>4221_struts2basics.zip (<a
+ href="http://www.javapassion.com/handsonlabs/4221_struts2basics.zip">download</a>)</li>
+  <ul>
+    <li>It contains this document and the lab contents<br>
+    </li>
+    <li>Download it and unzip in a directory of your choice</li>
+  </ul>
+</ul>
+<br>
+<h3 class="tutorial">OS platforms you can use<br>
+</h3>
+<ul>
+  <li>Windows</li>
+  <li>Solaris x86, Solaris Sparc</li>
+  <li>Linux</li>
+  <li>Mac OS X</li>
+</ul>
+<h3 class="tutorial"><a name="Change_Log"></a>Change Log<br>
+</h3>
+<ul>
+  <li>Nov. 10th, 2007: Created</li>
+  <li>Jan. 3rd, 2008: Homework created</li>
+  <li>July 26th, 2008: NetBeans 6.1 is used for sample projects</li>
+</ul>
+<br>
+<br>
+<h3 class="tutorial">Things to be done (by Sang Shin)<br>
+</h3>
+<ul>
+  <li>Polish the documentation</li>
+</ul>
+<h3 class="tutorial"><a name="Tutorial_Exercises"></a>Lab Exercises</h3>
+<ul>
+  <li><a href="#Exercise_1">Exercise 1: Build and run
+"struts2-hellotime" sample
+application (20 minutes)</a><br>
+  </li>
+  <li><a href="#Exercise_2">Exercise 2: Build "mystruts2-hellotime"
+application from scratch (20 minutes)</a></li>
+  <li><a href="#Exercise_3">Exercise 3: Build and run
+"struts2-blank" sample application (20 minutes)</a></li>
+  <li><a href="#Exercise_4">Exercise 4: Build and run "struts2-login"
+sample application
+(20 minutes)</a></li>
+  <li><a href="#Exercise_5">Exercise 5: Client side validation (15
+minutes)</a></li>
+  <li><a href="#Exercise_6">Exercise 6: Validation via annotation (15
+minutes)</a></li>
+  <li><a href="#Exercise_7">Exercise 7: Build and run
+"struts2-mailreader" sample application
+(45 minutes)</a></li>
+  <li><a href="#Exercise_8">Exercise 8: Build and run
+"struts2-showcase" sample application
+(45 minutes)</a><br>
+  </li>
+  <li><a href="#Homework_Exercise">Homework
+Exercise (for people who
+are taking Sang Shin's "Java EE Programming online course")</a></li>
+</ul>
+</div>
+<br>
+<!-- ===================================================================================== -->
+<h2><a name="Exercise_1"></a>Exercise 1: Build and run
+"struts2-hellotime" sample application<br>
+</h2>
+<i></i>
+<p style="margin-left: 40px;">In this exercise, you are going to build
+and run "ready-to-build" Struts sample application.&nbsp; You will then
+build the same application from scratch in the next exercise.<br>
+</p>
+<ul style="margin-left: 40px;">
+</ul>
+<ol style="margin-left: 40px;">
+</ol>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.1"></a>(1.1)
+Open, build, and run "struts2-hellotime" sample application<br>
+</h3>
+<p style="margin-left: 40px;">0. Start NetBeans IDE.&nbsp; <br>
+1. Open <span style="font-weight: bold; color: rgb(51, 51, 255);">struts2-hellotime</span>
+NetBeans project.&nbsp; <br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">Open Project (Ctrl+Shift+O)</span>. The <span
+ style="font-weight: bold;">Open Project</span> dialog box appears.</li>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/struts2basics/samples</span>
+directory.&nbsp; <br>
+  </li>
+  <ul>
+    <li>Windows: If you unzipped the <span style="font-weight: bold;">4221_struts2basics.zip</span>
+file under <span style="font-weight: bold;">C:\handsonlabs</span>
+directory, the directory to which you want
+to browse down should be <span style="font-weight: bold;">C:\handsonlabs\struts2basics\samples.</span></li>
+    <li>Solaris/Linux: If you unzipped the <span
+ style="font-weight: bold;">4221_struts2basics.zip</span>
+file under <span style="font-weight: bold;">$HOME/handsonlabs</span>
+directory, the directory to which you want
+to browse down should be <span style="font-weight: bold;">$HOME/handsonlabs/struts2basics/samples.</span><span
+ style="font-weight: bold;"></span></li>
+  </ul>
+  <li>Select <span style="font-weight: bold; color: rgb(51, 51, 255);">struts2-hellotime</span>.&nbsp;
+  </li>
+  <li>Click <span style="font-weight: bold;">Open Project</span>.&nbsp;
+The <span style="font-weight: bold;">struts2-hellotime</span>
+project node appears under <span style="font-weight: bold;">Projects </span>tab
+window.</li>
+</ul>
+</div>
+<p style="margin-left: 40px;">2. Remove broken references and add
+library files to the project (only if you have broken reference
+problem).&nbsp;&nbsp; You might want to create
+Struts2 library using NetBeans library manager for your
+convenience.&nbsp; <br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right click<span style="font-weight: bold;"></span>
+project node and select <span style="font-weight: bold;">Properties</span>.</li>
+  <li>Observe that <span style="font-weight: bold;">Project Properties</span>
+dialog box appears.</li>
+</ul>
+<ul>
+  <li>Select <span style="font-weight: bold;">Libraries </span>under <span
+ style="font-weight: bold;">Categories </span>on the left</li>
+  <li>Remove all broken references by selecting them all
+and select <span style="font-weight: bold;">Remove </span>on the
+right.</li>
+</ul>
+<ul>
+  <li>Select <span style="font-weight: bold;">Add JAR/Folder</span>
+button on the right.<br>
+  </li>
+  <li>Browse down to<span style="font-weight: bold;">
+&lt;LAB_UNZIPPED_DIRECTORY&gt;/lib1</span> directory.</li>
+  <li>Select all the files and click <span style="font-weight: bold;">Open
+    </span>button.</li>
+</ul>
+</div>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Click <span style="font-weight: bold;">OK</span> button of the<span
+ style="font-weight: bold;"> Project Properties</span> dialog box to
+close it.</li>
+</ul>
+</div>
+<p style="margin-left: 40px;">3. Build and run <span
+ style="font-weight: bold;">struts2-hellotime </span>project. <br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right-click <span style="font-weight: bold;">struts2-hellotime</span>
+project and select <span style="font-weight: bold;">Run</span>. <br>
+  </li>
+  <li>Browser gets displayed.&nbsp; (Figure-1.12 below)<br>
+  </li>
+</ul>
+</div>
+<p style="margin-left: 40px;"><img alt=""
+ src="index_files/1_hellotime1.png" style="width: 812px; height: 643px;"><br>
+Figure-1.12: Running struts2-hellotime project<br>
+</p>
+<p style="margin-left: 40px;"></p>
+<h3 style="margin-left: 40px;" class="tutorial">Summary</h3>
+<p style="margin-left: 40px;">In this exercise,&nbsp; you have built
+and run a ready-to-build-and-run "struts2-hellotime" sample
+application to get a sense how the application works.&nbsp; <br>
+</p>
+<p style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="#Tutorial_Exercises">return to the top</a>
+<br>
+</p>
+<p style="margin-left: 40px;"><br>
+<br>
+</p>
+<!-- ===================================================================================== -->
+<h2><a name="Exercise_2"></a>Exercise 2: Build "mystruts2-hellotime"
+application from scratch<br>
+</h2>
+<p style="margin-left: 40px;">In this exercise, you are going to build
+the <span style="font-weight: bold;">struts2-hellotime </span>application
+from scratch.&nbsp; The goal of this exercise is to let you get exposed
+to
+a step by step process of building the same application you built and
+ran in the previous exercise.&nbsp;&nbsp; <br>
+</p>
+<p style="margin-left: 40px;"></p>
+<ul>
+  <ul>
+  </ul>
+  <ol>
+    <li><a href="#2.1">Create a NetBeans project</a><br>
+    </li>
+    <li><a href="#2.2">Add Struts 2 library files to the project</a><br>
+    </li>
+    <li><a href="#2.3">Modify web.xml file</a><br>
+    </li>
+    <li><a href="#2.4">Add struts.xml file</a><br>
+    </li>
+    <li><a href="#2.5">Write JSP pages</a><br>
+    </li>
+    <li><a href="#2.6">Write Action classes</a><br>
+    </li>
+    <li><a href="#2.7">Build and run the application</a><br>
+    </li>
+  </ol>
+</ul>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.1"></a>(2.1)
+Create a NetBeans project<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">1. Create a new NetBeans project. <br>
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">New Project (Ctrl+Shift+N)</span>.&nbsp;&nbsp;
+    <br>
+  </li>
+  <li>Observe that the <span style="font-weight: bold;">New Project</span>
+dialog box appears.</li>
+  <li>Select <span style="font-weight: bold;"><span
+ style="color: rgb(51, 51, 255);">Web</span> </span>under <span
+ style="font-weight: bold;">Categories </span>and <span
+ style="font-weight: bold; color: rgb(51, 51, 255);">Web Application</span>
+under <span style="font-weight: bold;">Projects</span>.&nbsp; <br>
+  </li>
+  <li>Click <span style="font-weight: bold;">Next</span>. <br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_hellotime1.png"
+ style="width: 809px; height: 505px;"><br>
+<br>
+2. Provide project name to the project.<br>
+<ul>
+  <li>Observe <span style="font-weight: bold;">Name and Location</span>
+pane appears.</li>
+  <li>For the <span style="font-weight: bold;">Project Name</span>
+field, enter <span style="font-weight: bold; color: rgb(51, 51, 255);">mystruts2-hellotime</span>.&nbsp;
+(Figure-1.20 below)</li>
+  <li>Click <span style="font-weight: bold;">Next</span>.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_hellotime2.png"
+ style="width: 809px; height: 505px;"><br>
+Figure-1.20: Name and Location of the project<br>
+<ul>
+  <li>Click Finish.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_hellotime2.0.png"
+ style="width: 809px; height: 505px;"><br>
+<br>
+</div>
+<div style="margin-left: 40px;"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#Exercise_2">return to top of the exercise</a><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.2"></a>(2.2)
+Add Struts 2 library files to the project<br>
+</h3>
+<div style="margin-left: 40px;"><span
+ style="color: rgb(0, 153, 0); font-weight: bold;"></span><br>
+1. Right lick project node and select Properties.<br>
+<br>
+<img alt="" src="index_files/2_hellotime2.1.png"
+ style="width: 843px; height: 753px;"><br>
+<br>
+2. Select Libraries and click Add JAR/Folder.<br>
+<br>
+<img alt="" src="index_files/2_hellotime2.2.png"
+ style="width: 777px; height: 673px;"><br>
+<br>
+3. Add Struts 2 library files.<br>
+<ul>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/struts2basics/lib1
+    </span>directory</li>
+  <li>Select all files and click Open.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_hellotime2.3.png"
+ style="width: 722px; height: 281px;"><br>
+<ul>
+  <li>Click OK to close the Project Properties dialog box.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_hellotime2.4.png"
+ style="width: 777px; height: 673px;"><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.3"></a>(2.3)
+Modify web.xml<br>
+</h3>
+<div style="margin-left: 40px;"><span
+ style="color: rgb(0, 153, 0); font-weight: bold;"></span><br>
+1. Modify IDE generated <span style="font-weight: bold;">web.xml</span>.<br>
+<ul>
+  <li>Double click <span style="font-weight: bold;">web.xml</span>
+under <span style="font-weight: bold;">mystruts2-hellotime-&gt;Web
+Pages-&gt;WEB-INF</span> to open it in the source editor window.</li>
+  <li>Click <span style="font-weight: bold;">XML </span>tab window to
+open it in XML format.</li>
+</ul>
+<img alt="" src="index_files/2_hellotime2.5.png"
+ style="width: 843px; height: 753px;"><br>
+<ul>
+  <li>Replace the IDE generated <span style="font-weight: bold;">web.xml</span>
+with the web.xml in the Code-2.20 below.&nbsp; The code fragments that
+need to be added are highlighted in bold and red-colored font.<br>
+  </li>
+</ul>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version="1.0"
+encoding="UTF-8"?&gt;<br>
+&lt;web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"&gt;<br>
+&nbsp;<span style="color: rgb(255, 0, 0);">&nbsp;&nbsp;</span><span
+ style="font-weight: bold; color: rgb(255, 0, 0);">
+&lt;display-name&gt;Struts Helloworld&lt;/display-name&gt;</span><br
+ style="font-weight: bold; color: rgb(255, 0, 0);">
+      <span style="font-weight: bold; color: rgb(255, 0, 0);">&nbsp;&nbsp;&nbsp;
+&lt;filter&gt;</span><br
+ style="font-weight: bold; color: rgb(255, 0, 0);">
+      <span style="font-weight: bold; color: rgb(255, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;filter-name&gt;struts2&lt;/filter-name&gt;</span><br
+ style="font-weight: bold; color: rgb(255, 0, 0);">
+      <span style="font-weight: bold; color: rgb(255, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;filter-class&gt;org.apache.struts2.dispatcher.FilterDispatcher&lt;/filter-class&gt;</span><br
+ style="font-weight: bold; color: rgb(255, 0, 0);">
+      <span style="font-weight: bold; color: rgb(255, 0, 0);">&nbsp;&nbsp;&nbsp;
+&lt;/filter&gt;</span><br
+ style="font-weight: bold; color: rgb(255, 0, 0);">
+      <span style="font-weight: bold; color: rgb(255, 0, 0);">&nbsp;&nbsp;&nbsp;
+&lt;filter-mapping&gt;</span><br
+ style="font-weight: bold; color: rgb(255, 0, 0);">
+      <span style="font-weight: bold; color: rgb(255, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;filter-name&gt;struts2&lt;/filter-name&gt;</span><br
+ style="font-weight: bold; color: rgb(255, 0, 0);">
+      <span style="font-weight: bold; color: rgb(255, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;url-pattern&gt;/*&lt;/url-pattern&gt;</span><br
+ style="font-weight: bold; color: rgb(255, 0, 0);">
+      <span style="font-weight: bold; color: rgb(255, 0, 0);">&nbsp;&nbsp;&nbsp;
+&lt;/filter-mapping&gt;</span><br>
+&nbsp;&nbsp;&nbsp; &lt;session-config&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;session-timeout&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 30<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/session-timeout&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/session-config&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;welcome-file-list&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;welcome-file&gt;index.jsp&lt;/welcome-file&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/welcome-file-list&gt;<br>
+&lt;/web-app&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.20: IDE generated web.xml<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.4"></a>(2.4)
+Write struts.xml file<br>
+</h3>
+<div style="margin-left: 40px;"><span
+ style="color: rgb(0, 153, 0); font-weight: bold;"></span><br>
+</div>
+<div style="margin-left: 40px;">1. Create XML file.<br>
+<ul>
+  <li>Right click <span style="font-weight: bold;">Sources Packages</span>
+under <span style="font-weight: bold;">mystruts-hellotime</span>
+project node and select <span style="font-weight: bold;">New-&gt;File/Folder</span>.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_hellotime5.png"
+ style="width: 843px; height: 753px;"><br>
+<ul>
+  <li>Observe that the <span style="font-weight: bold;">New File </span>dialog
+box appears.</li>
+  <li>Select <span style="font-weight: bold;">XML </span>under <span
+ style="font-weight: bold;">Categories </span>section on the left and<span
+ style="font-weight: bold;"> XML Document</span> under <span
+ style="font-weight: bold;">File Types</span> section on the right.</li>
+  <li>Click Next.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_hellotime6.png"
+ style="width: 729px; height: 505px;"><br>
+<ul>
+  <li>For the <span style="font-weight: bold;">File Name</span> field,
+enter <span style="font-weight: bold; color: rgb(255, 0, 0);">struts</span>.</li>
+  <li>Click <span style="font-weight: bold;">Browse</span>.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_hellotime6.1.png"
+ style="width: 729px; height: 505px;"><br>
+<ul>
+  <li>Expand <span style="font-weight: bold;">mystruts-helloname-&gt;src</span>.</li>
+  <li>Choose <span style="font-weight: bold;">java</span>.</li>
+  <li>Click <span style="font-weight: bold;">Select Folder</span>.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_hellotime6.2.png"
+ style="width: 432px; height: 525px;"><br>
+<ul>
+  <li>Observe the <span style="font-weight: bold;">Select Document Type</span>
+pane appears.</li>
+  <li>Click Finish.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_hellotime7.png"
+ style="width: 729px; height: 505px;"><br>
+<ul>
+  <li>Observe that the IDE generated <span style="font-weight: bold;">struts.xml</span>
+is displayed in the source editor.</li>
+</ul>
+2. Replace the IDE generated<span style="font-weight: bold;"> struts.xml</span>
+with the struts.xml in the code below.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version="1.0"
+encoding="UTF-8"?&gt;<br>
+      <br>
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&lt;!DOCTYPE
+struts PUBLIC</span><br style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">"-//Apache
+Software Foundation//DTD Struts Configuration 2.0//EN"</span><br
+ style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">"http://struts.apache.org/dtds/struts-2.0.dtd"&gt;</span><br
+ style="font-weight: bold; color: rgb(0, 0, 0);">
+      <br style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&lt;struts&gt;</span><br
+ style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;
+      </span><br style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;
+&lt;constant name="struts.enable.DynamicMethodInvocation" value="false"
+/&gt;</span><br style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;
+&lt;constant name="struts.devMode" value="false" /&gt;</span><br
+ style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;
+      </span><br style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;
+&lt;package name="mypackage" namespace="/pages"
+extends="struts-default"&gt;</span><br
+ style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;action name="HelloTime" class="mypackage.HelloTime"&gt;</span><br
+ style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result&gt;/pages/HelloTime.jsp&lt;/result&gt;</span><br
+ style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/action&gt;</span><br
+ style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;action name="*" class="mypackage.HelloTime"&gt;</span><br
+ style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result&gt;/pages/HelloTime.jsp&lt;/result&gt;</span><br
+ style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/action&gt;</span><br
+ style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;!-- Add actions here --&gt;</span><br
+ style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;
+&lt;/package&gt;</span><br
+ style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;
+      </span><br style="font-weight: bold; color: rgb(0, 0, 0);">
+      <span style="font-weight: bold; color: rgb(0, 0, 0);">&lt;/struts&gt;</span><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+struts.xml<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.5"></a>(2.5)
+Write JSP pages<br>
+</h3>
+<div style="margin-left: 40px;"><span
+ style="color: rgb(0, 153, 0); font-weight: bold;"></span><br>
+In this step, you are going to create JSP pages.&nbsp; This application
+has index.jsp and HelloTime.jsp.<br>
+<br>
+</div>
+<div style="margin-left: 40px;">1. Modify IDE generated <span
+ style="font-weight: bold;">index.jsp</span>.<br>
+<ul>
+  <li>Double click <span style="font-weight: bold;">index.jsp</span>
+under <span style="font-weight: bold;">mystruts2-hellotime-&gt;Web
+Pages</span> to open it in the source editor window.</li>
+  <li>Modify the IDE generated <span style="font-weight: bold;">index.jsp</span>
+with the code below.</li>
+</ul>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;!DOCTYPE HTML PUBLIC
+"-//W3C//DTD HTML 4.0 Transitional//EN"&gt;<br>
+&lt;html&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;META
+HTTP-EQUIV="Refresh" CONTENT="0;URL=<span style="font-weight: bold;">pages/HelloTime.action</span>"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;Loading
+...&lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<img alt="" src="index_files/2_hellotime7.1.png"
+ style="width: 843px; height: 753px;"><br>
+<br>
+2. Create <span style="font-weight: bold;">HelloTime.jsp</span>.<br>
+<ul>
+  <li>Right click <span style="font-weight: bold;">mystruts2-hellotime
+    </span>project node and select <span style="font-weight: bold;">New-&gt;JSP</span>.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_hellotime3.png"
+ style="width: 843px; height: 753px;"><br>
+<ul>
+  <li>For the JSP File Name field, enter <span
+ style="font-weight: bold; color: rgb(255, 0, 0);">HelloTime</span>.</li>
+  <li>For Folder field, enter <span style="font-weight: bold;">pages</span>.<br>
+  </li>
+</ul>
+<br>
+<img alt="" src="index_files/2_hellotime4.png"
+ style="width: 663px; height: 452px;"><br>
+<ul>
+  <li>Observe that the IDE generates HelloTime.jsp and displays it in
+the source editor window.<br>
+  </li>
+  <li>Modify the IDE generated <span style="font-weight: bold;">HelloTime.jsp</span>
+with code below.</li>
+</ul>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">&lt;%@
+taglib prefix="s" uri="/struts-tags" %&gt;</span><br>
+&lt;html&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt;Struts 2 Hello
+Time Application!&lt;/title&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h2&gt;<span
+ style="font-weight: bold;">&lt;s:property value="message" /&gt;</span>&lt;/h2&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;Current date and
+time is: &lt;b&gt;<span style="font-weight: bold;">&lt;s:property
+value="currentTime" /&gt;</span>&lt;/b&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<img alt="" src="index_files/2_hellotime4.1.png"
+ style="width: 843px; height: 753px;"><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="index.html#Exercise_2">return to top of the exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.6"></a>(2.6)
+Write Action classes<br>
+</h3>
+<div style="margin-left: 40px;"><span
+ style="color: rgb(51, 153, 153); font-weight: bold;"></span><br>
+1. Create a new Java class.<br>
+<ul>
+  <li>Right click the project node and select New-&gt;Java Class.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_hellotime9.png"
+ style="width: 843px; height: 753px;"><br>
+<ul>
+  <li>For the <span style="font-weight: bold;">Class Name</span>
+field, enter <span style="font-weight: bold; color: rgb(255, 0, 0);">HelloTime</span>.</li>
+  <li>For the <span style="font-weight: bold;">Package </span>field,
+enter <span style="font-weight: bold; color: rgb(255, 0, 0);">mypackage</span>.</li>
+  <li>Click Finish.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_hellotime11.png"
+ style="width: 729px; height: 505px;"><br>
+<br>
+2. Modify the IDE generated HelloTime.java.<br>
+<ul>
+  <li>Observe that the IDE generates HelloTime.java and displays in the
+source editor window.</li>
+  <li>Replace the IDE generated HelloTime.java with code below.<br>
+  </li>
+</ul>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">package mypackage;<br>
+      <br>
+import com.opensymphony.xwork2.ActionSupport;<br>
+import java.util.Date;<br>
+      <br>
+      <span style="font-weight: bold;">public class HelloTime extends
+ActionSupport </span>{<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static final String MESSAGE = "My Own Struts
+2 Hello Time Tutorial!";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">public String
+execute() throws Exception {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+setMessage(MESSAGE);</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return SUCCESS;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; private String message;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public void setMessage(String message){<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.message = message;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public String
+getMessage() {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return message;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; </span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; public String
+getCurrentTime(){</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return new Date().toString();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+</div>
+<div style="margin-left: 40px;"><img alt=""
+ src="index_files/2_hellotime11.1.png"
+ style="width: 843px; height: 753px;"><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="index.html#Exercise_2">return to top of the exercise</a><br>
+</div>
+<br>
+<div style="margin-left: 40px;"><br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.7"></a>(2.7)
+Build and run the application<br>
+</h3>
+<div style="margin-left: 40px;">
+<br>
+1. Right-click <span style="font-weight: bold;">mystruts2-hellotime</span>
+project node and select <span style="font-weight: bold;">Run</span>.&nbsp;
+<br>
+2. Observe that the browser displays the current time.<br>
+<br>
+<img alt="" src="index_files/2_hellotime12.png"
+ style="width: 711px; height: 555px;"><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="index.html#Exercise_2">return to top of the exercise</a><br>
+</div>
+<div style="margin-left: 40px;"><br>
+</div>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial">Summary</h3>
+<br>
+<div style="margin-left: 40px;">Solution is provided as a NetBeans
+project, <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/struts2basics/solutions/mystruts2-hellotime</span>.&nbsp;<span
+ style="font-weight: bold;"> <br>
+</span></div>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial">Summary</h3>
+<p style="margin-left: 40px;">In this exercise, you have built and run
+"mystruts2-hellotime" sample application step by step.<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; <a href="#Tutorial_Exercises">return
+to the top</a> </p>
+<div class="indent"></div>
+<p></p>
+<div class="indent">
+<div class="indent">
+<p><br>
+</p>
+</div>
+<p> </p>
+</div>
+<!-- ======================================================================================= -->
+<br>
+<h2><a name="Exercise_3"></a>Exercise 3: Build and run "struts2-blank"
+sample application<br>
+</h2>
+<ol>
+  <ol>
+  </ol>
+</ol>
+<br>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial">(3.1) Open, build, and
+run "struts2-blank" sample application<br>
+</h3>
+<div style="margin-left: 40px;">
+<br>
+1. Open <span style="font-weight: bold; color: rgb(51, 51, 255);">struts2-blank</span>
+NetBeans project.&nbsp; <br>
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">Open Project (Ctrl+Shift+O)</span>. The <span
+ style="font-weight: bold;">Open Project</span> dialog box appears.</li>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/struts2basics/samples</span>
+directory.&nbsp; <br>
+  </li>
+  <li>Select <span style="font-weight: bold; color: rgb(51, 51, 255);">struts2-blank</span>.&nbsp;
+  </li>
+  <li>Click <span style="font-weight: bold;">Open Project</span>.&nbsp;
+The <span style="font-weight: bold;">struts2-blank</span>
+project node appears under <span style="font-weight: bold;">Projects </span>tab
+window.</li>
+</ul>
+<div style="margin-left: 40px;"></div>
+</div>
+<p style="margin-left: 40px;">2. Remove broken references and add
+library files to the project.<br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right click<span style="font-weight: bold;"></span>
+project node and select <span style="font-weight: bold;">Properties</span>.</li>
+  <li>Observe that <span style="font-weight: bold;">Project Properties</span>
+dialog box appears.</li>
+</ul>
+<ul>
+  <li>Select <span style="font-weight: bold;">Libraries </span>under <span
+ style="font-weight: bold;">Categories </span>on the left</li>
+  <li>Remove all broken references by selecting them all
+and select <span style="font-weight: bold;">Remove </span>on the
+right.</li>
+</ul>
+<ul>
+  <li>Select <span style="font-weight: bold;">Add JAR/Folder</span>
+button on the right.<br>
+  </li>
+  <li>Browse down to<span style="font-weight: bold;">
+&lt;LAB_UNZIPPED_DIRECTORY&gt;/lib1</span> directory.</li>
+  <li>Select all the files and click <span style="font-weight: bold;">Open
+    </span>button.</li>
+</ul>
+</div>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Click <span style="font-weight: bold;">OK</span> button of the<span
+ style="font-weight: bold;"> Project Properties</span> dialog box to
+close it.</li>
+</ul>
+</div>
+<p style="margin-left: 40px;">3. Build and run <span
+ style="font-weight: bold;">struts2-blank </span>project. <br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right-click <span style="font-weight: bold;">struts2-hellotime</span>
+project and select <span style="font-weight: bold;">Run</span>. <br>
+  </li>
+  <li>Browser gets displayed.&nbsp; (Figure-1.12 below)</li>
+</ul>
+<img alt="" src="index_files/3_blank1.png"
+ style="width: 711px; height: 555px;"><br>
+<ul>
+  <li>Click Espanol link and observe that Spanish words gets displayed.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/3_blank2.png"
+ style="width: 711px; height: 555px;"><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial">(3.2) Look under the
+hood of the "struts2-blank" sample application</h3>
+<div style="margin-left: 40px;"></div>
+<br>
+<div style="margin-left: 40px;">1. web.xml<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version="1.0"
+encoding="UTF-8"?&gt;<br>
+&lt;web-app id="WebApp_9" version="2.4"
+xmlns="http://java.sun.com/xml/ns/j2ee"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; &lt;display-name&gt;Struts Blank&lt;/display-name&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; &lt;filter&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;filter-name&gt;struts2&lt;/filter-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;filter-class&gt;org.apache.struts2.dispatcher.FilterDispatcher&lt;/filter-class&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/filter&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; &lt;filter-mapping&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;filter-name&gt;struts2&lt;/filter-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">&lt;url-pattern&gt;/*&lt;/url-pattern&gt;</span><br>
+&nbsp;&nbsp;&nbsp; &lt;/filter-mapping&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; &lt;welcome-file-list&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;welcome-file&gt;index.html&lt;/welcome-file&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/welcome-file-list&gt;<br>
+      <br>
+&lt;/web-app&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+2. struts.xml<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version="1.0"
+encoding="UTF-8" ?&gt;<br>
+&lt;!DOCTYPE struts PUBLIC<br>
+&nbsp;&nbsp;&nbsp; "-//Apache Software Foundation//DTD Struts
+Configuration 2.0//EN"<br>
+&nbsp;&nbsp;&nbsp; "http://struts.apache.org/dtds/struts-2.0.dtd"&gt;<br>
+      <br>
+&lt;struts&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; &lt;constant
+name="struts.enable.DynamicMethodInvocation" value="false" /&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;constant name="struts.devMode" value="false"
+/&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;"> &lt;include
+file="example.xml"/&gt;</span><br>
+      <br>
+&nbsp;&nbsp;&nbsp; &lt;!-- Add packages here --&gt;<br>
+      <br>
+&lt;/struts&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+3. <span style="font-weight: bold;">example.xml</span> under <span
+ style="font-weight: bold;">Sources packages-&gt;&lt;default package&gt;</span><br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version="1.0"
+encoding="UTF-8" ?&gt;<br>
+&lt;!DOCTYPE struts PUBLIC<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "-//Apache Software
+Foundation//DTD Struts Configuration 2.0//EN"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"http://struts.apache.org/dtds/struts-2.0.dtd"&gt;<br>
+      <br>
+&lt;struts&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; &lt;package name="example" namespace="/example"
+extends="struts-default"&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action name="HelloWorld"
+class="example.HelloWorld"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result&gt;/example/HelloWorld.jsp&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action name="*"
+class="example.ExampleSupport"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result&gt;/example/{1}.jsp&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- Add actions here
+--&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/package&gt;<br>
+&lt;/struts&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+4. Web Pages-&gt;index.html<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;!DOCTYPE HTML PUBLIC
+"-//W3C//DTD HTML 4.0 Transitional//EN"&gt;<br>
+&lt;html&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;META
+HTTP-EQUIV="Refresh" CONTENT="0;URL=<span style="font-weight: bold;">example/HelloWorld.action</span>"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;Loading
+...&lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+5. Web Pages-&gt;example-&gt;HelloWorld.jsp<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ page
+contentType="text/html; charset=UTF-8" %&gt;<br>
+      <span style="font-weight: bold;">&lt;%@ taglib prefix="s"
+uri="/struts-tags" %&gt;</span><br>
+&lt;html&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt;<span
+ style="font-weight: bold;">&lt;s:text name="HelloWorld.message"/&gt;</span>&lt;/title&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h2&gt;<span
+ style="font-weight: bold;">&lt;s:property value="message"/&gt;</span>&lt;/h2&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;h3&gt;Languages&lt;/h3&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;ul&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;li&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="font-weight: bold;">&lt;s:url id="url"
+action="HelloWorld"&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:param name="request_locale"&gt;en&lt;/s:param&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/s:url&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:a href="%{url}"&gt;English&lt;/s:a&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/li&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;li&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span style="font-weight: bold;">&lt;s:url id="url"
+action="HelloWorld"&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:param name="request_locale"&gt;es&lt;/s:param&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/s:url&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:a href="%{url}"&gt;Espanol&lt;/s:a&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/li&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/ul&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+6. Source Packages-&gt;example-&gt;HelloWorld.java<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">package example;<br>
+      <br>
+/**<br>
+&nbsp;* &lt;code&gt;Set welcome message.&lt;/code&gt;<br>
+&nbsp;*/<br>
+public class HelloWorld extends ExampleSupport {<br>
+      <br>
+&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp; public String
+execute() throws Exception {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+setMessage(getText(MESSAGE));</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return SUCCESS;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Provide default valuie for Message property.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">public static
+final String MESSAGE = "HelloWorld.message";</span><br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Field for Message property.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;"> private String
+message;</span><br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Return Message property.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return Message property<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">public String
+getMessage() {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return message;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Set Message property.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param message Text to display on HelloWorld
+page.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public void setMessage(String message) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.message = message;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+7. Source Packages-&gt;example-&gt;ExampleSupport.java<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">package example;<br>
+      <br>
+import com.opensymphony.xwork2.ActionSupport;<br>
+      <br>
+/**<br>
+&nbsp;* Base Action class for the Tutorial package.<br>
+&nbsp;*/<br>
+public class ExampleSupport extends <span style="font-weight: bold;">ActionSupport
+      </span>{<br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+8. Source Packages-&gt;example-&gt;package.properties-&gt;default
+language<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">HelloWorld.message=
+Struts is up and running ...</span><br>
+requiredstring = ${getText(fieldName)} is required.<br>
+password = Password<br>
+username = User Name<br>
+Missing.message =&nbsp; This feature is under construction. Please try
+again in the next interation.<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+9. Source Packages-&gt;example-&gt;package.properties-&gt;es - Spanish<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">HelloWorld.message=
+¡Struts está bien! ...</span><br>
+requiredstring = ${getText(fieldName)} se requiere.<br>
+password = Contraseña<br>
+username = Nombre de Usuario<br>
+Missing.message =&nbsp;&nbsp; ¡en obras! ¡seguir intentando!<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+</div>
+<br>
+<h2><a name="Exercise_4"></a>Exercise 4: Build and run "struts2-login"
+sample application<br>
+</h2>
+<br>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial">(4.1) Open, build, and
+run "struts2-login" sample application<br>
+</h3>
+<div style="margin-left: 40px;">
+<br>
+1. Open <span style="font-weight: bold; color: rgb(51, 51, 255);">struts2-login</span>
+NetBeans project.&nbsp; <br>
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">Open Project (Ctrl+Shift+O)</span>. The <span
+ style="font-weight: bold;">Open Project</span> dialog box appears.</li>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/struts2basics/samples</span>
+directory.&nbsp; <br>
+  </li>
+  <li>Select <span style="font-weight: bold; color: rgb(51, 51, 255);">struts2-login</span>.&nbsp;
+  </li>
+  <li>Click <span style="font-weight: bold;">Open Project</span>.&nbsp;
+The <span style="font-weight: bold;">struts2-login</span>
+project node appears under <span style="font-weight: bold;">Projects </span>tab
+window.</li>
+</ul>
+<div style="margin-left: 40px;">
+</div>
+</div>
+<p style="margin-left: 40px;">2. Remove broken references and add
+library files to the project.<br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right click<span style="font-weight: bold;"></span>
+project node and select <span style="font-weight: bold;">Properties</span>.</li>
+  <li>Observe that <span style="font-weight: bold;">Project Properties</span>
+dialog box appears.</li>
+</ul>
+<ul>
+  <li>Select <span style="font-weight: bold;">Libraries </span>under <span
+ style="font-weight: bold;">Categories </span>on the left</li>
+  <li>Remove all broken references by selecting them all
+and select <span style="font-weight: bold;">Remove </span>on the
+right.</li>
+</ul>
+<ul>
+  <li>Select <span style="font-weight: bold;">Add JAR/Folder</span>
+button on the right.<br>
+  </li>
+  <li>Browse down to<span style="font-weight: bold;"> <span
+ style="color: rgb(51, 51, 255);">&lt;LAB_UNZIPPED_DIRECTORY&gt;/lib1</span></span>
+directory.</li>
+  <li>Select all the files and click <span style="font-weight: bold;">Open
+    </span>button.</li>
+</ul>
+</div>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Click <span style="font-weight: bold;">OK</span> button of the<span
+ style="font-weight: bold;"> Project Properties</span> dialog box to
+close it.</li>
+</ul>
+</div>
+<p style="margin-left: 40px;">3. Build and run <span
+ style="font-weight: bold;">struts2-login </span>project. <br>
+</p>
+<ul style="margin-left: 40px;">
+  <li>Right-click <span style="font-weight: bold;">struts2-login</span>
+project and select <span style="font-weight: bold;">Run</span>. <br>
+  </li>
+  <li>Browser gets displayed.&nbsp; <br>
+  </li>
+  <li>Click <span style="font-weight: bold;">English </span>link.<br>
+  </li>
+</ul>
+<div style="margin-left: 40px;"><img alt=""
+ src="index_files/4_login1.png" style="width: 687px; height: 582px;"><br>
+<ul>
+  <li>Enter your name, sangshin in this example, for the <span
+ style="font-weight: bold;">User Name</span> field.</li>
+  <li>Enter a password for the <span style="font-weight: bold;">Password
+    </span>field.</li>
+  <li>Click <span style="font-weight: bold;">Submit</span>.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/4_login2.png"
+ style="width: 687px; height: 582px;"><br>
+<ul>
+  <li>Observe that <span style="font-weight: bold;">Missing.jsp</span>
+is being displayed.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/4_login3.png"
+ style="width: 687px; height: 582px;"><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial">(4.2) Study the
+configuration of the "struts2-login" sample application</h3>
+<br>
+<div style="margin-left: 40px;">1. <span style="font-weight: bold;">struts.xml
+</span>under <span style="font-weight: bold;">Source
+Packages-&gt;&lt;default package&gt;</span><br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version="1.0"
+encoding="UTF-8" ?&gt;<br>
+&lt;!DOCTYPE struts PUBLIC<br>
+&nbsp;&nbsp;&nbsp; "-//Apache Software Foundation//DTD Struts
+Configuration 2.0//EN"<br>
+&nbsp;&nbsp;&nbsp; "http://struts.apache.org/dtds/struts-2.0.dtd"&gt;<br>
+      <br>
+&lt;struts&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; &lt;constant
+name="struts.enable.DynamicMethodInvocation" value="false" /&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;constant name="struts.devMode" value="false"
+/&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; &lt;include file="example.xml"/&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; &lt;!-- Add packages here --&gt;<br>
+      <br>
+&lt;/struts&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+2. <span style="font-weight: bold;">example.xml</span> under <span
+ style="font-weight: bold;">Source Packages-&gt;&lt;default package&gt;</span><br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version="1.0"
+encoding="UTF-8" ?&gt;<br>
+&lt;!DOCTYPE struts PUBLIC<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "-//Apache Software
+Foundation//DTD Struts Configuration 2.0//EN"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"http://struts.apache.org/dtds/struts-2.0.dtd"&gt;<br>
+      <br>
+&lt;struts&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; &lt;package name="example" namespace="/example"
+extends="struts-default"&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">&lt;action name="HelloWorld"
+class="example.HelloWorld"&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result&gt;/example/HelloWorld.jsp&lt;/result&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/action&gt;</span><br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;
+&lt;action name="Login_*" method="{1}" class="example.Login"&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result name="input"&gt;/example/Login.jsp&lt;/result&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result type="redirect-action"&gt;Menu&lt;/result&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/action&gt;</span><br style="font-weight: bold;">
+      <br>
+&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;action name="*"
+class="example.ExampleSupport"&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result&gt;/example/{1}.jsp&lt;/result&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/action&gt;</span><br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- Add actions here
+--&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/package&gt;<br>
+&lt;/struts&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial">(4.3) Control flow of
+the "struts2-login" sample application</h3>
+<div style="margin-left: 40px;"><br>
+1. The <span style="font-weight: bold;">index.html</span> is displayed.<br>
+<span style="font-weight: bold;"></span><br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;!DOCTYPE HTML PUBLIC
+"-//W3C//DTD HTML 4.0 Transitional//EN"&gt;<br>
+&lt;html&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;META
+HTTP-EQUIV="Refresh" CONTENT="0;<span style="font-weight: bold;">URL=example/HelloWorld.action</span>"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;Loading
+...&lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+index.html under Web Pages<br>
+<br>
+2. Control is forwarded to <span style="font-weight: bold;">example/HelloWorld.action</span><br>
+<br>
+When the <span style="font-weight: bold;">index.html</span> is
+accessed, the control is forwarded to
+<span style="font-weight: bold;">example/HelloWorld.action</span>.&nbsp;
+This will result in the invocation of the <span
+ style="font-weight: bold;">execute()</span> method of
+the <span style="font-weight: bold;">example.HelloWorld</span> class
+according to the configuration below.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&nbsp;&nbsp; &lt;package
+name="example" <span style="font-weight: bold;">namespace="/example"</span>
+extends="struts-default"&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">&lt;action name="HelloWorld"
+class="example.HelloWorld"&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>&lt;result&gt;/example/HelloWorld.jsp&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/action&gt;</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+3. The<span style="font-weight: bold;"> execute()</span> method of the
+example.HelloWorld class is invoked.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">package example;<br>
+      <br>
+/**<br>
+&nbsp;* &lt;code&gt;Set welcome message.&lt;/code&gt;<br>
+&nbsp;*/<br>
+public class HelloWorld extends ExampleSupport {<br>
+      <br>
+&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp; public String
+execute() throws Exception {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>LOG.info("HelloWorld:
+execute() method is called");<span style="font-weight: bold;"><br
+ style="font-weight: bold;">
+      </span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+setMessage(getText(MESSAGE));</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return SUCCESS;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Provide default valuie for Message property.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public static final String MESSAGE =
+"HelloWorld.message";<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Field for Message property.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; private String message;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Return Message property.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return Message property<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public String getMessage() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return message;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * Set Message property.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @param message Text to display on HelloWorld
+page.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public void setMessage(String message) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.message = message;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+HelloWorld.java under Source Packages-&gt;example.<br>
+<br>
+Note that the execute() method of the HelloWorld.java always returns
+SUCCESS. This will set the <span style="font-weight: bold;">result </span>to
+be set to<span style="font-weight: bold;"> /example/HelloWorld.jsp</span>.<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action name="HelloWorld"
+class="example.HelloWorld"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold;">
+&lt;result&gt;/example/HelloWorld.jsp&lt;/result&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/action&gt;<br>
+<br>
+4. HelloWorld.jsp is displayed.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ page
+contentType="text/html; charset=UTF-8" %&gt;<br>
+&lt;%@ taglib prefix="s" uri="/struts-tags" %&gt;<br>
+&lt;html&gt;<br>
+&lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;title&gt;&lt;s:text
+name="HelloWorld.message"/&gt;&lt;/title&gt;<br>
+&lt;/head&gt;<br>
+      <br>
+&lt;body&gt;<br>
+&lt;h2&gt;&lt;s:property value="message"/&gt;&lt;/h2&gt;<br>
+      <br>
+&lt;h3&gt;Languages&lt;/h3&gt;<br>
+&lt;ul&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;li&gt;<br>
+&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:url id="url" action="Login"&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold;">&nbsp; &lt;s:param
+name="request_locale"&gt;en&lt;/s:param&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/s:url&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">&lt;s:a
+href="%{url}"&gt;English&lt;/s:a&gt;</span><br>
+&nbsp;&nbsp;&nbsp; &lt;/li&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;li&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;
+&lt;s:url id="url" action="Login"&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">&lt;s:param
+name="request_locale"&gt;es&lt;/s:param&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/s:url&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold;"> &lt;s:a
+href="%{url}"&gt;Espanol&lt;/s:a&gt;</span><br>
+&nbsp;&nbsp;&nbsp; &lt;/li&gt;<br>
+&lt;/ul&gt;<br>
+      <br>
+&lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+HelloWorld.jsp under Web Pages-&gt;example<br>
+<br>
+The <span style="font-weight: bold;">&lt;s:url ..&gt;</span> tag is
+used to create a URL.&nbsp; You can use the &lt;s:param ..&gt; tag
+inside the body to provide additional request parameters.&nbsp; So
+the&nbsp; <span style="font-weight: bold;">%{url}</span>
+represents&nbsp; <span style="font-weight: bold;">http://localhost:8080/struts2-login/example/Login.action?request_locale=en</span>.&nbsp;
+<span style="color: rgb(0, 0, 0);">When the link is clicked, it will</span>
+set the result to <span style="font-weight: bold;">/example/Login.jsp</span>
+according to the configuration below.<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;</span>
+&lt;action name="Login_*" method="{1}" class="example.Login"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="font-weight: bold;">&lt;result
+name="input"&gt;/example/Login.jsp&lt;/result&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result type="redirect-action"&gt;Menu&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/action&gt;<br>
+<br>
+5. Login.jsp is displayed.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ page
+contentType="text/html; charset=UTF-8" %&gt;<br>
+&lt;%@ taglib prefix="s" uri="/struts-tags" %&gt;<br>
+&lt;html&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt;Sign
+On&lt;/title&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">&lt;s:form action="Login"&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:textfield key="username"/&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:password key="password" /&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:submit/&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/s:form&gt;</span><br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<span style="color: rgb(0, 0, 0);">Now when the form is submitted, </span>the
+<span style="font-weight: bold;">username </span>and <span
+ style="font-weight: bold;">password </span>fields are set by the
+entered values, and then the<span style="color: rgb(0, 0, 0);"> <span
+ style="font-weight: bold;">execute()</span> method of the </span><span
+ style="font-weight: bold;">example.Login</span> class gets invoked
+according to the configuration below.<br style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 0);">&nbsp;</span><span
+ style="font-weight: bold; color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="color: rgb(0, 0, 0);"></span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;</span>
+&lt;action name="<span style="font-weight: bold;">Login_*</span>"
+method="<span style="font-weight: bold;">{1}"</span> class="<span
+ style="font-weight: bold;">example.Login</span>"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result name="input"&gt;/example/Login.jsp&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result type="redirect-action"&gt;Menu&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/action&gt;<br>
+<br>
+6. The execute() method of the <span style="font-weight: bold;">example.Login</span>
+class is invoked.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">package example;<br>
+      <br>
+public class Login extends ExampleSupport {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp; public String
+execute() throws Exception {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> LOG.info("Login:
+execute() method is called, username = " + username);<span
+ style="font-weight: bold;"><br style="font-weight: bold;">
+      </span> <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (isInvalid(getUsername())) return INPUT;</span><span
+ style="font-weight: bold;"></span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (isInvalid(getPassword())) return INPUT;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return SUCCESS;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; private boolean isInvalid(String value) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return (value == null ||
+value.length() == 0);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; private String username;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public String getUsername() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return username;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public void setUsername(String username) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.username = username;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; private String password;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public String getPassword() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return password;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public void setPassword(String password) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.password = password;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+If a valid username and a valid password are entered, the execute()
+method of Login class returns SUCCESS, whose result is set to <span
+ style="font-weight: bold;">Menu</span>.&nbsp; This results in calling
+http://localhost:8080/struts2-login/example/Menu.action.<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;</span>
+&lt;action name="Login_*" method="{1}" class="example.Login"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result name="input"&gt;/example/Login.jsp&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="font-weight: bold;">&lt;result
+type="redirect-action"&gt;Menu&lt;/result&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/action&gt;<br>
+<span style="font-weight: bold;"></span><br>
+7. The Menu action is accessed and the execute() method of the
+example.ExampleSupport class is executed according to the configuration
+below.<br>
+<br>
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&lt;action name=<span style="font-weight: bold;">"*"</span>
+class="<span style="font-weight: bold;">example.ExampleSupport</span>"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold;">
+</span>&lt;result&gt;/example/{1}.jsp&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+<br>
+<br>
+8. The execute() method of the ExampleSupport (actually the execute()
+method of the ActionSupport class) is invoked.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">package example;<br>
+      <br>
+import com.opensymphony.xwork2.ActionSupport;<br>
+      <br>
+/**<br>
+&nbsp;* Base Action class for the Tutorial package.<br>
+&nbsp;*/<br>
+public class ExampleSupport extends ActionSupport {<br>
+&nbsp;&nbsp;&nbsp; public String execute() throws Exception {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LOG.info("ExampleSupport:
+execute() method is called");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return SUCCESS;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Note that ExampleSupport class extends ActionSupport class, which
+execute() method returns SUCCESS as a default, which will display <span
+ style="font-weight: bold;">/example/Menu.jsp</span> because {1} is
+replaced by <span style="font-weight: bold;">Menu</span>.<br>
+<br>
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+&lt;action name="*"
+class="example.ExampleSupport"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold;">&nbsp;
+&lt;result&gt;/example/{1}.jsp&lt;/result&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+<br>
+9.&nbsp; The Menu.jsp is displayed.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ page
+contentType="text/html; charset=UTF-8" %&gt;<br>
+&lt;%@ taglib prefix="s" uri="/struts-tags" %&gt;<br>
+&lt;s:include value="Missing.jsp"/&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+10. The Missing.jsp is displayed.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ page
+contentType="text/html; charset=UTF-8" %&gt;<br>
+&lt;%@ taglib prefix="s" uri="/struts-tags" %&gt;<br>
+&lt;html&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;&lt;title&gt;Missing
+Feature&lt;/title&gt;&lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:text name="Missing.message"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
+</div>
+<h2><a name="Exercise_5"></a>Exercise 5: Build and run
+"struts2-login-clientvalidation" sample
+application<br>
+</h2>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial">(5.1) Open, build, and
+run "struts2-login-clientvalidation" sample application<br>
+</h3>
+<div style="margin-left: 40px;">
+<br>
+1. Open <span style="font-weight: bold; color: rgb(51, 51, 255);">struts2-login-clientvalidation</span>
+NetBeans project.&nbsp; <br>
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">Open Project (Ctrl+Shift+O)</span>. The <span
+ style="font-weight: bold;">Open Project</span> dialog box appears.</li>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/struts2basics/samples</span>
+directory.&nbsp; <br>
+  </li>
+  <li>Select <span style="font-weight: bold; color: rgb(51, 51, 255);">struts2-login-clientvalidation</span>.&nbsp;
+  </li>
+  <li>Click <span style="font-weight: bold;">Open Project</span>.&nbsp;
+The <span style="font-weight: bold;">struts2-login-clientvalidation</span>
+project node appears under <span style="font-weight: bold;">Projects </span>tab
+window.</li>
+</ul>
+<div style="margin-left: 40px;">
+</div>
+</div>
+<p style="margin-left: 40px;">2. Remove broken references and add
+library files to the project.<br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right click<span style="font-weight: bold;"></span>
+project node and select <span style="font-weight: bold;">Properties</span>.</li>
+  <li>Observe that <span style="font-weight: bold;">Project Properties</span>
+dialog box appears.</li>
+</ul>
+<ul>
+  <li>Select <span style="font-weight: bold;">Libraries </span>under <span
+ style="font-weight: bold;">Categories </span>on the left</li>
+  <li>Remove all broken references by selecting them all
+and select <span style="font-weight: bold;">Remove </span>on the
+right.</li>
+</ul>
+<ul>
+  <li>Select <span style="font-weight: bold;">Add JAR/Folder</span>
+button on the right.<br>
+  </li>
+  <li>Browse down to<span style="font-weight: bold;">
+&lt;LAB_UNZIPPED_DIRECTORY&gt;/lib1</span> directory.</li>
+  <li>Select all the files and click <span style="font-weight: bold;">Open
+    </span>button.</li>
+</ul>
+</div>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Click <span style="font-weight: bold;">OK</span> button of the<span
+ style="font-weight: bold;"> Project Properties</span> dialog box to
+close it.</li>
+</ul>
+</div>
+<p style="margin-left: 40px;">3. Build and run <span
+ style="font-weight: bold;">struts2-login-clientvalidation </span>project.
+<br>
+</p>
+<ul>
+  <ul>
+    <li>Right-click <span style="font-weight: bold;"></span>project
+and select <span style="font-weight: bold;">Run</span>. <br>
+    </li>
+    <li>Browser gets displayed.&nbsp; <br>
+    </li>
+    <li>Click English link.</li>
+  </ul>
+</ul>
+<div style="margin-left: 40px;">4. Study the client side JavaScript
+code (for client side validation)<br>
+<ul>
+  <li>Select View-&gt;Page Source.</li>
+</ul>
+<br>
+</div>
+<div style="margin-left: 40px;"><img alt="" src="index_files/5_val1.png"
+ style="width: 753px; height: 641px;"><br>
+<ul>
+  <li>Observe that validationForm_login() JavaScript function is added
+on the page for the client side validation.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/5_val2.png"
+ style="width: 836px; height: 768px;"><br>
+</div>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial">(5.2) Look under the
+hood of the "struts2-login-clientvalidation" sample application</h3>
+<br>
+<div style="margin-left: 40px;">1. Login.jsp<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ page
+contentType="text/html; charset=UTF-8" %&gt;<br>
+&lt;%@ taglib prefix="s" uri="/struts-tags" %&gt;<br>
+&lt;html&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt;Sign
+On&lt;/title&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- client side
+validation, the HTML source should have JavaScript code --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;s:form action="Login" <span
+ style="font-weight: bold;">validate="true"</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:textfield key="username"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:password key="password" /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:submit/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/s:form&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+</div>
+<br>
+<h2><a name="Exercise_6"></a>Exercise 6: Build and run
+"struts2-login-validationViaAnnotation"
+sample application<br>
+</h2>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial">(6.1) Open, build, and
+run "struts2-login-validationViaAnnotation" sample application<br>
+</h3>
+<div style="margin-left: 40px;">
+<br>
+1. Open <span style="font-weight: bold; color: rgb(51, 51, 255);">struts2-login-validationViaAnnotation</span>
+NetBeans project.&nbsp; <br>
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">Open Project (Ctrl+Shift+O)</span>. The <span
+ style="font-weight: bold;">Open Project</span> dialog box appears.</li>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/struts2basics/samples</span>
+directory.&nbsp; <br>
+  </li>
+  <li>Select <span style="font-weight: bold; color: rgb(51, 51, 255);">struts2-login-validationViaAnnotation</span>.&nbsp;
+  </li>
+  <li>Click <span style="font-weight: bold;">Open Project</span>.&nbsp;
+The <span style="font-weight: bold;">struts2-login-validationViaAnnotation</span>
+project node appears under <span style="font-weight: bold;">Projects </span>tab
+window.</li>
+</ul>
+<div style="margin-left: 40px;">
+</div>
+</div>
+<p style="margin-left: 40px;">2. Remove broken references and add
+library files to the project.<br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right click<span style="font-weight: bold;"></span>
+project node and select <span style="font-weight: bold;">Properties</span>.</li>
+  <li>Observe that <span style="font-weight: bold;">Project Properties</span>
+dialog box appears.</li>
+</ul>
+<ul>
+  <li>Select <span style="font-weight: bold;">Libraries </span>under <span
+ style="font-weight: bold;">Categories </span>on the left</li>
+  <li>Remove all broken references by selecting them all
+and select <span style="font-weight: bold;">Remove </span>on the
+right.</li>
+</ul>
+<ul>
+  <li>Select <span style="font-weight: bold;">Add JAR/Folder</span>
+button on the right.<br>
+  </li>
+  <li>Browse down to<span style="font-weight: bold;">
+&lt;LAB_UNZIPPED_DIRECTORY&gt;/lib1</span> directory.</li>
+  <li>Select all the files and click <span style="font-weight: bold;">Open
+    </span>button.</li>
+</ul>
+</div>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Click <span style="font-weight: bold;">OK</span> button of the<span
+ style="font-weight: bold;"> Project Properties</span> dialog box to
+close it.</li>
+</ul>
+</div>
+<p style="margin-left: 40px;">3. Build and run <span
+ style="font-weight: bold;">struts2-login-validationViaAnnotation </span>project.
+<br>
+</p>
+<ul style="margin-left: 40px;">
+  <li>Right-click <span style="font-weight: bold;"></span>project and
+select <span style="font-weight: bold;">Run</span>. <br>
+  </li>
+  <li>Browser gets displayed.</li>
+  <li>Click English link.</li>
+</ul>
+<div style="margin-left: 40px;"><img alt="" src="index_files/6_val1.png"
+ style="width: 753px; height: 641px;"><br>
+</div>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial">(6.2) Look under the
+hood of the "struts2-login-validationViaAnnotation" sample application<br>
+</h3>
+<div style="margin-left: 40px;">
+</div>
+<br>
+<div style="margin-left: 40px;">1. Login.java<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">package example;<br>
+      <br>
+import
+com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;<br>
+      <br>
+public class Login extends ExampleSupport {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public String execute() throws Exception {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return SUCCESS;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; private String username;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">@RequiredStringValidator(message="You
+need to enter name - validating by annotation")</span><br>
+&nbsp;&nbsp;&nbsp; public String getUsername() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return username;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public void setUsername(String username) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.username = username;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; private String password;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">@RequiredStringValidator(message="You
+need to enter password - validating by annotation")</span><br>
+&nbsp;&nbsp;&nbsp; public String getPassword() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return password;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public void setPassword(String password) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.password = password;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+</div>
+<br>
+<h2><a name="Exercise_7"></a>Exercise 7: Build and run
+"struts2-mailreader"
+sample application<br>
+</h2>
+<br>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial">(7.1) Open, build, and
+run "struts2-mailreader" sample application<br>
+</h3>
+<div style="margin-left: 40px;">
+<br>
+</div>
+<div style="margin-left: 40px;">1. Open <span
+ style="font-weight: bold; color: rgb(51, 51, 255);">struts2-mailreader</span>
+NetBeans project.&nbsp; <br>
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">Open Project (Ctrl+Shift+O)</span>. The <span
+ style="font-weight: bold;">Open Project</span> dialog box appears.</li>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/struts2basics/samples</span>
+directory.&nbsp; <br>
+  </li>
+  <li>Select <span style="font-weight: bold; color: rgb(51, 51, 255);">struts2-mailreader</span>.&nbsp;
+  </li>
+  <li>Click <span style="font-weight: bold;">Open Project</span>.&nbsp;
+The <span style="font-weight: bold;">struts2-mailreader</span>
+project node appears under <span style="font-weight: bold;">Projects </span>tab
+window.</li>
+</ul>
+<div style="margin-left: 40px;">
+</div>
+</div>
+<p style="margin-left: 40px;">2. Remove broken references and add
+library files to the project.<br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right click<span style="font-weight: bold;"></span>
+project node and select <span style="font-weight: bold;">Properties</span>.</li>
+  <li>Observe that <span style="font-weight: bold;">Project Properties</span>
+dialog box appears.</li>
+</ul>
+<ul>
+  <li>Select <span style="font-weight: bold;">Libraries </span>under <span
+ style="font-weight: bold;">Categories </span>on the left</li>
+  <li>Remove all broken references by selecting them all
+and select <span style="font-weight: bold;">Remove </span>on the
+right.</li>
+</ul>
+<ul>
+  <li>Select <span style="font-weight: bold;">Add JAR/Folder</span>
+button on the right.<br>
+  </li>
+  <li>Browse down to<span style="font-weight: bold;">
+&lt;LAB_UNZIPPED_DIRECTORY&gt;/lib1</span> directory.</li>
+  <li>Select all the files and click <span style="font-weight: bold;">Open
+    </span>button.</li>
+</ul>
+</div>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Click <span style="font-weight: bold;">OK</span> button of the<span
+ style="font-weight: bold;"> Project Properties</span> dialog box to
+close it.</li>
+</ul>
+</div>
+<p style="margin-left: 40px;">3. Build and run <span
+ style="font-weight: bold;">struts2-mailreader </span>project.
+<br>
+</p>
+<ul>
+  <ul>
+    <li>Right-click <span style="font-weight: bold;"></span>project
+and select <span style="font-weight: bold;">Run</span>. <br>
+    </li>
+    <li>Browser gets displayed.&nbsp; <br>
+    </li>
+  </ul>
+</ul>
+<div style="margin-left: 40px;"><img alt=""
+ src="index_files/7_mail1.png" style="width: 753px; height: 641px;"><br>
+<br>
+<img alt="" src="index_files/7_mail2.png"
+ style="width: 753px; height: 641px;"><br>
+<br>
+<img alt="" src="index_files/7_mail3.png"
+ style="width: 753px; height: 641px;"><br>
+<br>
+<img alt="" src="index_files/7_mail4.png"
+ style="width: 753px; height: 641px;"><br>
+</div>
+<br>
+<div style="margin-left: 40px;"><img alt=""
+ src="index_files/7_mail5.png" style="width: 753px; height: 641px;"><br>
+<br>
+<img alt="" src="index_files/7_mail6.png"
+ style="width: 753px; height: 641px;"><br>
+<br>
+<img alt="" src="index_files/7_mail7.png"
+ style="width: 753px; height: 641px;"><br>
+</div>
+<br>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial">(7.2) Study
+configuration files<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">1. web.xml<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version="1.0"
+encoding="ISO-8859-1"?&gt;<br>
+&lt;!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web
+Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd"&gt;<br>
+&lt;web-app&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;display-name&gt;Struts 2
+Mailreader&lt;/display-name&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;filter&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;filter-name&gt;Struts2&lt;/filter-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;filter-class&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+org.apache.struts2.dispatcher.FilterDispatcher<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/filter-class&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/filter&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;filter-mapping&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;filter-name&gt;Struts2&lt;/filter-name&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;
+&lt;url-pattern&gt;*.do&lt;/url-pattern&gt;</span><br>
+&nbsp;&nbsp;&nbsp; &lt;/filter-mapping&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;!-- Application Listener for Mailreader database
+--&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;listener&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;listener-class&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+mailreader2.ApplicationListener<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/listener-class&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/listener&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;welcome-file-list&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;welcome-file&gt;index.html&lt;/welcome-file&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/welcome-file-list&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&lt;/web-app&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+2. struts.xml<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version="1.0"
+encoding="UTF-8" ?&gt;<br>
+&lt;!DOCTYPE struts PUBLIC<br>
+&nbsp;&nbsp;&nbsp; "-//Apache Software Foundation//DTD Struts
+Configuration 2.0//EN"<br>
+&nbsp;&nbsp;&nbsp; "http://struts.apache.org/dtds/struts-2.0.dtd"&gt;<br>
+      <br>
+&lt;struts&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; &lt;constant name="struts.action.extension"
+value="do" /&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;constant name="struts.devMode" value="true" /&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;constant
+name="struts.enable.DynamicMethodInvocation" value="false" /&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; &lt;include file="mailreader-default.xml"/&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; &lt;include file="mailreader-support.xml"/&gt;<br>
+      <br>
+&lt;/struts&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+</div>
+<br>
+<div style="margin-left: 40px;">3. mailreader-default.xml<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version="1.0"
+encoding="UTF-8" ?&gt;<br>
+&lt;!DOCTYPE struts PUBLIC<br>
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"<br>
+"http://struts.apache.org/dtds/struts-2.0.dtd"&gt;<br>
+      <br>
+&lt;struts&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;package name="mailreader-default" namespace="/"
+extends="struts-default"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;interceptors&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor name="authentication"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+class="mailreader2.AuthenticationInterceptor"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor-stack name="user" &gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor-ref name="authentication" /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor-ref name="defaultStack"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/interceptor-stack&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor-stack name="user-submit" &gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor-ref name="token-session" /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor-ref name="user"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/interceptor-stack&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor-stack name="guest" &gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor-ref name="defaultStack"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/interceptor-stack&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/interceptors&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;default-interceptor-ref
+name="user"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;global-results&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result name="error"&gt;/pages/Error.jsp&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result name="invalid.token"&gt;/pages/Error.jsp&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result name="login"
+type="redirect-action"&gt;Login_input&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/global-results&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;global-exception-mappings&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;exception-mapping<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+result="error"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exception="java.lang.Throwable"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/global-exception-mappings&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;/package&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&lt;/struts&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+</div>
+<div style="margin-left: 40px;">4. mailreader-support.xml<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version="1.0"
+encoding="UTF-8" ?&gt;<br>
+&lt;!DOCTYPE struts PUBLIC<br>
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"<br>
+"http://struts.apache.org/dtds/struts-2.0.dtd"&gt;<br>
+      <br>
+&lt;struts&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;package name="mailreader-support" namespace="/"
+extends="mailreader-default"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action name="Tour"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result&gt;/tour.html&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor-ref name="guest"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action name="Welcome"
+class="mailreader2.Welcome"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result&gt;/Welcome.jsp&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor-ref name="guest"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action name="Logout"
+class="mailreader2.Logout"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result type="redirect-action"&gt;Welcome&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action
+name="Login_*"&nbsp; method="{1}" class="mailreader2.Login"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result name="input"&gt;/Login.jsp&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result name="cancel"
+type="redirect-action"&gt;Welcome&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result type="redirect-action"&gt;MainMenu&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result name="expired" type="chain"&gt;ChangePassword&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;exception-mapping<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exception="org.apache.struts.apps.mailreader.dao.ExpiredPasswordException"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+result="expired"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor-ref name="guest"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action
+name="Registration_*" method="{1}" class="mailreader2.Registration"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result name="input"&gt;/Registration.jsp&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result type="redirect-action"&gt;MainMenu&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor-ref name="guest"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/package&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;package name="subscription" namespace="/"
+extends="mailreader-support"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;global-results&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result name="input"&gt;/Subscription.jsp&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result type="redirect-action"&gt;Registration_input&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/global-results&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action
+name="Subscription_save" method="save"
+class="mailreader2.Subscription"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor-ref name="user-submit" /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action
+name="Subscription_*" method="{1}" class="mailreader2.Subscription"
+/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;/package&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;package name="wildcard" namespace="/"
+extends="mailreader-support"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action name="*"
+class="mailreader2.MailreaderSupport"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result&gt;/{1}.jsp&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;/package&gt;<br>
+&lt;/struts&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial">(7.3) Control flow<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+1. index.html is displayed.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;!DOCTYPE HTML PUBLIC
+"-//W3C//DTD HTML 4.0 Transitional//EN"&gt;<br>
+&lt;html&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;META
+HTTP-EQUIV="Refresh" CONTENT="0;<span style="font-weight: bold;">URL=Welcome.do"</span>&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;Loading
+...&lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+index.html<br>
+<br>
+The control is forwarded to Welcome.do, which in turn displays
+Welcome.jsp.<br>
+</div>
+<br>
+<div style="margin-left: 40px;">2. Welcome.jsp is displayed.<br>
+</div>
+<br>
+<div style="margin-left: 40px;">
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ page
+contentType="text/html; charset=UTF-8" %&gt;<br>
+&lt;%@ taglib uri="/struts-tags" prefix="s" %&gt;<br>
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"<br>
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;<br>
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+lang="en"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;meta
+http-equiv="Content-Type" content="text/html; charset=utf-8"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt;&lt;s:text
+name="index.title"/&gt;&lt;/title&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;link href="&lt;s:url
+value="/css/mailreader.css"/&gt;" rel="stylesheet"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+type="text/css"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h3&gt;&lt;s:text
+name="index.heading"/&gt;&lt;/h3&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;ul&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;li&gt;<span style="font-weight: bold;">&lt;a href="&lt;s:url
+action="Registration_input"/&gt;"&gt;&lt;s:text</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+name="index.registration"/&gt;&lt;/a&gt;</span>&lt;/li&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;li&gt;&lt;a href="&lt;s:url action="Login_input"/&gt;"&gt;&lt;s:text<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+name="index.login"/&gt;&lt;/a&gt;&lt;/li&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/ul&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h3&gt;Language
+Options&lt;/h3&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;ul&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;li&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:url id="en" action="Welcome"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:param name="request_locale"&gt;en&lt;/s:param&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/s:url&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:a href="%{en}"&gt;English&lt;/s:a&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/li&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;li&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:url id="ja" action="Welcome"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:param name="request_locale"&gt;ja&lt;/s:param&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/s:url&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:a href="%{ja}"&gt;Japanese&lt;/s:a&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/li&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;li&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:url id="ru" action="Welcome"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:param name="request_locale"&gt;ru&lt;/s:param&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/s:url&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:a href="%{ru}"&gt;Russian&lt;/s:a&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/li&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/ul&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;hr/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;p&gt;&lt;s:i18n
+name="alternate"&gt;&lt;a href="http://struts.apache.org/"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;img src="&lt;s:text name="struts.logo.path"/&gt;"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+alt="&lt;s:text name="struts.logo.alt"/&gt;" border="0px"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/a&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/s:i18n&gt;&lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+When a user selects Register with the MailReader Demonstration
+Application link, <span style="font-weight: bold;">Registration_input</span>
+action will be performed.&nbsp; Based on the wildcard based
+configuration below, input() method of the Registration class will be
+invoked.<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action
+name="Registration_*" method="{1}" class="mailreader2.Registration"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result name="input"&gt;/Registration.jsp&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result type="redirect-action"&gt;MainMenu&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor-ref name="guest"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+<br>
+</div>
+<div style="margin-left: 40px;">3. The <span style="font-weight: bold;">input()</span>
+method of the Registration class is invoked.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">package mailreader2;<br>
+      <br>
+import org.apache.struts.apps.mailreader.dao.User;<br>
+      <br>
+      <br>
+/**<br>
+&nbsp;* &lt;p&gt;Insert or update a User object to the persistent
+store. &lt;/p&gt;<br>
+&nbsp;*/<br>
+public class Registration extends MailreaderSupport {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * &lt;p&gt;Double check that there is not a
+valid User login. &lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return True if there is not a valid User
+login<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; private boolean isCreating() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; User user = getUser();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return (null == user) ||
+(null == user.getDatabase());<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * &lt;p&gt; Retrieve User object to edit or
+null if User does not exist. &lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return The "Success" result for this mapping<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @throws Exception on any error<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;"> public String
+input() throws Exception {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (isCreating()) {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+createInputUser();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+setTask(Constants.CREATE);</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} else {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+setTask(Constants.EDIT);</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+setUsername(getUser().getUsername());</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+setPassword(getUser().getPassword());</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+setPassword2(getUser().getPassword());</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return INPUT;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * &lt;p&gt;Insert or update a
+Registration.&lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return The "outcome" result code<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @throws Exception on any error<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public String save() throws Exception {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return execute();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * &lt;p&gt; Insert or update a User object to
+the persistent store. &lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * &lt;p/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * &lt;p&gt; If a User is not logged in, then a
+new User is created and<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * automatically logged in. Otherwise, the
+existing User is updated. &lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return The "outcome" result code<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @throws Exception on any error<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; public String execute()<br>
+&nbsp;&nbsp;&nbsp; throws Exception {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; boolean creating =
+Constants.CREATE.equals(getTask());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; creating = creating
+&amp;&amp; isCreating(); // trust but verify<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (creating) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; User
+user = findUser(getUsername(), getPassword());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+boolean haveUser = (user != null);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(haveUser) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+addActionError(getText("error.username.unique"));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return INPUT;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+copyUser(getUsername(), getPassword());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } else {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+FIXME: Any way to call the RegisrationSave validators from here?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+String newPassword = getPassword();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(newPassword != null) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+String confirmPassword = getPassword2();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+boolean matches = ((null != confirmPassword)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&amp;&amp; (confirmPassword.equals(newPassword)));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (matches) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+getUser().setPassword(newPassword);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} else {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+addActionError(getText("error.password.match"));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return INPUT;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; saveUser();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return SUCCESS;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Registration.java<br>
+<br>
+The input() method returns INPUT and the <span
+ style="font-weight: bold;">/Registration.jsp</span> will be displayed
+as a result.<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action
+name="Registration_*" method="{1}" class="mailreader2.Registration"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold;">&nbsp; &lt;result
+name="input"&gt;/Registration.jsp&lt;/result&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result type="redirect-action"&gt;MainMenu&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor-ref name="guest"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+<br>
+</div>
+<div style="margin-left: 40px;">5. /Registration.jsp is displayed.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ page
+contentType="text/html; charset=UTF-8" %&gt;<br>
+&lt;%@ taglib uri="/struts-tags" prefix="s" %&gt;<br>
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"<br>
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;<br>
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+lang="en"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold;"> &lt;s:if test="task=='Create'"&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;title&gt;&lt;s:text
+name="registration.title.create"/&gt;&lt;/title&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/s:if&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;s:if
+test="task=='Edit'"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;title&gt;&lt;s:text
+name="registration.title.edit"/&gt;&lt;/title&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/s:if&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;link href="&lt;s:url
+value="/css/mailreader.css"/&gt;" rel="stylesheet"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+type="text/css"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;body
+onload="self.focus();document.Registration_save_username.focus()"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;s:actionerror/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">&lt;s:form action="Registration_save"
+validate="false"&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:token /&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:hidden name="task"/&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:if test="task == 'Create'"&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:textfield key="username"/&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/s:if&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:else&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:label key="username"/&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:hidden name="username"/&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/s:else&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:password key="password" showPassword="true"/&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:password key="password2"/&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:textfield key="user.fullName"/&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:textfield key="user.fromAddress"/&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:textfield key="user.replyToAddress"/&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:if test="task == 'Create'"&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:submit key="button.save" action="Registration_save"/&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:reset key="button.reset"/&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:submit action="Welcome" key="button.cancel"</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+onclick="form.onsubmit=null"/&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/s:if&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:else&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:submit key="button.save" action="Registration"/&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:reset key="button.reset"/&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:submit action="MainMenu" key="button.cancel"</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+onclick="form.onsubmit=null"/&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/s:else&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/s:form&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;s:if test="task ==
+'Edit'"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;div align="center"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;h3&gt;&lt;s:text name="heading.subscriptions"/&gt;&lt;/h3&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/div&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;table border="1" width="100%"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;th align="center" width="30%"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:text name="heading.host"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/th&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;th align="center" width="25%"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:text name="heading.user"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/th&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;th align="center" width="10%"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:text name="heading.type"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/th&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;th align="center" width="10%"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:text name="heading.autoConnect"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/th&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;th align="center" width="15%"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:text name="heading.action"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/th&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:iterator value="user.subscriptions"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td align="left"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:property value="host"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td align="left"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:property value="username"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td align="center"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:property value="type"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td align="center"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:property value="autoConnect"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;td align="center"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;a href="&lt;s:url action="Subscription_delete"&gt;&lt;s:param
+name="host" value="host"/&gt;&lt;/s:url&gt;"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:text name="registration.deleteSubscription"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/a&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&amp;nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;a href="&lt;s:url action="Subscription_edit"&gt;&lt;s:param
+name="host" value="host"/&gt;&lt;/s:url&gt;"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:text name="registration.editSubscription"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/a&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/s:iterator&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/table&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;a href="&lt;s:url action="Subscription_input"/&gt;"&gt;&lt;s:text<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+name="registration.addSubscription"/&gt;&lt;/a&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/s:if&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;jsp:include
+page="Footer.jsp"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Registration.jsp<br>
+</div>
+<br>
+<div style="margin-left: 40px;">6. The save() method of the
+Registration class is invoked.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">package mailreader2;<br>
+      <br>
+import org.apache.struts.apps.mailreader.dao.User;<br>
+      <br>
+      <br>
+/**<br>
+&nbsp;* &lt;p&gt;Insert or update a User object to the persistent
+store. &lt;/p&gt;<br>
+&nbsp;*/<br>
+public class Registration extends MailreaderSupport {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * &lt;p&gt;Double check that there is not a
+valid User login. &lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return True if there is not a valid User
+login<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; private boolean isCreating() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; User user = getUser();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return (null == user) ||
+(null == user.getDatabase());<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * &lt;p&gt; Retrieve User object to edit or
+null if User does not exist. &lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return The "Success" result for this mapping<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @throws Exception on any error<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;"> public String
+input() throws Exception {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (isCreating()) {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+createInputUser();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+setTask(Constants.CREATE);</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} else {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+setTask(Constants.EDIT);</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+setUsername(getUser().getUsername());</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+setPassword(getUser().getPassword());</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+setPassword2(getUser().getPassword());</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return INPUT;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * &lt;p&gt;Insert or update a
+Registration.&lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return The "outcome" result code<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @throws Exception on any error<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">public String
+save() throws Exception {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return execute();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; /**<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * &lt;p&gt; Insert or update a User object to
+the persistent store. &lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * &lt;p/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * &lt;p&gt; If a User is not logged in, then a
+new User is created and<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * automatically logged in. Otherwise, the
+existing User is updated. &lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; *<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @return The "outcome" result code<br>
+&nbsp;&nbsp;&nbsp;&nbsp; * @throws Exception on any error<br>
+&nbsp;&nbsp;&nbsp;&nbsp; */<br>
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">public String
+execute()</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; throws
+Exception {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+boolean creating = Constants.CREATE.equals(getTask());</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+creating = creating &amp;&amp; isCreating(); // trust but verify</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (creating) {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+User user = findUser(getUsername(), getPassword());</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+boolean haveUser = (user != null);</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (haveUser) {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+addActionError(getText("error.username.unique"));</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return INPUT;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+copyUser(getUsername(), getPassword());</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} else {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// FIXME: Any way to call the RegisrationSave validators from here?</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+String newPassword = getPassword();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (newPassword != null) {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+String confirmPassword = getPassword2();</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+boolean matches = ((null != confirmPassword)</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&amp;&amp; (confirmPassword.equals(newPassword)));</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (matches) {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+getUser().setPassword(newPassword);</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} else {</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+addActionError(getText("error.password.match"));</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return INPUT;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+saveUser();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return SUCCESS;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; }</span><br>
+&nbsp;&nbsp;&nbsp; <br>
+}</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+The save() method returns SUCCESS.&nbsp; The MainMenu action is chosen
+according to the configuration below.<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action
+name="Registration_*" method="{1}" class="mailreader2.Registration"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result name="input"&gt;/Registration.jsp&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">&lt;result
+type="redirect-action"&gt;MainMenu&lt;/result&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;interceptor-ref name="guest"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+</div>
+<br>
+<div style="margin-left: 40px;">The MenuMenu action will use the
+wildcard action below, which invokes the execute() method of the
+mailreader2.MailreaderSupport class.<br>
+<br>
+&nbsp;&nbsp;&nbsp; &lt;package name="wildcard" namespace="/"
+extends="mailreader-support"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;action name="*"
+class="mailreader2.MailreaderSupport"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;result&gt;/{1}.jsp&lt;/result&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/action&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;/package&gt;<br>
+<br>
+7. MainMenu.jsp is displayed.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;%@ page
+contentType="text/html; charset=UTF-8" %&gt;<br>
+&lt;%@ taglib uri="/struts-tags" prefix="s" %&gt;<br>
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"<br>
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;<br>
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+lang="en"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt;&lt;s:text
+name="mainMenu.title"/&gt;&lt;/title&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;link href="&lt;s:url
+value="/css/mailreader.css"/&gt;" rel="stylesheet"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+type="text/css"/&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/head&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &lt;body&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h3&gt;&lt;s:text
+name="mainMenu.heading"/&gt; &lt;s:property<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+value="user.fullName"/&gt;&lt;/h3&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;ul&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;li&gt;&lt;a href="&lt;s:url action="Registration_input" /&gt;"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:text name="mainMenu.registration"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/a&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/li&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;li&gt;&lt;a href="&lt;s:url action="Logout"/&gt;"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;s:text name="mainMenu.logout"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/a&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/li&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/ul&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/body&gt;<br>
+&lt;/html&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+</div>
+<br>
+<h2><a name="Exercise_8"></a>Exercise 8: Build and run
+"struts2-showcase"
+sample application<br>
+</h2>
+<br>
+<div style="margin-left: 40px;">The Struts Showcase demonstrates a
+variety of use cases and tag usages. Essentially, the application
+exercises various framework features in isolation. The Showcase is not
+meant as a "best practices" example.<br>
+</div>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial">(8.1) Open, build, and
+run "struts2-showcase" sample application<br>
+</h3>
+<div style="margin-left: 40px;">
+<br>
+</div>
+<div style="margin-left: 40px;">
+1. Open <span style="font-weight: bold; color: rgb(51, 51, 255);">struts2-showcase</span>
+NetBeans project.&nbsp; <br>
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">Open Project (Ctrl+Shift+O)</span>. The <span
+ style="font-weight: bold;">Open Project</span> dialog box appears.</li>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/struts2basics/samples</span>
+directory.&nbsp; <br>
+  </li>
+  <li>Select <span style="font-weight: bold; color: rgb(51, 51, 255);">struts2-showcase</span>.&nbsp;
+  </li>
+  <li>Click <span style="font-weight: bold;">Open Project</span>.&nbsp;
+The <span style="font-weight: bold;">struts2-showcase</span>
+project node appears under <span style="font-weight: bold;">Projects </span>tab
+window.</li>
+</ul>
+<div style="margin-left: 40px;">
+</div>
+</div>
+<p style="margin-left: 40px;">2. Remove broken references and add
+library files to the project.<br>
+</p>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Right click<span style="font-weight: bold;"></span>
+project node and select <span style="font-weight: bold;">Properties</span>.</li>
+  <li>Observe that <span style="font-weight: bold;">Project Properties</span>
+dialog box appears.</li>
+</ul>
+<ul>
+  <li>Select <span style="font-weight: bold;">Libraries </span>under <span
+ style="font-weight: bold;">Categories </span>on the left</li>
+  <li>Remove all broken references by selecting them all
+and select <span style="font-weight: bold;">Remove </span>on the
+right.</li>
+</ul>
+<ul>
+  <li>Select <span style="font-weight: bold;">Add JAR/Folder</span>
+button on the right.<br>
+  </li>
+  <li>Browse down to<span style="font-weight: bold;"> <span
+ style="color: rgb(255, 0, 0);">&lt;LAB_UNZIPPED_DIRECTORY&gt;/lib2</span></span>
+directory.</li>
+  <li>Select all the files and click <span style="font-weight: bold;">Open
+    </span>button.</li>
+</ul>
+</div>
+<div style="margin-left: 40px;">
+<ul>
+  <li>Click <span style="font-weight: bold;">OK</span> button of the<span
+ style="font-weight: bold;"> Project Properties</span> dialog box to
+close it.</li>
+</ul>
+</div>
+<p style="margin-left: 40px;">3. Build and run <span
+ style="font-weight: bold;">struts2-showcase </span>project.
+<br>
+</p>
+<ul>
+  <ul>
+    <li>Right-click <span style="font-weight: bold;"></span>project
+and select <span style="font-weight: bold;">Run</span>. <br>
+    </li>
+    <li>Browser gets displayed. <br>
+    </li>
+  </ul>
+</ul>
+<div style="margin-left: 40px;"><img alt=""
+ src="index_files/8_show1.png" style="width: 814px; height: 936px;"><br>
+<br>
+<br>
+<br>
+</div>
+<h2><a name="Homework_Exercise"></a><a name="Homework"></a>Homework
+Exercise (for people
+who
+are taking Sang Shin's "Java EE Programming online course") <br>
+</h2>
+<br>
+<div style="margin-left: 40px;">1. The homework is to modify the <span
+ style="font-weight: bold;">hello1HomeworkStart</span>
+NetBeans project as following. (The <span style="font-weight: bold;">hello1HomeworkStart</span>
+project is provided under <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/struts2basics/samples
+</span>directory.<span style="font-weight: bold;"></span>)&nbsp; You
+can name the new project in any way you want but
+here I am going to
+call to call it as <span style="font-weight: bold;">Myhello1HomeworkStart</span>.
+<br>
+<ul>
+  <li>Rewrite the application using Struts2 framework.<br>
+  </li>
+</ul>
+<div style="margin-left: 40px;"></div>
+2<span style="color: rgb(0, 0, 0);">.
+Send the following files to</span><span style="color: rgb(0, 0, 0);">
+<a href="mailto:j2eehomeworks@sun.com">j2eehomeworks@sun.com</a>
+with </span><span style="font-weight: bold; color: rgb(0, 0, 0);">Subject
+</span><span style="color: rgb(0, 0, 0);">as </span><span
+ style="font-weight: bold; color: rgb(0, 0, 0);">J2EEHomework-struts2basics.</span><br
+ style="color: rgb(0, 0, 0);">
+<span style="font-weight: bold; color: rgb(0, 0, 0);"></span>
+<ul style="color: rgb(0, 0, 0);">
+  <li>Zip file of the the<span style="font-weight: bold;">
+Myhello1HomeworkStart</span>
+NetBeans project.&nbsp; (Someone else
+should be able to open and run it as a NetBeans project.)&nbsp; You can
+use your favorite zip utility or you can use "jar" utility that comes
+with JDK as following.<br>
+  </li>
+  <ul>
+    <li>cd &lt;parent directory that contains <span
+ style="font-weight: bold;">Myhello1HomeworkStart</span>
+directory&gt;
+(assuming you named your project as <span style="font-weight: bold;">Myhello1HomeworkStart</span>)<br>
+    </li>
+    <li>jar cvf Myhello1HomeworkStart.zip Myhello1HomeworkStart (<span
+ style="font-weight: bold;">Myhello1HomeworkStart </span>should
+contain <span style="font-weight: bold;">nbproject </span>directory)<br>
+    </li>
+  </ul>
+  <li>Captured output screen&nbsp;<span style="font-weight: bold;"> </span>-
+name it as <span style="font-weight: bold;">J2EEHomework-struts2basics.gif</span>
+or<span style="font-weight: bold;">J2EEHomework-struts2basics</span><span
+ style="font-weight: bold;">.jpg</span> (or <span
+ style="font-weight: bold;">J2EEHomework-struts2basics.&lt;whatver
+graphics format&gt;</span>)</li>
+  <ul>
+    <li>Any screen capture that shows that your program is working is
+good enough.&nbsp; <br>
+    </li>
+  </ul>
+  <li>If you decide to use
+different IDE other than NetBeans, the zip
+file should contain all the files that are needed for rebuilding the
+project - war file with necessary source files is OK.</li>
+</ul>
+</div>
+<div style="margin-left: 40px;"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; <a href="#Tutorial_Exercises">return
+to the top</a></div>
+<div class="indent"><br>
+<br>
+<br>
+</div>
+<br>
+<p> </p>
+<!-- ======================================================================================== -->
+</body>
+</html>

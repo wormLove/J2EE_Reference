@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC
+      "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+      "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+
+<validators>
+
+    <field name="percentagemarks">
+        <field-validator type="double">
+            <param name="minInclusive">20.1</param>
+            <param name="maxInclusive">50.1</param>
+            <message>Percentage marks need to between ${minInclusive} and ${maxInclusive}
+            </message>
+        </field-validator>
+    </field>
+
+</validators>

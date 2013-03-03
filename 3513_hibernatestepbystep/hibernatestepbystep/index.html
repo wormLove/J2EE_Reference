@@ -1,0 +1,2344 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <script src="index_files/tigris.txt" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="index_files/netbeans.css">
+  <title>LAB-3513: Building Hibernate Application Step By Step</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta name="SourceCastVersion" content="2.6.2.4.10">
+  <link rel="shortcut icon" href="http://www.netbeans.org/favicon.ico"
+ type="image/x-icon">
+  <meta name="keywords"
+ content="NetBeans, IDE, Platform, free, open source, developer">
+  <link rel="stylesheet" href="index_files/netbeans_002.css">
+  <meta name="author" content="Sang Shin">
+  <style type="text/css">
+#search {height:100%;}
+#topmodule {align:right;}
+  </style>
+  <script language="JavaScript" type="text/javascript">
+<!--
+function get_sc_login() {
+  var sclogin = "guest";
+  return (sclogin);
+}
+var username=get_sc_login();
+//-->
+  </script>
+  <meta content="Hibernate Tutorial example using NetBeans"
+ name="description">
+</head>
+<body onload="loginfocus()" class="composite"
+ style="background-image: url(index_files/beige.jpg);">
+<!-- begin TopTabs --><!-- end TopTabs --><!-- start NavCol --><!-- end NavCol --><!-- Servlet-Specific template --><!-- Show servlet name if it is a servlet -->
+<br>
+<br>
+<h1 style="text-align: center;">Building Hibernate Application Step By
+Step<br>
+</h1>
+<div class="articledate" style="margin-left: 0px; text-align: center;"><a
+ href="http://www.javapassion.com/SangSchedule.html#Bio">Sang Shin</a>,
+<a href="mailto:sang.shin@sun.com">sang.shin@sun.com</a>, Sun
+Microsystems, <a href="http://www.javapassion.com/j2ee">www.javapassion.com/j2ee</a><br>
+<br>
+<img alt="" src="index_files/l2_shin_sang_portrait.gif"
+ style="width: 100px; height: 88px;"><br>
+<a href="mailto:sang.shin@sun.com"><i></i></a></div>
+<p>This lab takes you through the basics of building a simple
+HelloWorld Hibernate application.&nbsp; Even though you are building
+the simplest
+possible Hibernate application, you will get an exposure to the
+relatively complete concept
+of Hibernate.&nbsp; You will also learn how to
+display context sensitive Java document on Hibernate classes.&nbsp;
+This lab is one of the several Hibernate related hands-on labs.<br>
+<br>
+</p>
+<p></p>
+<p align="center"><b>Expected duration: 60 minutes<br>
+<br>
+</b></p>
+<div class="indent">
+<h3 class="tutorial"><a name="software"></a>Software Needed</h3>
+<p>Before you begin, you need to install the following software on your
+computer. The Hibernate library files are provided as part of the
+hands-on lab zip file so you don't have
+to download Hibernate yourself.</p>
+<ul>
+</ul>
+<ul>
+  <li>Java Standard Development Kit (JDK™) version
+6.0 (<a href="http://java.sun.com/javase/downloads/index.jsp">download</a>)<br>
+  </li>
+  <ul>
+    <li>If you already have installed JDK 5.0 or JDK 6.0, you
+can skip this.</li>
+  </ul>
+  <li>NetBeans IDE 6.1 (<a
+ href="http://www.netbeans.org/community/releases/61/">download</a>) <br>
+  </li>
+  <ul>
+    <li>Download either "<span style="font-weight: bold;">Web &amp;
+Java EE</span>" or "<span style="font-weight: bold;">All</span>"
+bundles.</li>
+    <li>When you install NetBeans IDE, it will ask you which JDK
+you want to use. </li>
+  </ul>
+</ul>
+<ul>
+  <li>3513_hibernatestepbystep.zip (<a
+ href="http://www.javapassion.com/handsonlabs/3513_hibernatestepbystep.zip">download</a>)</li>
+  <ul>
+    <li>Download it and unzip it in a directory of your choice.&nbsp;
+We will call the directory as &lt;LAB_UNZIPPED_DIRECTORY&gt; in this
+document.</li>
+    <li>Once unzipped, it will create <span style="font-weight: bold;">hibernatestepbystep
+      </span>directory
+under &lt;LAB_UNZIPPED_DIRECTORY&gt;.&nbsp; Read
+&lt;LAB_UNZIPPED_DIRECTORY&gt;/hibernatestepbystep/index.html document
+(this document) to proceed.<br>
+    </li>
+    <li>It contains Hibernate 3.2 library files, Hibernate Javadoc, and
+Derby client driver so you don't need to download them yourself.<br>
+    </li>
+  </ul>
+</ul>
+<br>
+<h3 class="tutorial"><a name="Change_Log"></a>Change Log<br>
+</h3>
+<ul>
+  <li>March 28th, 2007: Created</li>
+  <li>April 23rd, 2007: More pictures are added</li>
+  <li>May 5th, 2007: Added a step of adding log4j.properties file to
+the project</li>
+  <li>March 15th, 2008: NetBeans 6.0.1 is used</li>
+  <li>Arpil 3rd, 2008: Hibernate jar files are created into Hibernate
+library, the sample projects use Hiberate library.</li>
+  <li>June 10th, 2008: NetBeans 6.1 is used<br>
+  </li>
+</ul>
+<br>
+<h3 class="tutorial">Things to be done (by Sang Shin)<br>
+</h3>
+<ul>
+  <li>&lt;tbd&gt;</li>
+</ul>
+<br>
+<h3 class="tutorial"><a name="Tutorial_Exercises"></a>Lab Exercises</h3>
+<ul>
+  <li><a href="#Exercise_0">Exercise 0: Start Derby database server,
+Create "mydatabase" database, Add Hibernate plug-in</a><br>
+  </li>
+  <li><a href="#Exercise_1">Exercise 1: Build "HelloWorld" Hibernate
+Application (20
+minutes)</a><br>
+  </li>
+  <li><a href="#Exercise_2">Exercise 2: Build "HelloWorld2" Hibernate
+Application
+(20 minutes)</a><br>
+  </li>
+  <li><a href="#Exercise_3">Exercise 3: Configure Javadoc of Hibernate
+and display context sensitive Javadoc
+(20 minutes)</a></li>
+  <li><a href="#Homework">Homework
+Exercise (for people who
+are taking Sang Shin's "Java EE Programming online course")</a></li>
+</ul>
+<ul>
+  <ul>
+  </ul>
+</ul>
+</div>
+<br>
+<h2><a name="Exercise_0"></a>Exercise 0: Start Derby Database server
+and Create "mydatabase" database <br>
+</h2>
+<div style="margin-left: 40px;">
+<br>
+In this exercise, you are going to start the Derby database server and
+create
+"mydatabase" database.<br>
+<ol>
+  <li><a href="#0.1">Start Java DB (code-named as Derby) database server</a></li>
+  <li><a href="#0.2">Create a database of your own called "mydatabase</a></li>
+  <li><a href="#0.3">Install Hibernate plug-in to the NetBeans IDE</a>
+(works only for NetBeans IDE 6.1)<br>
+  </li>
+</ol>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="0.1"></a>(0.1)
+Start Java DB (code-named as Derby) database server (if it has not been
+started already)<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+1. Select<span style="font-weight: bold;"> </span>Java DB Server.
+(Figure-0.10 below)&nbsp; <br>
+<ul>
+  <li>Select <span style="font-weight: bold;">Services </span>tab.</li>
+  <li>Expand <span style="font-weight: bold;">Databases</span>.</li>
+  <li>Right click <span style="font-weight: bold;">Java DB</span> and
+select<span style="font-weight: bold;"> Start Server</span>. If
+it has been already started, it should be grayed out.&nbsp; </li>
+</ul>
+<img alt="" src="index_files/0_derby1.png"
+ style="width: 854px; height: 668px;"><br>
+Figure-0.10: Start the Derby database server<br>
+<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="#Exercise_0">return to top of the
+exercise</a><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="0.2"></a>(0.2)
+Create a database of your own called "mydatabase" (if it has not been
+created already)<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+1. Create database<br>
+<ul>
+  <li>Right click <span style="font-weight: bold;">Java DB</span> and
+select <span style="font-weight: bold;">Create Database</span>.&nbsp;<span
+ style="font-weight: bold;"></span> (Figure-0.20 below)</li>
+</ul>
+<img alt="" src="index_files/0_derby2.png"
+ style="width: 854px; height: 668px;"><br>
+Figure-0.20: Create mydatabase database<br>
+<br>
+2.&nbsp; Fill up the fields of the <span style="font-weight: bold;">Create
+Java DB Database</span> dialog box.<br>
+<ul>
+  <li>For the <span style="font-weight: bold;">Database Name</span>
+field, type in "<span style="font-weight: bold; color: rgb(255, 0, 0);">mydatabase</span>".</li>
+  <li>For <span style="font-weight: bold;">Password</span> field, type
+in "<span style="font-weight: bold;">app</span>". (Figure-0.21 below)</li>
+  <li>Click <span style="font-weight: bold;">OK</span>.</li>
+</ul>
+<img alt="" src="index_files/0_derby8.png"
+ style="width: 472px; height: 326px;"><br>
+Figure-0.21: Create Java DB Database<br>
+<br>
+3. Make a connection to the&nbsp; <span style="font-weight: bold;">mydatabase
+</span>database.&nbsp; Note that you have not created any tables yet
+under
+this database.&nbsp; This is an optional step.<br>
+<ul>
+  <li>Expand <span style="font-weight: bold;">Drivers</span>.</li>
+  <li>Right click <span style="font-weight: bold;">Java DB (Network)</span>
+and select<span style="font-weight: bold;"> Connect Using...</span><br>
+  </li>
+</ul>
+<img alt="" src="index_files/0_derby3.1.png"
+ style="width: 854px; height: 668px;"><br>
+<ul>
+  <li>Observe that the <span style="font-weight: bold;">New Database
+Connection</span> dialog box appears.</li>
+  <li>For the Database URL field, type in <span
+ style="font-weight: bold; color: rgb(255, 0, 0);">jdbc:derby://localhost:1527/mydatabase</span>.</li>
+  <li>For the User Name and Password firled, type in <span
+ style="font-weight: bold; color: rgb(255, 0, 0);">app</span>.</li>
+  <li>Click OK.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/0_derby3.2.png"
+ style="width: 681px; height: 376px;"><br>
+<ul>
+  <li>Observe that there is now <span style="font-weight: bold;">jdbc:derby://localhost:1527/mydatabase
+[app on APP] </span>under <span style="font-weight: bold;">Databases</span>.&nbsp;
+(Figure-0.22 below)<span style="font-weight: bold;"><br>
+    </span></li>
+</ul>
+<img alt="" src="index_files/0_derby4.png"
+ style="width: 854px; height: 668px;"><br>
+Figure-0.22: Observe that mydatabase database is created<br>
+<ul>
+  <li>Click <span style="font-weight: bold;">Projects </span>tab
+window to go back to display the project view of the project</li>
+</ul>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="0.3"></a>(0.3)
+Install Hibernate NetBeans Plug-in<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+The Hibernate plug-in is available only for NetBeans 6.1.<br>
+<br>
+<img alt="" src="index_files/112_lib1.png"
+ style="width: 770px; height: 668px;"><br>
+<br>
+<img alt="" src="index_files/112_lib2.png"
+ style="width: 771px; height: 561px;"><br>
+<br>
+<img alt="" src="index_files/112_lib3.png"
+ style="width: 538px; height: 483px;"><br>
+<br>
+<img alt="" src="index_files/112_lib4.png"
+ style="width: 538px; height: 483px;"><br>
+<br>
+<img alt="" src="index_files/112_lib5.png"
+ style="width: 538px; height: 483px;"><br>
+<br>
+<img alt="" src="index_files/112_lib6.png"
+ style="width: 538px; height: 483px;"><br>
+<br>
+<img alt="" src="index_files/112_lib7.png"
+ style="width: 771px; height: 561px;"><br>
+<br>
+<br>
+</div>
+<div style="margin-left: 40px;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_0">return to top of the
+exercise</a>
+</div>
+<br>
+<h2><a name="Exercise_1"></a>Exercise 1: Build "HelloWorld"
+Hibernate application<br>
+</h2>
+<div style="margin-left: 40px;">
+<br>
+In this exercise, you are going to write and run a simple "HelloWorld"
+Hibernate application.&nbsp; In this application, you are going to
+persist a couple of Person objects to the database through Hibernate.<br>
+<ol>
+  <li><a href="#1.1">Write POJO classes, Person.java in this example</a><br>
+  </li>
+  <li><a href="#1.2">Write Hibernate mapping files for the POJO
+classes, Person.hbm.xml in this example</a><br>
+  </li>
+  <li><a href="#1.3">Write Hibernate configuration file,
+hibernate.cfg.xml</a><br>
+  </li>
+  <li><a href="#1.4">Write Main.java and HibernateUtil.java</a></li>
+  <li><a href="#1.5">Add Hibernate and Java DB libraries</a><br>
+  </li>
+  <li><a href="#1.6">Add log4j.properties to the class path</a><br>
+  </li>
+  <li><a href="#1.7">Build and run the project</a></li>
+  <li><a href="#1.8">Verify the database</a><br>
+  </li>
+  <span style="text-decoration: underline;"><span
+ style="font-weight: bold;"><br>
+  </span></span>
+</ol>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.1"></a>(1.1)
+Write POJO classes<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+In this simple application, there is only one POJO class to
+write.&nbsp; The name of the POJO class is <span
+ style="font-weight: bold;">Person.java</span>.<br>
+<br>
+1. Create a new NetBeans project<br>
+<ul>
+  <li>Select <span style="font-weight: bold;">File</span>-&gt;<span
+ style="font-weight: bold;">New Project (Ctrl+Shift+N)</span>.&nbsp;
+(Figure-1.11 below)</li>
+</ul>
+<img alt="" src="index_files/111_hello2.png"
+ style="width: 852px; height: 721px;"><br>
+Figure-1.11: Create a new project<br>
+<ul>
+  <li>Observe that the <span style="font-weight: bold;">New Project</span>
+dialog box appears.</li>
+  <li>Under <span style="font-weight: bold;">Choose Project</span>
+pane,
+select <span style="font-weight: bold;">Java </span>under <span
+ style="font-weight: bold;">Categories </span>and <span
+ style="font-weight: bold;">Java Application</span> under <span
+ style="font-weight: bold;">Projects</span>. (Figure-1.12 below)</li>
+  <li>Click Next.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/111_hello3.png"
+ style="width: 729px; height: 505px;"><br>
+Figure-1.12: Create Java Application project<br>
+<ul>
+  <li>Under <span style="font-weight: bold;">Name and Location</span>
+pane, for the <span style="font-weight: bold;">Project Name</span>
+field, type in <span style="font-weight: bold; color: rgb(255, 0, 0);">HibernateHelloWorld</span>.</li>
+  <li>For <span style="font-weight: bold;">Create Main Class</span>
+field, type in <span style="font-weight: bold; color: rgb(255, 0, 0);">Main</span>.&nbsp;
+(Figure-1.13 below)<br>
+  </li>
+  <li>Click <span style="font-weight: bold;">Finish</span>.</li>
+</ul>
+<img alt="" src="index_files/111_hello4.png"
+ style="width: 823px; height: 505px;"><br>
+Figure-1.13: Give a project name<br>
+<ul>
+  <li>Observe that <span style="font-weight: bold;">HibernateHelloWorld
+    </span>project appears and IDE generated <span
+ style="font-weight: bold;">Main.java</span>
+is displayed in the source editor window of NetBeans IDE.&nbsp; You are
+going to modify the <span style="font-weight: bold;">Main.java</span>
+later on.<br>
+  </li>
+</ul>
+2. Write <span style="font-weight: bold;">Person.java</span> as shown
+in Code-1.14 below.&nbsp; Note that this is a POJO class.<br>
+<ul>
+  <li>Right click <span style="font-weight: bold;">HibernateHelloWorld
+    </span>project node and select<span style="font-weight: bold;">
+New-&gt;Java Class</span>.</li>
+  <li>Observe the <span style="font-weight: bold;">New Java Class</span>
+dialog box appears.</li>
+  <li>For the <span style="font-weight: bold;">Class Name</span>
+field, enter <span style="font-weight: bold; color: rgb(255, 0, 0);">Person</span>.</li>
+  <li>For <span style="font-weight: bold;">Package </span>field,&nbsp;
+leave it as a blank field.&nbsp; You are going to use default package
+by leaving it a blank field. (Using a package is usually a better
+practice but in this exercise,&nbsp; we are using the default package
+for the sake of simplicity of the exercise.)<br>
+  </li>
+  <li>Click <span style="font-weight: bold;">Finish</span>.
+(Figure-1.14 below)<br>
+  </li>
+</ul>
+<img alt="" src="index_files/111_hello12.png"
+ style="width: 729px; height: 505px;"><br>
+Figure-1.14: Name and Location pane<br>
+<ul>
+  <li>Modify the IDE generated <span style="font-weight: bold;">Person.java</span>
+with the code of Code-1.15
+below.&nbsp; You can copy and paste the code.<br>
+  </li>
+</ul>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import java.io.Serializable;<br>
+      <br>
+public class Person implements Serializable {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; private int id;<br>
+&nbsp;&nbsp;&nbsp; private String name;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; protected Person() {<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public Person(int id, String name) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.id = id;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.name = name;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public int getId() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return id;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public void setId(int id) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.id = id;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public String getName() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return name;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public void setName(String name) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.name = name;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.15: Person.java
+<br>
+</div>
+<div style="margin-left: 40px;"><br>
+<ul>
+</ul>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of the
+exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.2"></a>(1.2)
+Write Hibernate mapping files for the POJO classes.<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+Since there is only one POJO class, <span style="font-weight: bold;">Person</span>
+class, in this application,
+you are going to write a single
+mapping file.&nbsp; (Actually, a single mapping file can contain
+mapping
+information of multiple POJO classes but it is a good practice to have
+a separate mapping file for each POJO class.)<br>
+<br>
+1. Write <span style="font-weight: bold;">Person.hbm.xml</span>.&nbsp;
+<br>
+<br>
+In this mapping file, you will specify that <span
+ style="font-weight: bold;">Person
+</span>class is mapped to a database table
+called <span style="font-weight: bold;">person</span>.&nbsp; The <span
+ style="font-weight: bold;">id </span>field of the <span
+ style="font-weight: bold;">Person </span>class will be used as a
+primary key field in the person database table.&nbsp; The <span
+ style="font-weight: bold;">name </span>field will have a
+corresponding column called <span style="font-weight: bold;">cname</span>.<br>
+<ul>
+  <li>Right click <span style="font-weight: bold;">HibernateHelloWorld
+    </span>project node and select <span style="font-weight: bold;">New-&gt;Other</span>.
+(Figure-1.21 below)<span style="font-weight: bold;"><br>
+    </span></li>
+</ul>
+<img alt="" src="index_files/111_hello5.png"
+ style="width: 852px; height: 721px;"><br>
+Figure-1.21: Create XML file<br>
+<ul>
+  <li>Observe that Choose File Type pane appears.<br>
+  </li>
+  <li>Choose <span style="font-weight: bold;">XML </span>under <span
+ style="font-weight: bold;">Categories </span>section on the left and <span
+ style="font-weight: bold;">XML Document</span> under <span
+ style="font-weight: bold;">File Types</span> on the right.
+(Figure-1.22 below)<br>
+  </li>
+  <li>Click <span style="font-weight: bold;">Next.</span></li>
+</ul>
+<img alt="" src="index_files/111_hello6.png"
+ style="width: 729px; height: 505px;"><br>
+Figure-1.22: Create XML Document<br>
+<ul>
+  <li>Observe that <span style="font-weight: bold;">Name and Location</span>
+pane appears.</li>
+  <li>For <span style="font-weight: bold;">File Name</span> field,
+enter <span style="font-weight: bold; color: rgb(255, 0, 0);">Person.hbm</span>.
+(Figure-1.23 below)<span style="font-weight: bold;"><br>
+    </span></li>
+  <li>Click <span style="font-weight: bold;">Browse </span>for Folder.</li>
+</ul>
+<img alt="" src="index_files/111_hello7.png"
+ style="width: 729px; height: 505px;"><br>
+Figure-1.23: Specify the folder in which the file gets created<br>
+<ul>
+  <li>Observe that the Browse Folders dialog box appears.<br>
+  </li>
+  <li>Select <span style="font-weight: bold;">src </span>node.</li>
+  <li>Click <span style="font-weight: bold;">Select Folder</span>.
+(Figure-1.24 below)<br>
+  </li>
+</ul>
+<img alt="" src="index_files/111_hello7.1.png"
+ style="width: 432px; height: 525px;"><br>
+Figure-1.24: Select src <br>
+<ul>
+  <li>Click Next. (Figure-1.25 below)<br>
+  </li>
+</ul>
+<img alt="" src="index_files/111_hello7.2.png"
+ style="width: 729px; height: 505px;"><br>
+Figure-1.25: Click Next.<br>
+<ul>
+  <li>Observe that the <span style="font-weight: bold;">Select
+Document Type</span> pane appears.<br>
+  </li>
+  <li>Click Finish. (Figure-1.26 below)<br>
+  </li>
+</ul>
+<img alt="" src="index_files/111_hello8.png"
+ style="width: 729px; height: 505px;"><br>
+Figure-1.26: Finish creation of XML document<br>
+<ul>
+  <li>Observe IDE generated XML file is displayed in the editor window.</li>
+  <li>Replace the template XML file with the contents of the Code-1.27
+below.</li>
+  <li>Study the code by paying
+special attention to the bold fonted parts.&nbsp; </li>
+</ul>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version='1.0'
+encoding='utf-8'?&gt;<br>
+&lt;!DOCTYPE hibernate-mapping<br>
+&nbsp;&nbsp; PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"<br>
+&nbsp;&nbsp;
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;<br>
+      <br>
+&lt;hibernate-mapping&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;<span style="font-weight: bold;">&nbsp; &lt;class name="Person"
+table="person"&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;id name="id" type="int"&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;generator class="increment"/&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/id&gt;</span><br style="font-weight: bold;">
+      <br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;property name="name" column="cname" type="string"/&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp; &lt;/class&gt;</span><br>
+&nbsp;&nbsp; <br>
+&lt;/hibernate-mapping&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.27: Person.hbm.xml<br>
+<br>
+<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of the
+exercise</a><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.3"></a>(1.3)
+Write a Hibernate configuration file<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+The Hibernate configuration file is
+for each application.&nbsp; You specify database connection setting
+information
+along
+with names of the mapping files in this file.&nbsp; Except the names of
+the mapping files, most Hibernate applications will share the same
+Hibernate configuration file.<br>
+<br>
+1. Write <span style="font-weight: bold;">hibernate.cfg.xml</span>.&nbsp;
+<br>
+<ul>
+  <li>Right click <span style="font-weight: bold;">HibernateHelloWorld
+    </span>project node and select <span style="font-weight: bold;">New-&gt;XML
+Document.</span></li>
+  <li>Observe that <span style="font-weight: bold;">Name and Location</span>
+pane appears.</li>
+  <li>For <span style="font-weight: bold;">File Name</span> field,
+enter <span style="font-weight: bold;"><span
+ style="color: rgb(255, 0, 0);">hibernate.cfg</span>.</span></li>
+  <li>Click <span style="font-weight: bold;">Browse </span>for Folder.</li>
+</ul>
+<ul>
+  <li>Observe that the Browse Folders dialog box appears.</li>
+  <li>Select <span style="font-weight: bold;">src </span>node.</li>
+  <li>Click <span style="font-weight: bold;">Select Folder</span>.</li>
+  <li>Click Next (of the Name and Location pane).<br>
+  </li>
+</ul>
+<ul>
+  <li>Observe that the <span style="font-weight: bold;">Select
+Document Type</span> pane appears.</li>
+  <li>Click <span style="font-weight: bold;">Finish</span>.</li>
+</ul>
+<ul>
+  <li>Observe IDE generated XML file is displayed in the editor window.</li>
+  <li>Replace the template XML file with the contents of the Code-1.31
+below.</li>
+</ul>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version='1.0'
+encoding='utf-8'?&gt;<br>
+&lt;!DOCTYPE hibernate-configuration PUBLIC<br>
+&nbsp;&nbsp;&nbsp; "-//Hibernate/Hibernate Configuration DTD//EN"<br>
+&nbsp;&nbsp;&nbsp;
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"&gt;<br>
+&lt;hibernate-configuration&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;session-factory&gt;<br>
+      <span style="font-weight: bold;">&nbsp;<span
+ style="color: rgb(255, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;!-- Database connection settings --&gt;</span></span><br
+ style="font-weight: bold; color: rgb(255, 0, 0);">
+      <span style="font-weight: bold; color: rgb(255, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;property
+name="connection.driver_class"&gt;org.apache.derby.jdbc.ClientDriver&lt;/property&gt;</span><br
+ style="font-weight: bold; color: rgb(255, 0, 0);">
+      <span style="font-weight: bold; color: rgb(255, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;property
+name="connection.url"&gt;jdbc:derby://localhost:1527/mydatabase&lt;/property&gt;</span><br
+ style="font-weight: bold; color: rgb(255, 0, 0);">
+      <span style="font-weight: bold; color: rgb(255, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;property name="connection.username"&gt;app&lt;/property&gt;</span><br
+ style="font-weight: bold; color: rgb(255, 0, 0);">
+      <span style="font-weight: bold; color: rgb(255, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;property name="connection.password"&gt;app&lt;/property&gt;</span><br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- JDBC connection pool
+(use the built-in) --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="connection.pool_size"&gt;1&lt;/property&gt;<br>
+      <br>
+&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="color: rgb(255, 0, 0);">&nbsp;
+&lt;!-- SQL dialect --&gt;</span></span><br
+ style="font-weight: bold; color: rgb(255, 0, 0);">
+      <span style="font-weight: bold; color: rgb(255, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;property
+name="dialect"&gt;org.hibernate.dialect.DerbyDialect&lt;/property&gt;</span><br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- Echo all executed
+SQL to stdout --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="show_sql"&gt;false&lt;/property&gt;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;<span
+ style="color: rgb(255, 0, 0);">
+&lt;!-- Mapping files --&gt;</span></span><br
+ style="font-weight: bold; color: rgb(255, 0, 0);">
+      <span style="font-weight: bold; color: rgb(255, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;mapping resource="Person.hbm.xml"/&gt;</span><br>
+&nbsp;&nbsp;&nbsp; &lt;/session-factory&gt;<br>
+&lt;/hibernate-configuration&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.31: hibernate.cfg.xml<br>
+<br>
+<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of the
+exercise</a><br>
+<br>
+<br>
+</div>
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;"><br>
+</div>
+</div>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.4"></a>(1.4)
+Write Main.java and HibernateUtil.java<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+1. Modify IDE generated <span style="font-weight: bold;">Main.java</span>
+as shown in Code-1.21 below.&nbsp; Study the code by paying
+special attention to the bold fonted parts.&nbsp; <br>
+<br>
+Since you have not added Hibernate library files to the classpath, you
+will see bunch of compile errors (red boxes) detected by the IDE.&nbsp;
+Don't worry about these compile
+errors for now.&nbsp; We will add the Hibernate library files during
+the subsequent step.<br>
+<br>
+In the <span style="font-weight: bold;">main()</span> method of the
+<span style="font-weight: bold;">Main </span>class, object instance is
+created and persisted through <span style="font-weight: bold;">Session
+</span>object of the Hibernate.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import org.hibernate.*;<br>
+import org.hibernate.cfg.Configuration;<br>
+      <br>
+public class Main {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static void main(String[] args) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Set up database tables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.droptable("drop table person");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HibernateUtil.setup("create
+table person ( id int, cname VARCHAR(20))");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;
+// Create SessionFactory and Session object</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SessionFactory sessions = new
+Configuration().configure().buildSessionFactory();</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Session session = sessions.openSession();</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Perform life-cycle
+operations under a transaction<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transaction tx = null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx =
+session.beginTransaction();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Create a Person object and save it</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Person p1 = new Person();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+p1.setName("Sang Shin");</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.save(p1);</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Create another Person object and save it.</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Person p2 = new Person();</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+p2.setName("Young Shin");</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.save(p2);</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+Retrieve the person objects<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Person person = (Person)session. get(Person.class, p1.getId());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("First person retrieved = " + person.getName());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+person = (Person)session.get(Person.class, p2.getId());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Second person retrieved = " + person.getName());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx =
+null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch ( HibernateException
+e ) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (
+tx != null ) tx.rollback();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+e.printStackTrace();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } finally {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.close();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Display tables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.checkData("select * from person");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.41: Person.hbm.xml<br>
+<br>
+2. Write <span style="font-weight: bold;">HibernateUtil.java</span> as
+shown in Code-1.42 below.&nbsp; <br>
+<br>
+This is a utility class you will use
+for testing and debugging purpose. In this lab, you are going to use
+this utility class for creating and displaying database tables.&nbsp;
+Use this utility class in other Hibernate projects at your
+convenience.&nbsp;
+It is not really important for you to read this code.<br>
+<ul>
+  <li>Right click <span style="font-weight: bold;">HibernateHelloWorld
+    </span>project node and select <span style="font-weight: bold;">New-&gt;Java
+Class</span>.</li>
+  <li>Observe that the <span style="font-weight: bold;">Name and
+Location</span> pane appears.</li>
+  <li>For the <span style="font-weight: bold;">Class Name</span>
+field, enter <span style="font-weight: bold; color: rgb(255, 0, 0);">HibernateUtil</span>.&nbsp;
+(Figure-1.42 below)<br>
+  </li>
+  <li>Click Finish. <br>
+  </li>
+</ul>
+<img alt="" src="index_files/111_hello11.png"
+ style="width: 729px; height: 505px;"><br>
+Figure-1.42: Create HibernateUtil.java<br>
+<ul>
+  <li>Replace the IDE generated HibernateUtil.java with the one in
+Code-1.43 below.<br>
+  </li>
+</ul>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import java.sql.Connection;<br>
+import java.sql.DriverManager;<br>
+import java.sql.Statement;<br>
+      <br>
+import java.sql.ResultSet;<br>
+import java.sql.ResultSetMetaData;<br>
+      <br>
+import org.hibernate.HibernateException;<br>
+import org.hibernate.Session;<br>
+import org.hibernate.SessionFactory;<br>
+import org.hibernate.cfg.Configuration;<br>
+      <br>
+public class HibernateUtil {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; // Database configuration<br>
+&nbsp;&nbsp;&nbsp; public static String url =
+"jdbc:derby://localhost:1527/mydatabase";<br>
+&nbsp;&nbsp;&nbsp; public static String dbdriver =
+"org.apache.derby.jdbc.ClientDriver";<br>
+&nbsp;&nbsp;&nbsp; public static String username = "app";<br>
+&nbsp;&nbsp;&nbsp; public static String password = "app";<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static final SessionFactory sessionFactory;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; static {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+Create the SessionFactory from hibernate.cfg.xml<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+sessionFactory = new Configuration().configure().buildSessionFactory();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch (Throwable ex) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+Make sure you log the exception, as it might be swallowed<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.err.println("Initial SessionFactory creation failed." + ex);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+throw new ExceptionInInitializerError(ex);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static final ThreadLocal session = new
+ThreadLocal();<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static Session currentSession() throws
+HibernateException {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session s = (Session)
+session.get();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Open a new Session, if
+this thread has none yet<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (s == null) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; s =
+sessionFactory.openSession();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+Store it in the ThreadLocal variable<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.set(s);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return s;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static void closeSession() throws
+HibernateException {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session s = (Session)
+session.get();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (s != null)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+s.close();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.set(null);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; static Connection conn;<br>
+&nbsp;&nbsp;&nbsp; static Statement st;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static void setup(String sql) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+createStatement();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+st.executeUpdate(sql);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch (Exception e) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.err.println("Got an exception! ");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+e.printStackTrace();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.exit(0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static void createStatement() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Class.forName(dbdriver);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; conn
+= DriverManager.getConnection(url, username, password);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; st =
+conn.createStatement();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch (Exception e) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.err.println("Got an exception! ");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+e.printStackTrace();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.exit(0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; // Drop table if exists<br>
+&nbsp;&nbsp;&nbsp; public static void droptable(String sql) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+createStatement();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+st.executeUpdate(sql);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch (Exception e) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static void checkData(String sql) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; String[] starray =
+sql.split(" ");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("\n******** Table: " +
+starray[starray.length-1]&nbsp; + " *******");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+createStatement();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ResultSet r = st.executeQuery(sql);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.outputResultSet(r);<br>
+//&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; conn.close();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch (Exception e) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+e.printStackTrace();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static void outputResultSet(ResultSet rs)
+throws Exception{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ResultSetMetaData metadata =
+rs.getMetaData();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int numcols =
+metadata.getColumnCount();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; String[] labels = new
+String[numcols];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int[] colwidths = new
+int[numcols];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int[] colpos = new
+int[numcols];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int linewidth;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; linewidth = 1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (int i = 0; i &lt;
+numcols; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+colpos[i] = linewidth;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+labels[i] = metadata.getColumnLabel(i + 1); // get its label<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int
+size = metadata.getColumnDisplaySize(i + 1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(size &gt; 30 || size == -1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+size = 30;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int
+labelsize = labels[i].length();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(labelsize &gt; size)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+size = labelsize;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+colwidths[i] = size + 1; // save the column the size<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+linewidth += colwidths[i] + 2; // increment total size<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StringBuffer divider = new
+StringBuffer(linewidth);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StringBuffer blankline = new
+StringBuffer(linewidth);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (int i = 0; i &lt;
+linewidth; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+divider.insert(i, '-');<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+blankline.insert(i, " ");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Put special marks in the
+divider line at the column positions<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (int i = 0; i &lt;
+numcols; i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+divider.setCharAt(colpos[i] - 1, '+');<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; divider.setCharAt(linewidth
+- 1, '+');<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Begin the table output
+with a divider line<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println(divider);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // The next line of the
+table contains the column labels.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Begin with a blank line,
+and put the column names and column<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // divider characters "|"
+into it. overwrite() is defined below.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StringBuffer line = new
+StringBuffer(blankline.toString());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; line.setCharAt(0, '|');<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (int i = 0; i &lt;
+numcols; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int
+pos = colpos[i] + 1 + (colwidths[i] - labels[i].length()) / 2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+overwrite(line, pos, labels[i]);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+overwrite(line, colpos[i] + colwidths[i], " |");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println(line);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println(divider);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while (rs.next()) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; line
+= new StringBuffer(blankline.toString());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+line.setCharAt(0, '|');<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for
+(int i = 0; i &lt; numcols; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Object value = rs.getObject(i + 1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (value != null){<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+overwrite(line, colpos[i] + 1, value.toString().trim());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+overwrite(line, colpos[i] + colwidths[i], " |");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println(line);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println(divider);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; static void overwrite(StringBuffer b, int pos,
+String s) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int len = s.length();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (int i = 0; i &lt; len;
+i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+b.setCharAt(pos + i, s.charAt(i));<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.43: HibernateUtil.java<br>
+<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of the
+exercise</a><br>
+<br>
+<br>
+</div>
+<div style="margin-left: 40px;">
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.5"></a>(1.5)
+Add Hibernate library and Java DB driver<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+1. Right click <span style="font-weight: bold;">HibernateHelloWorld </span>project
+and select <span style="font-weight: bold;">Properties</span>.
+(Figure-1.61 below)</div>
+<div style="margin-left: 40px;"><br>
+<img alt="" src="index_files/11_hello1.png"
+ style="width: 854px; height: 683px;"><br>
+Figure-1.61: Select Properties of the project<br>
+<br>
+2. Add Hibernate library<br>
+<ul>
+  <li>Select <span style="font-weight: bold;">Libraries </span>under <span
+ style="font-weight: bold;">Categories </span>section on the left and
+select <span style="font-weight: bold;">Add Library </span>button
+on the right. (Figure-1.62 below)</li>
+</ul>
+<img alt="" src="index_files/11_hello2.png"
+ style="width: 808px; height: 583px;"><br>
+Figure-1.62: Select Add Library<br>
+<ul>
+  <li>Select <span style="font-weight: bold;">Hibernate </span>library.</li>
+  <li>Click <span style="font-weight: bold;">Add Library</span>
+button. (Figure-1.63 below)<br>
+  </li>
+</ul>
+<img alt="" src="index_files/11_hello2.1.png"
+ style="width: 373px; height: 402px;"><br>
+Figure-1.63: Add HibernateCore library<br>
+<br>
+3. Add Java DB library.<br>
+<ul>
+  <li>Click <span style="font-weight: bold;">Add Library</span>
+button. <br>
+  </li>
+</ul>
+<img alt="" src="index_files/11_hello2.2.png"
+ style="width: 808px; height: 583px;"><br>
+<br>
+<ul>
+  <li>Select Java DB Driver.</li>
+  <li>Click Add Library.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/11_hello2.3.png"
+ style="width: 373px; height: 402px;"><br>
+<ul>
+  <li>Click OK.<br>
+  </li>
+</ul>
+<img alt="" src="index_files/11_hello2.4.png"
+ style="width: 808px; height: 583px;"><br>
+Figure-1.64: Close the Project Properties<br>
+<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of the
+exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.6"></a>(1.6)
+Add log4j.properties file<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+This is optional step.&nbsp; If you don't have<span
+ style="font-weight: bold;"> log4j.properties </span>file&nbsp; in the
+class path of your project, you will get some warning messages, which
+you can ignore for now.<br>
+<br>
+1. Add <span style="font-weight: bold;"> log4j.properties </span>file.<br>
+<ul>
+  <li>Right click <span style="font-weight: bold;">HibernateHelloWorld
+    </span>project node and select <span style="font-weight: bold;">New-&gt;Other.</span></li>
+  <li>Choose <span style="font-weight: bold;">Other </span>under <span
+ style="font-weight: bold;">Categories </span>section on the left and <span
+ style="font-weight: bold;">Empty File</span> under <span
+ style="font-weight: bold;">File Types</span> on the right.</li>
+  <li>Click <span style="font-weight: bold;">Next.</span></li>
+</ul>
+<ul>
+  <li>Observe that <span style="font-weight: bold;">Name and Location</span>
+pane appears.</li>
+  <li>For <span style="font-weight: bold;">File Name</span> field,
+enter <span style="font-weight: bold;"><span
+ style="color: rgb(51, 51, 255);">log4j.properties</span>.</span></li>
+  <li>Click<span style="font-weight: bold;"> Browse </span>on the
+Folder.</li>
+</ul>
+<ul>
+  <li>Observe that the Browse Folders dialog box appears.</li>
+  <li>Select src.<br>
+  </li>
+  <li>Click <span style="font-weight: bold;">Select Folder</span>.</li>
+</ul>
+<ul>
+  <li>Click Finish.<br>
+  </li>
+</ul>
+<ul>
+  <li>Observe empty file is displayed in the editor window.</li>
+  <li>Copy the contents of the Code-1.71 below and paste it to the
+empty file.</li>
+</ul>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">#<br>
+# Log4J Settings for log4j 1.2.x (via jakarta-commons-logging)<br>
+#<br>
+# The five logging levels used by Log are (in order):<br>
+#<br>
+#&nbsp;&nbsp; 1. DEBUG (the least serious)<br>
+#&nbsp;&nbsp; 2. INFO<br>
+#&nbsp;&nbsp; 3. WARN<br>
+#&nbsp;&nbsp; 4. ERROR<br>
+#&nbsp;&nbsp; 5. FATAL (the most serious)<br>
+      <br>
+      <br>
+# Set root logger level to WARN and append to stdout<br>
+log4j.rootLogger=WARN, stdout<br>
+      <br>
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender<br>
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout<br>
+      <br>
+# Pattern to output the caller's file name and line number.<br>
+log4j.appender.stdout.layout.ConversionPattern=%d %5p (%c:%L) - %m%n<br>
+      <br>
+# Print only messages of level ERROR or above in the package noModule.<br>
+log4j.logger.noModule=FATAL<br>
+      <br>
+# OpenSymphony Stuff<br>
+log4j.logger.com.opensymphony=INFO<br>
+log4j.logger.com.opensymphony.webwork=DEBUG<br>
+      <br>
+# Spring Stuff<br>
+log4j.logger.org.springframework=INFO<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-1.71: log4j.properties file<br>
+<br>
+</div>
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;"><br>
+</div>
+</div>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.7"></a>(1.7)
+Build and run the application<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+Now you are ready to build and run the application.<br>
+<br>
+1. Right click <span style="font-weight: bold;">HibernateHelloWorld </span>project
+and select <span style="font-weight: bold;">Run</span>.
+(Figure-1.81 below)<br>
+<br>
+<img alt="" src="index_files/1_hello8.png"
+ style="width: 852px; height: 721px;"><br>
+Figure-1.81: Run Project<br>
+<br>
+2. Observe the result in the <span style="font-weight: bold;">Output </span>window
+of the IDE. (Figure-1.82 below) The first part of the result is the
+output from the persistence operation through Hinernate and the second
+part is the display of the rows of the <span style="font-weight: bold;">person
+</span>table.<br>
+<br>
+<img alt="" src="index_files/1_hello9.png"
+ style="width: 852px; height: 721px;"><br>
+Figure-1.82: Result of performing database operation through Hibernate<br>
+<br>
+<span style="color: rgb(255, 0, 0);">Trouble-shooting</span>: If you
+see the following error condition in the Output window, it is highly
+likely due to the fact the database server is not running.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">15&nbsp;&nbsp; [main] WARN&nbsp;
+org.hibernate.cfg.SettingsFactory&nbsp; - Could not obtain connection
+metadata<br>
+org.apache.derby.client.am.DisconnectException:
+java.security.PrivilegedActionException : <span
+ style="font-weight: bold;">Error opening socket to
+server localhost on port 1527 with message</span> : null<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.apache.derby.client.net.NetAgent.&lt;init&gt;(Unknown Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.apache.derby.client.net.NetConnection.newAgent_(Unknown Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.apache.derby.client.am.Connection.&lt;init&gt;(Unknown Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.apache.derby.client.net.NetConnection.&lt;init&gt;(Unknown Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.apache.derby.jdbc.ClientDriver.connect(Unknown Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+java.sql.DriverManager.getConnection(DriverManager.java:582)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+java.sql.DriverManager.getConnection(DriverManager.java:154)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.hibernate.connection.DriverManagerConnectionProvider.getConnection(DriverManagerConnectionProvider.java:110)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:76)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.hibernate.cfg.Configuration.buildSettings(Configuration.java:1933)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.hibernate.cfg.Configuration.buildSessionFactory(Configuration.java:1216)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+HibernateUtil.&lt;clinit&gt;(HibernateUtil.java:26)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at Main.main(Main.java:9)<br>
+Got an exception! <br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<span style="color: rgb(51, 51, 255);">Solution</span>: Start the
+database server as described in <a href="#Exercise_0">Exercise 0 above</a>.<br>
+<br>
+<span style="color: rgb(255, 0, 0);">Trouble-shooting</span>: If you
+see the following error condition in the Output window, it is highly
+likely due to the fact the client driver, <span
+ style="font-weight: bold;">derbyclient.jar</span> for the Derby
+database, is not added to the classpath.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">Initial SessionFactory creation
+failed.org.hibernate.HibernateException: <span
+ style="font-weight: bold;">JDBC Driver class not found:
+org.apache.derby.jdbc.ClientDriver</span><br>
+Exception in thread "main" java.lang.ExceptionInInitializerError<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+HibernateUtil.&lt;clinit&gt;(HibernateUtil.java:30)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at Main.main(Main.java:9)<br>
+Caused by: org.hibernate.HibernateException: JDBC Driver class not
+found: org.apache.derby.jdbc.ClientDriver<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:66)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.hibernate.connection.ConnectionProviderFactory.newConnectionProvider(ConnectionProviderFactory.java:124)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.hibernate.connection.ConnectionProviderFactory.newConnectionProvider(ConnectionProviderFactory.java:56)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.hibernate.cfg.SettingsFactory.createConnectionProvider(SettingsFactory.java:397)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:62)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.hibernate.cfg.Configuration.buildSettings(Configuration.java:1933)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+org.hibernate.cfg.Configuration.buildSessionFactory(Configuration.java:1216)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+HibernateUtil.&lt;clinit&gt;(HibernateUtil.java:26)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ... 1 more<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<span style="color: rgb(51, 51, 255);">Solution</span>: Add the client
+driver, <span style="font-weight: bold;">derbyclient.jar</span>, to
+the classpath as described in <a href="#1.5">step 1.5 above</a>.<br>
+<br>
+<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of the
+exercise</a><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="1.8"></a>(1.8)
+Verify the database<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+In this step, you are going to see if the <span
+ style="font-weight: bold;">person </span>table is in fact
+populated with two rows that have been added in the Main class.<br>
+<br>
+1. Select <span style="font-weight: bold;">Services </span>tab
+window.
+<br>
+2. Expand <span style="font-weight: bold;">Databases</span>. <br>
+3. Right click <span style="font-weight: bold;">jdbc:derby://localhost:1527/mydatabase
+[app on APP]</span> and select <span style="font-weight: bold;">Connect</span>.
+(Figure-1.91 below)<br>
+<br>
+<img alt="" src="index_files/1_hello10.png"
+ style="width: 852px; height: 721px;"><br>
+Figure-1.91: Connect to the database<br>
+<br>
+4. Expand <span style="font-weight: bold;">Tables</span>.<br>
+5. Right click <span style="font-weight: bold;">PERSON </span>table
+and select <span style="font-weight: bold;">View Data</span>.
+(Figure-1.92 below)<br>
+<br>
+<img alt="" src="index_files/1_hello11.png"
+ style="width: 854px; height: 657px;"><br>
+Figure-1.92: View Data of the PERSON table<br>
+<br>
+6. Observe that the two rows are present in the <span
+ style="font-weight: bold;">PERSON </span>database table. (Figure-1.93
+below)<br>
+<br>
+<img alt="" src="index_files/1_hello12.png"
+ style="width: 852px; height: 721px;"><br>
+Figure-1.93: Verify the contents of the database table.<br>
+<br>
+</div>
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;"><br>
+</div>
+</div>
+<span style="color: rgb(51, 51, 255); font-weight: bold;">Solution</span>:
+This exercise up to this point is provided as a ready-to-open-and-run
+NetBeans project as part of hands-on lab zip file. You can find it as <span
+ style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/hibernatestepbystep/samples/</span><span
+ style="font-weight: bold;">HibernateHelloWorld</span><span
+ style="font-weight: bold;">.&nbsp;
+</span>You will have to add Hibernate library files and client driver
+once you opened the project as described in this exercise above.<br>
+<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_1">return to top of the
+exercise</a><br>
+</div>
+<br>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial">Summary<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+In this exercise, you have learned how to build a simple HelloWorld
+Hibernate application from scratch.&nbsp; You learned Hibernate
+application typically has domain classes, corresponding mapping files
+for those domain classes, and Hibernate configuration file.<br>
+</div>
+<div style="margin-left: 40px;"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#Tutorial_Exercises">return to the top</a><br>
+</div>
+<br>
+<br>
+<h2><a name="Exercise_2"></a>Exercise 2: Build "HibernateHelloWorld2"
+application<br>
+</h2>
+<p style="margin-left: 40px;">In this exercise, you are going to create
+a new project called <span style="font-weight: bold;">HibernateHelloWorld2
+</span>by copying <span style="font-weight: bold;">HibernateHelloWorld
+</span>project you built in Exercise 1 above.&nbsp; By copying the
+project, all the Hibernate library files are automatically copied into
+the new project. You are also going add
+another POJO class and its mapping
+file to the new project.<br>
+</p>
+<ol style="margin-left: 40px;">
+  <li><a href="#2.1">Create "HibernateHelloWorld2" project by copying
+the "HibernateHelloWorld" project<br>
+    </a></li>
+  <li><a href="#2.2">Add a new POJO class, Student.java<br>
+    </a></li>
+  <li><a href="#2.3">Write a mapping file, Student.hbm.xml</a></li>
+  <li><a href="#2.4">Modify hibernate.cfg.xml</a><br>
+  </li>
+  <li><a href="#2.4">Modify Main.java</a></li>
+  <li><a href="#2.6">Build and run the project</a></li>
+  <li><a href="#2.7">Observe SQL commands sent by the Hibernate</a><br>
+  </li>
+</ol>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.1"></a>(2.1)
+Create "HibernateHelloWorld2" project by copying the
+"HibernateHelloWorld" project<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+1. Right-click <span style="font-weight: bold;">HibernateHelloWorld </span>project
+and select <span style="font-weight: bold;">Copy Project</span>.
+(Figure-2.10 below)
+<ul>
+</ul>
+<img alt="" src="index_files/2_hello1.png"
+ style="width: 854px; height: 657px;"><br>
+Figure-2.10: Copy Project<br>
+<br>
+2. Give a project name to the new project.<br>
+<ul>
+  <li>Observe that the <span style="font-weight: bold;">Copy Project</span>
+dialog box appears. <br>
+  </li>
+  <li>For the <span style="font-weight: bold;">Project Name:</span>
+field, type in <span style="font-weight: bold; color: rgb(255, 0, 0);">HibernateHelloWorld2</span>.<br>
+  </li>
+  <li>Click <span style="font-weight: bold;">Copy</span>. (Figure-2.11
+below)<br>
+  </li>
+</ul>
+<img alt="" src="index_files/2_hello2.png"
+ style="width: 558px; height: 288px;"><br>
+Figure-2.11: Copy Project<br>
+<ul>
+  <li>Observe that <span style="font-weight: bold;">HibernateHelloWorld2
+    </span>project node appears.</li>
+</ul>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_2">return to top of the
+exercise</a><br>
+<br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.2"></a>(2.2)
+Add a new POJO class<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+In this step, you are going to add a new POJO domain class called <span
+ style="font-weight: bold;">Student</span>.<br>
+<br>
+1. Write <span style="font-weight: bold;">Student.java</span>.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import java.io.Serializable;<br>
+      <br>
+public class Student implements Serializable {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; private int id;<br>
+&nbsp;&nbsp;&nbsp; private String school;<br>
+&nbsp;&nbsp;&nbsp; private String grade;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; protected Student() {<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public Student(int id, String school) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.id = id;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.school = school;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public int getId() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return id;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public void setId(int id) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.id = id;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public String getSchool() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return school;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public void setSchool(String name) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.school = name;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public String getGrade() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return grade;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public void setGrade(String grade) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.grade = grade;<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.21: Student.java<br>
+<br>
+&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_2">return to top of the
+exercise</a><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.3"></a>(2.3)
+Write new mapping file, Student.hbm.xml, for the Student class<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+1. Write <span style="font-weight: bold;">Student.hbm.xml</span> as
+shown in Code-2.31 below.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version='1.0'
+encoding='utf-8'?&gt;<br>
+&lt;!DOCTYPE hibernate-mapping<br>
+&nbsp;&nbsp; PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"<br>
+&nbsp;&nbsp;
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;<br>
+      <br>
+&lt;hibernate-mapping&gt;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp; <span style="font-weight: bold;">&lt;class name="Student"
+table="student"&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;id name="id" type="int"&gt;</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;generator class="increment"/&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/id&gt;</span><br style="font-weight: bold;">
+      <br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;property name="school" column="schoolname"
+type="string"/&gt;&nbsp;&nbsp;&nbsp;&nbsp; </span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;property name="grade" column="grade" type="string"/&gt;</span><br
+ style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp; &lt;/class&gt;</span><br>
+&nbsp;&nbsp; <br>
+&lt;/hibernate-mapping&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.31: Student.hbm.xml<br>
+<br>
+&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_2">return to top of the
+exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.4"></a>(2.4)
+Modify Main.java<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+1. Modify the <span style="font-weight: bold;">Main.java</span> of the
+<span style="font-weight: bold;">HibernateHelloWorld2 </span>project
+as shown in Code-2.41 below.&nbsp; The
+code fragments that need to be changed are high-lighted in bold and
+blue-colored font.&nbsp; Please make sure you are modifying the
+<span style="font-weight: bold;">Main.java</span> of the <span
+ style="font-weight: bold;">HibernateHelloWorld2 </span>project not
+HibernateHelloWorld
+project. (It is very easy to make this mistake.)<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">import org.hibernate.*;<br>
+import org.hibernate.cfg.Configuration;<br>
+      <br>
+public class Main {<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; public static void main(String[] args) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Set up database tables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.droptable("drop table Person");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold; color: rgb(51, 51, 255);">HibernateUtil.droptable("drop
+table Student");</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HibernateUtil.setup("create
+table Person ( id int, cname VARCHAR(20))");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold; color: rgb(51, 51, 255);">HibernateUtil.setup("create
+table Student ( id int, schoolname VARCHAR(30), grade VARCHAR(5))");</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Create SessionFactory and
+Session object<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SessionFactory sessions =
+new Configuration().configure().buildSessionFactory();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session session =
+sessions.openSession();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Perform life-cycle
+operations under a transaction<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transaction tx = null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx =
+session.beginTransaction();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+Create a Person object and save it<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Person p1 = new Person();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+p1.setName("Sang Shin");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.save(p1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+Create another Person object and save it.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Person p2 = new Person();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+p2.setName("Young Shin");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.save(p2);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+Retrieve the person objects<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Person person = (Person)session. get(Person.class, p1.getId());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("First person retrieved = " + person.getName());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+person = (Person)session.get(Person.class, p2.getId());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("Second person retrieved = " + person.getName());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Create a Student object and save it</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Student s1 = new Student();</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+s1.setSchool("Lexington High School");</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+s1.setGrade("A");</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.save(s1);</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><br style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Retrieve the Student objects</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Student student = (Student)session. get(Student.class, s1.getId());</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+System.out.println("First student retrieved = " + student.getId() + ",
+" +</span><br style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"School attending = " + student.getSchool() + ", " +</span><br
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+      <span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"Grade = " + student.getGrade());</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+tx.commit();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx =
+null;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch ( HibernateException
+e ) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (
+tx != null ) tx.rollback();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+e.printStackTrace();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } finally {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+session.close();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Display tables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HibernateUtil.checkData("select * from Person");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+ style="font-weight: bold; color: rgb(51, 51, 255);">
+HibernateUtil.checkData("select * from Student");</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+}<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.41: Main.java<br>
+<br>
+&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_2">return to top of the
+exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.5"></a>(2.5)
+Modify hibernate.cfg.xml file<br>
+</h3>
+<div style="margin-left: 40px;">
+<br>
+1. Modify <span style="font-weight: bold;">hibernate.cfg.xml </span>file
+as shown in Code-2.52 below.&nbsp; The code fragment that needs to be
+added is highlighted in blue-colored and bold font.<span
+ style="font-weight: bold;"><br>
+<br>
+</span>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">&lt;?xml version='1.0'
+encoding='utf-8'?&gt;<br>
+&lt;!DOCTYPE hibernate-configuration PUBLIC<br>
+"-//Hibernate/Hibernate Configuration DTD//EN"<br>
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"&gt;<br>
+&lt;hibernate-configuration&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;session-factory&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- Database connection
+settings --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="connection.driver_class"&gt;org.apache.derby.jdbc.ClientDriver&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="connection.url"&gt;jdbc:derby://localhost:1527/mydatabase&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="connection.username"&gt;app&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="connection.password"&gt;app&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- JDBC connection pool
+(use the built-in) --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="connection.pool_size"&gt;1&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- SQL dialect --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="dialect"&gt;org.hibernate.dialect.DerbyDialect&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- Echo all executed
+SQL to stdout --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property
+name="show_sql"&gt;true&lt;/property&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- Mapping files --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;mapping
+resource="Person.hbm.xml"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold; color: rgb(51, 51, 255);">&lt;mapping
+resource="Student.hbm.xml"/&gt;</span><br>
+&nbsp;&nbsp;&nbsp; &lt;/session-factory&gt;<br>
+&lt;/hibernate-configuration&gt;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Code-2.52: Modified hibernate.cfg.xml file<br>
+<br>
+&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_2">return to top of the
+exercise</a><br>
+<span style="font-weight: bold;"><br>
+</span></div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.6"></a>(2.6)
+Build and run the application<br>
+</h3>
+<div style="margin-left: 40px;">
+<br>
+1. Right click <span style="font-weight: bold;">HibernateHelloWorld2 </span>project
+and select <span style="font-weight: bold;">Run Project</span>. <br>
+2. Observe the result in the Output window of the IDE. (Figure-2.61
+below)<br>
+<br>
+<img alt="" src="index_files/2_hello3.png"
+ style="width: 854px; height: 657px;"><br>
+Figure-2.61: Result<br>
+<br>
+&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_2">return to top of the
+exercise</a><br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="2.7"></a>(2.7)
+Observe the SQL commands<br>
+</h3>
+<div style="margin-left: 40px;">
+<br>
+In this step, you are going to set the flag in the <span
+ style="font-weight: bold;">hibernate.cfg.xml</span>
+file to display the SQL commands that are being sent by the Hibernate
+framework.&nbsp; This is a useful debugging feature.<br>
+<br>
+1. Change the "<span style="font-weight: bold;">show_sql</span>"
+property of the <span style="font-weight: bold;">&lt;session-factory&gt;</span>
+element
+of the <span style="font-weight: bold;">hibernate.cfg.xml</span> file
+to <span style="font-weight: bold;">true </span>(from <span
+ style="font-weight: bold;">false</span>) as shown in Figure-2.71 below.<br>
+<br>
+<img alt="" src="index_files/2_hello4.png"
+ style="width: 854px; height: 657px;"><br>
+Figure-2.71: Set "show_sql" property to true<br>
+<br>
+2. Right-click <span style="font-weight: bold;">HibernateHelloWorld2 </span>project
+and select <span style="font-weight: bold;">Run Project</span>.<br>
+3. Observe the SQL commands that are being sent by the Hibernate.
+(Figure-2.72 below)<br>
+<br>
+<img alt="" src="index_files/2_hello5.png"
+ style="width: 854px; height: 657px;"><br>
+Figure-2.72: SQL commands<br>
+</div>
+<div style="margin-left: 40px;"><br>
+<span style="color: rgb(51, 51, 255); font-weight: bold;">Solution</span>:
+This exercise up to this point is provided as a ready-to-open-and-run
+NetBeans project as part of hands-on lab zip file. You can find it as <span
+ style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;/hibernatestepbystep/samples/</span><span
+ style="font-weight: bold;">HibernateHelloWorld2</span><span
+ style="font-weight: bold;">. </span>You will have to add Hibernate
+library files and client driver once you opened the project as
+described in Exercise 1.<span style="font-weight: bold;">
+</span><br>
+<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_2">return to top of the
+exercise</a><br>
+<br>
+<br>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial">Summary</h3>
+<p style="margin-left: 40px;">In this exercise,&nbsp; you have learned
+how to create a new Hibernate project by copying an existing Hibernate
+project.&nbsp; You also learned how to add another POJO class and its
+corresponding Hibernate map file to the project.&nbsp; Finally you
+learned how to display the SQL commands that are sent by the Hibernate
+to the database.<br>
+</p>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="index.html#Tutorial_Exercises">return to
+the top</a><br>
+<br>
+<br>
+<br>
+<h2><a name="Exercise_3"></a>Exercise 3: Configuring Hibernate JavaDoc<br>
+</h2>
+<br>
+<div style="margin-left: 40px;">In this exercise, you are going to
+configure Javadoc of the Hibernate so that you can display context
+sensitive Java documentation on Hibernate classes.&nbsp; You do this
+just once meaning once it is configured, Javadoc of Hibernate classes
+can be displayed for all the other and future Hibernate projects.<br>
+</div>
+<p style="margin-left: 40px;"></p>
+<ul>
+  <ul>
+  </ul>
+  <ol>
+    <li><a href="#3.1">Configure Hibernate Javadoc directory to the
+NetBeans IDE</a><br>
+    </li>
+    <li><a href="#3.2">Display Javadoc of the Hibernate Session
+interface in a
+context-sensitive manner<br>
+      </a></li>
+  </ol>
+</ul>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="3.1"></a>(3.1)
+Configure Hibernate Javadoc directory to the NetBeans IDE<br>
+</h3>
+<br>
+<div style="margin-left: 40px;">1. Select <span
+ style="font-weight: bold;">Tools </span>from the top-level menu and
+select Libraries.
+(Figure-3.10 below)<br>
+<br>
+<img alt="" src="index_files/3_javadoc1.png"
+ style="width: 852px; height: 721px;"><br>
+Figure-3.10: Select Java Platform Manager<br>
+<br>
+2. Configure Javadoc for the HibernateCore library.<br>
+<ul>
+  <li>Select <span style="font-weight: bold; color: rgb(255, 0, 0);">Hibernate</span>
+under <span style="font-weight: bold;">Libraries </span>on the left.</li>
+  <li>Select <span style="font-weight: bold;">Javadoc</span> tab
+window.</li>
+  <li>Click <span style="font-weight: bold;">Add ZIP/Folder</span>
+button. (Figure-3.11 below)<br>
+  </li>
+</ul>
+<img alt="" src="index_files/3_javadoc2.png"
+ style="width: 658px; height: 488px;"><br>
+Figure-3.11: Add ZIP/Folder of the Hibernate Javadoc<br>
+<ul>
+  <li>Browse down to <span style="font-weight: bold;">&lt;LAB_UNZIPPED_DIRECTORY&gt;</span><span
+ style="font-weight: bold;">/hibernatestepbystep/hibernatedoc</span>
+directory</li>
+  <li>Select <span style="font-weight: bold;">api </span>and click <span
+ style="font-weight: bold;">Add ZIP/Folder</span> button. (Figure-3.12
+below)</li>
+</ul>
+<img alt="" src="index_files/3_javadoc3.png"
+ style="width: 667px; height: 280px;"><br>
+Figure-3.12: Add api directory<br>
+<br>
+<ul>
+  <li>Click OK to close the Library Manager dialog box.
+(Figure-3.13 below)</li>
+</ul>
+<img alt="" src="index_files/3_javadoc4.png"
+ style="width: 658px; height: 488px;"><br>
+Figure-3.13: Close Java Platform Manager <br>
+<span style="color: rgb(51, 51, 255); font-weight: bold;"></span><br>
+</div>
+<div style="margin-left: 40px;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_3">return to top of the
+exercise</a><br>
+<br>
+</div>
+<br>
+<h3 style="margin-left: 40px;" class="tutorial"><a name="3.2"></a>(3.2)
+Display Javadoc of the Session Hibernate interface in a
+context-sensitive manner<br>
+</h3>
+<div style="margin-left: 40px;"><br>
+1. Double-click <span style="font-weight: bold;">Main.java</span> to
+open it in the editor window.<br>
+2. Move the cursor on the <span style="font-weight: bold;">Session </span>and
+right click on it.<br>
+3. Select <span style="font-weight: bold;">Show Javadoc</span>.&nbsp;
+(Figure-3.21 below)<br>
+<br>
+<img alt="" src="index_files/3_javadoc5.png"
+ style="width: 854px; height: 657px;"><br>
+Figure-3.21: Select Show Javadoc on Session<br>
+<br>
+4. Observe the Javadoc of the <span style="font-weight: bold;">Session
+</span>interface gets displayed in the browser. (Figure-3.22 below)<br>
+5. Please spend some time browsing various methods supported by <span
+ style="font-weight: bold;">Session </span>interface.<br>
+<br>
+<img alt="" src="index_files/3_javadoc6.png"
+ style="width: 851px; height: 731px;"><br>
+Figure-3.22: Javadoc of Session interface<span
+ style="color: rgb(255, 0, 0);"></span><br>
+<br>
+<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; <a href="index.html#Exercise_3">return to top of the
+exercise</a><br>
+</div>
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;"><br>
+</div>
+</div>
+<h3 style="margin-left: 40px;" class="tutorial">Summary</h3>
+<div style="margin-left: 40px;"><br>
+In this exercise, you have learned how to display Javadoc of Hibernate
+classes in a context-sensitive manner.<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; <a href="index.html#Tutorial_Exercises">return
+to the top</a><br>
+<br>
+<br>
+</div>
+<br>
+<br>
+<h2><a name="Homework"></a>Homework
+exercise (for people who
+are taking Sang Shin's "Java EE Programming online course")<br>
+</h2>
+<br>
+<div style="margin-left: 40px;">1. The homework is to create your own
+Hibernate project called <span style="font-weight: bold;">HibernateMyHobby</span>.&nbsp;
+You are welcome to create a new project from scratch as you've done in
+Exercise 1 or you can&nbsp; copy <span style="font-weight: bold;">HibernateHelloWorld
+</span>or
+<span style="font-weight: bold;">HibernateHelloWorld2 </span>project
+as you've done in Exercise 2 above. <br>
+<ul>
+  <li>The Hibernate project has the following POJO class.&nbsp; <br>
+  </li>
+</ul>
+<ul style="margin-left: 40px;">
+  <li>Hobby class with the following fields</li>
+  <ul>
+    <li>int myHobbyId</li>
+    <li>String hobby</li>
+    <li>int yearIstartedThisHobby<br>
+    </li>
+  </ul>
+</ul>
+<ul>
+  <li>Create a database table called, <span style="font-weight: bold;">hobbytable</span>
+either manually or programmatically using <span
+ style="font-weight: bold;">HibernateUtil.setup()</span>
+utility method as is done in the <span style="font-weight: bold;">HibernateHelloWorld
+    </span>project.</li>
+  <li>In the <span style="font-weight: bold;">Main.java</span>, create
+a few instances of <span style="font-weight: bold;">Hobby</span><span
+ style="font-weight: bold;"> </span>objects instances and save
+them to the database tables.<br>
+  </li>
+</ul>
+</div>
+<div style="margin-left: 40px;">2. This is an optional exercise.&nbsp;
+Rebuild the project by using MySQL or HSQL.&nbsp; You can create a new
+project called <span style="font-weight: bold;">HibernateMyHobbyMySQL </span>or<span
+ style="font-weight: bold;"> </span><span style="font-weight: bold;">HibernateMyHobbyHSQL
+</span>by copying <span style="font-weight: bold;">HibernateMyHobby </span>project.&nbsp;
+You can download MySQL and HSQL from the following sites.<br>
+<ul>
+  <li>MySQL (<a href="http://dev.mysql.com/downloads/">download</a>
+for Windows) - optional<br>
+  </li>
+  <li>HSQLDB (<a
+ href="http://downloads.sourceforge.net/hsqldb/hsqldb_1_8_0_7.zip?modtime=1159390846&amp;big_mirror=0">download</a>)</li>
+</ul>
+<br>
+3<span style="color: rgb(0, 0, 0);">. Send the following files to</span><span
+ style="color: rgb(0, 0, 0);">
+<a href="mailto:j2eehomeworks@sun.com">j2eehomeworks@sun.com</a>
+with </span><span style="font-weight: bold; color: rgb(0, 0, 0);">Subject
+</span><span style="color: rgb(0, 0, 0);">as </span><span
+ style="font-weight: bold; color: rgb(0, 0, 0);">J2EEHomework-hibernatestepbystep.</span><br
+ style="color: rgb(0, 0, 0);">
+<span style="font-weight: bold; color: rgb(0, 0, 0);"></span>
+<ul style="color: rgb(0, 0, 0);">
+  <li>Zip file of the the<span style="font-weight: bold;">
+HibernateMyHobby</span>
+NetBeans project.&nbsp; (Someone else
+should be able to open and run it as a NetBeans project.)&nbsp; You can
+use your favorite zip utility or you can use "jar" utility that comes
+with JDK as following.<br>
+  </li>
+  <ul>
+    <li>cd &lt;parent directory that contains <span
+ style="font-weight: bold;">HibernateMyHobby</span> directory&gt;
+(assuming you named your project as <span style="font-weight: bold;">HibernateMyHobby</span>)<br>
+    </li>
+    <li>jar cvf HibernateMyHobby.zip HibernateMyHobby (<span
+ style="font-weight: bold;">HibernateMyHobby </span>should contain <span
+ style="font-weight: bold;">nbproject </span>directory)<br>
+    </li>
+  </ul>
+  <li>Captured output screen&nbsp;<span style="font-weight: bold;"> </span>-
+name it as <span style="font-weight: bold;">J2EEHomework-hibernatestepbystep.gif</span>
+or<span style="font-weight: bold;">J2EEHomework-hibernatestepbystep</span><span
+ style="font-weight: bold;">.jpg</span> (or <span
+ style="font-weight: bold;">J2EEHomework-hibernatestepbystep.&lt;whatver
+graphics format&gt;</span>)</li>
+  <ul>
+    <li>Any screen capture that shows that your program is working is
+good enough.&nbsp; <br>
+    </li>
+  </ul>
+  <li>If you decide to use
+different IDE other than NetBeans, the zip
+file should contain all the files that are needed for rebuilding the
+project - war file with necessary source files is OK.</li>
+</ul>
+</div>
+<br>
+<br>
+<div style="margin-left: 40px;"><br>
+</div>
+<p> </p>
+<!-- ======================================================================================== -->
+</body>
+</html>

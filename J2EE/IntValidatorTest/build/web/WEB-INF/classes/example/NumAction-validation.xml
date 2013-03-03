@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC
+      "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+      "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+
+<validators>
+
+  <field name="userinput">
+    <field-validator type="int">
+      <param name="min">10</param>
+      <param name="max">80</param>
+      <message>Number needs to between ${min} and ${max} </message>
+    </field-validator>
+  </field>
+
+</validators>

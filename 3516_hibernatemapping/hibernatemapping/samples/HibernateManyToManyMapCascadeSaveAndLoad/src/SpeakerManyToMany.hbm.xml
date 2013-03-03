@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    
+    <class name="SpeakerManyToMany" table="m_speakers">
+        <id name="id" column="uid" type="long">
+            <generator class="increment"/>
+        </id>
+        <property name="firstName" type="string" length="20"/>
+        <property name="lastName" type="string" length="20"/>
+        
+        <set name="events" table="event_speakers" cascade="all">
+            <key column="speaker_id"/>
+            <many-to-many class="EventManyToMany"/>
+        </set>
+        
+    </class>
+    
+</hibernate-mapping>
